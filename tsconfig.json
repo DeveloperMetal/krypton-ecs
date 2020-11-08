@@ -2,7 +2,7 @@
   "compilerOptions": {
     "incremental": true,
     "module": "amd",
-    "outFile": "lib/framework.js",
+    "outFile": "lib/ecs.js",
     "target": "ES2015",
     "moduleResolution": "node",
     "declaration": true,
@@ -30,5 +30,8 @@
   },
   "include": [
     "src/**/*"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }

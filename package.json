@@ -1,6 +1,8 @@
 {
-  "name": "framework",
+  "name": "@krypton/ecs",
   "version": "1.0.0",
+  "main": "./lib/ecs.js",
+  "module": "./lib/ecs.js",
   "scripts": {
     "prepare": "yarn build",
     "build": "tsc",

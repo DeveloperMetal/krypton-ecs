@@ -1,3 +1,7 @@
-node_modules
+# Paths
+/node_modules
+/coverage
+/lib
+
+# Files
 *.log
-coverage
