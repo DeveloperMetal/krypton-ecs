@@ -1,5 +1,5 @@
-import { Identifiable } from "./utils";
-import { Component, ComponentInterface } from "./component";
+import { Identifiable } from './utils';
+import { Component, ComponentInterface } from './component';
 
 export class Entity extends Identifiable {
   private _components = new Map<string, Component<ComponentInterface>>();
@@ -15,5 +15,4 @@ export class Entity extends Identifiable {
   public listComponents() {
     return Array.from(this._components.keys());
   }
-
 }

@@ -1,4 +1,4 @@
-import { Entity } from "./entity";
+import { Entity } from './entity';
 
 export class ECS {
   private _entities = new Map<string, Entity>();
@@ -20,7 +20,7 @@ export class ECS {
   }
 
   /**
-   * 
+   *
    * @param id Entity name
    */
   removeEntity(id: string) {
