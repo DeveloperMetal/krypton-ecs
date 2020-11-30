@@ -1,35 +1,22 @@
 import { Identifiable } from './utils';
+import { Entity } from './entity';
+import { ComponentInterface, IComponent, ComponentFields, ECSDefine, FieldDefinition, FilterType } from './types';
+import { InternalECS } from './internal';
 
-export type FieldTypeof = 'number' | 'string' | 'bigint' | 'boolean';
-export type FieldType = string | number | bigint | boolean;
-
-export type FieldDefinition = {
-  defaultValue?: FieldType;
-  type: FieldTypeof;
-  nullable?: boolean;
-};
-
-export type ComponentFields<T extends ComponentInterface> = {
-  [field in keyof T]: FieldDefinition;
-};
-
-export interface IComponent {
-  $id: string;
-  keys(): string[];
-}
-
-export interface ComponentInterface {
-  [index: string]: FieldType | null;
-}
-
-export class Component<T extends ComponentInterface> extends Identifiable implements IComponent {
+export class Component<T extends ComponentInterface, C extends ECSDefine>
+  extends Identifiable<C> 
+  implements IComponent<C>
+{
   private _fieldDef: ComponentFields<T>;
+  private _parent: Entity<C>;
 
-  constructor(id: string, fieldDef: ComponentFields<T>) {
-    super();
+  constructor(id: string, fieldDef: ComponentFields<T>, parent: Entity<C>, ecs: InternalECS<C>) {
+    super(id, ecs);
     this._fieldDef = fieldDef;
-    this.$id = id;
+    this._parent = parent;
+    let inConstructor = true;
 
+    const me = this;
     // Build a proxy to guard component fields agaisnt invalid value types
     const prox = new Proxy(this, {
       set(obj, key, value) {
@@ -43,7 +30,12 @@ export class Component<T extends ComponentInterface> extends Identifiable implem
             throw new TypeError('Invalid Type');
           }
 
-          return Reflect.set(obj, key, value);
+          const result = Reflect.set(obj, key, value);
+          if ( result  && !inConstructor ) {
+            me.$ecs.enqueueTrigger(FilterType.Modifying, me._parent);
+          }
+
+          return result;
         }
 
         throw new TypeError(`Field ${String(key)} not found`);
@@ -60,8 +52,13 @@ export class Component<T extends ComponentInterface> extends Identifiable implem
         throw new TypeError('Default Value is required when field is not nullable');
       }
     }
+    inConstructor = false;
 
     return prox;
+  }
+
+  get parentEntity() {
+    return this._parent;
   }
 
   keys() {
@@ -69,6 +66,6 @@ export class Component<T extends ComponentInterface> extends Identifiable implem
   }
 
   as<A extends ComponentInterface>() {
-    return (this as unknown) as A & IComponent;
+    return (this as unknown) as A & IComponent<C>;
   }
 }
