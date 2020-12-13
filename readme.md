@@ -1,4 +1,4 @@
-# Kryton ECS System
+# Krypton ECS System
 
 An experimental type safe ECS system that supports an application loop and delayed bulk events.
 
@@ -90,7 +90,7 @@ app.addEntity('my-entity', 'Componen1');
 
 Components hold all data related to a feature and should always hold the minimum amount of data to implement a feature. In fact it is highly desired to split features into multiple components that contain very specific data about the different behaviours a feature might require.
 
-To specify a component for Kryton-ECS you need an interface and metadata about the component fields:
+To specify a component for Krypton-ECS you need an interface and metadata about the component fields:
 
 ```typescript
 // Component interface to enforce type signatures
