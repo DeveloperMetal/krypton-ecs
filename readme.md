@@ -83,7 +83,7 @@ app.addEntity('my-entity');
 or if you want to seed the entity with existing components:
 
 ```typescript
-app.addEntity('my-entity', 'Componen1');
+app.addEntity('my-entity', 'Component1');
 ```
 
 ### Components
