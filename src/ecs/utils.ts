@@ -17,8 +17,4 @@ export class Identifiable<C extends ECSDefine> {
   public get $id(): string {
     return this._$id;
   }
-
-  public set $id(value: string) {
-    this._$id = value;
-  }
 }
