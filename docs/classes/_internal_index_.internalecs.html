@@ -279,7 +279,7 @@
 				<a name="dequeuetrigger" class="tsd-anchor"></a>
 				<h3>dequeue<wbr>Trigger</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">dequeue<wbr>Trigger<span class="tsd-signature-symbol">(</span>filterType<span class="tsd-signature-symbol">: </span><a href="../modules/_index_.html#filtertype" class="tsd-signature-type">FilterType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					<li class="tsd-signature tsd-kind-icon">dequeue<wbr>Trigger<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><a href="../modules/_index_.html#filtertype" class="tsd-signature-type">FilterType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
@@ -290,15 +290,15 @@
 						</aside>
 						<div class="tsd-comment tsd-typography">
 							<div class="lead">
-								<p>Triggers a queue defined by a filter type and resets the queue.</p>
+								<p>Triggers a queue defined by a system event and resets the queue.</p>
 							</div>
 						</div>
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>filterType: <a href="../modules/_index_.html#filtertype" class="tsd-signature-type">FilterType</a></h5>
+								<h5>event: <a href="../modules/_index_.html#filtertype" class="tsd-signature-type">FilterType</a></h5>
 								<div class="tsd-comment tsd-typography">
-									<p>Trigger filter type.</p>
+									<p>Trigger system event.</p>
 								</div>
 							</li>
 						</ul>
@@ -310,7 +310,7 @@
 				<a name="enqueuetrigger" class="tsd-anchor"></a>
 				<h3>enqueue<wbr>Trigger</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">enqueue<wbr>Trigger<span class="tsd-signature-symbol">(</span>filterType<span class="tsd-signature-symbol">: </span><a href="../modules/_index_.html#filtertype" class="tsd-signature-type">FilterType</a>, entity<span class="tsd-signature-symbol">: </span><a href="_entity_index_.entity.html" class="tsd-signature-type">Entity</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					<li class="tsd-signature tsd-kind-icon">enqueue<wbr>Trigger<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><a href="../modules/_index_.html#filtertype" class="tsd-signature-type">FilterType</a>, entity<span class="tsd-signature-symbol">: </span><a href="_entity_index_.entity.html" class="tsd-signature-type">Entity</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
@@ -321,15 +321,15 @@
 						</aside>
 						<div class="tsd-comment tsd-typography">
 							<div class="lead">
-								<p>Enqueues an entity into a queue defined by a trigger filter type.</p>
+								<p>Enqueues an entity into a queue defined by a trigger system event.</p>
 							</div>
 						</div>
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>filterType: <a href="../modules/_index_.html#filtertype" class="tsd-signature-type">FilterType</a></h5>
+								<h5>event: <a href="../modules/_index_.html#filtertype" class="tsd-signature-type">FilterType</a></h5>
 								<div class="tsd-comment tsd-typography">
-									<p>Trigger filter type.</p>
+									<p>Trigger system event.</p>
 								</div>
 							</li>
 							<li>
@@ -347,7 +347,7 @@
 				<a name="getqueue" class="tsd-anchor"></a>
 				<h3>get<wbr>Queue</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">get<wbr>Queue<span class="tsd-signature-symbol">(</span>filterType<span class="tsd-signature-symbol">: </span><a href="../modules/_index_.html#filtertype" class="tsd-signature-type">FilterType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Set</span><span class="tsd-signature-symbol">&lt;</span><a href="_entity_index_.entity.html" class="tsd-signature-type">Entity</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></li>
+					<li class="tsd-signature tsd-kind-icon">get<wbr>Queue<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><a href="../modules/_index_.html#filtertype" class="tsd-signature-type">FilterType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Set</span><span class="tsd-signature-symbol">&lt;</span><a href="_entity_index_.entity.html" class="tsd-signature-type">Entity</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
@@ -364,9 +364,9 @@
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>filterType: <a href="../modules/_index_.html#filtertype" class="tsd-signature-type">FilterType</a></h5>
+								<h5>event: <a href="../modules/_index_.html#filtertype" class="tsd-signature-type">FilterType</a></h5>
 								<div class="tsd-comment tsd-typography">
-									<p>Trigger filter type</p>
+									<p>Trigger system event</p>
 								</div>
 							</li>
 						</ul>
@@ -452,7 +452,7 @@
 				<a name="resetqueue" class="tsd-anchor"></a>
 				<h3>reset<wbr>Queue</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">reset<wbr>Queue<span class="tsd-signature-symbol">(</span>filterType<span class="tsd-signature-symbol">: </span><a href="../modules/_index_.html#filtertype" class="tsd-signature-type">FilterType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					<li class="tsd-signature tsd-kind-icon">reset<wbr>Queue<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><a href="../modules/_index_.html#filtertype" class="tsd-signature-type">FilterType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
@@ -469,9 +469,9 @@
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>filterType: <a href="../modules/_index_.html#filtertype" class="tsd-signature-type">FilterType</a></h5>
+								<h5>event: <a href="../modules/_index_.html#filtertype" class="tsd-signature-type">FilterType</a></h5>
 								<div class="tsd-comment tsd-typography">
-									<p>Trigger filter type</p>
+									<p>Trigger system event</p>
 								</div>
 							</li>
 						</ul>
@@ -483,7 +483,7 @@
 				<a name="triggersystembyfilter" class="tsd-anchor"></a>
 				<h3>trigger<wbr>System<wbr>ByFilter</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">trigger<wbr>System<wbr>ByFilter<span class="tsd-signature-symbol">(</span>filterType<span class="tsd-signature-symbol">: </span><a href="../modules/_index_.html#filtertype" class="tsd-signature-type">FilterType</a>, entities<span class="tsd-signature-symbol">: </span><a href="_entity_index_.entity.html" class="tsd-signature-type">Entity</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					<li class="tsd-signature tsd-kind-icon">trigger<wbr>System<wbr>ByFilter<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><a href="../modules/_index_.html#filtertype" class="tsd-signature-type">FilterType</a>, entities<span class="tsd-signature-symbol">: </span><a href="_entity_index_.entity.html" class="tsd-signature-type">Entity</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
@@ -500,7 +500,7 @@
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>filterType: <a href="../modules/_index_.html#filtertype" class="tsd-signature-type">FilterType</a></h5>
+								<h5>event: <a href="../modules/_index_.html#filtertype" class="tsd-signature-type">FilterType</a></h5>
 								<div class="tsd-comment tsd-typography">
 									<p>Filter trigger type</p>
 								</div>

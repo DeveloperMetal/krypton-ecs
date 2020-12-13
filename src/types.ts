@@ -19,7 +19,7 @@ export type ECSComponentDefineTypes<E extends ECSDefine> = {
  * `-ing` events happen after a system completes work while `-ed` events happen after the application
  * loop is updated.
  */
-export enum FilterType {
+export enum SystemEvent {
   /**
    * Called as an entity is being added after every system call.
    */

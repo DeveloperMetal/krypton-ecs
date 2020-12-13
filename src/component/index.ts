@@ -1,6 +1,6 @@
 import { Identifiable } from '../utils';
 import { Entity } from '../entity';
-import { ComponentInterface, IComponent, ComponentFields, ECSDefine, FieldDefinition, FilterType } from '../types';
+import { ComponentInterface, IComponent, ComponentFields, ECSDefine, FieldDefinition, SystemEvent } from '../types';
 import { InternalECS } from '../internal';
 
 export class Component<T extends ComponentInterface, C extends ECSDefine>
@@ -31,7 +31,7 @@ export class Component<T extends ComponentInterface, C extends ECSDefine>
 
           const result = Reflect.set(obj, key, value);
           if (result && !inConstructor) {
-            me.$ecs.enqueueTrigger(FilterType.Modifying, me._parent);
+            me.$ecs.enqueueTrigger(SystemEvent.Modifying, me._parent);
           }
 
           return result;

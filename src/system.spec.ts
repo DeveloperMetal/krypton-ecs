@@ -1,5 +1,5 @@
 import { ECS } from '.';
-import { ComponentInterface, ComponentFields, ECSDefine, FilterType, System, FilterCallback } from './types';
+import { ComponentInterface, ComponentFields, ECSDefine, SystemEvent, System, FilterCallback } from './types';
 import { Entity } from './entity';
 
 interface ITestComp1 extends ComponentInterface {
@@ -92,26 +92,26 @@ describe('Setup System', () => {
 
     ecs
       // Define a filter to trigger a system when specific entities are added
-      .addSystem(FilterType.Adding, testFilter, testEntityAddingSystem)
-      .addSystem(FilterType.Added, testFilter, testEntityAddedSystem)
+      .addSystem(SystemEvent.Adding, testFilter, testEntityAddingSystem)
+      .addSystem(SystemEvent.Added, testFilter, testEntityAddedSystem)
 
       // Define a filter to trigger a system when specific entities are removed
-      .addSystem(FilterType.Removing, testFilter, testEntityRemovingSystem)
-      .addSystem(FilterType.Removed, testFilter, testEntityRemovedSystem)
+      .addSystem(SystemEvent.Removing, testFilter, testEntityRemovingSystem)
+      .addSystem(SystemEvent.Removed, testFilter, testEntityRemovedSystem)
 
       // Define a filter to trigger a system when specific entities are modified
-      .addSystem(FilterType.Modifying, testFilter, testEntityModifingSystem)
-      .addSystem(FilterType.Modified, testFilter, testEntityModifiedSystem);
+      .addSystem(SystemEvent.Modifying, testFilter, testEntityModifingSystem)
+      .addSystem(SystemEvent.Modified, testFilter, testEntityModifiedSystem);
   });
 
   it('Double add same system', () => {
-    // Here to trigger branching path where filter type isn't added twice
-    ecs.addSystem(FilterType.Adding, testFilter, testEntityAddingSystem);
-    // Here to trigger branching path where filter type exists but callback doesn't
-    ecs.addSystem(FilterType.Adding, testFilter2, testEntityAddingSystem);
+    // Here to trigger branching path where system event isn't added twice
+    ecs.addSystem(SystemEvent.Adding, testFilter, testEntityAddingSystem);
+    // Here to trigger branching path where system event exists but callback doesn't
+    ecs.addSystem(SystemEvent.Adding, testFilter2, testEntityAddingSystem);
 
-    expect(ecs.systemExists(FilterType.Adding, testFilter, testEntityAddingSystem)).toBeTruthy();
-    expect(ecs.systemExists(FilterType.Adding, testFilter2, testEntityAddingSystem)).toBeTruthy();
+    expect(ecs.systemExists(SystemEvent.Adding, testFilter, testEntityAddingSystem)).toBeTruthy();
+    expect(ecs.systemExists(SystemEvent.Adding, testFilter2, testEntityAddingSystem)).toBeTruthy();
   });
 
   it('System event triggers', () => {
@@ -153,23 +153,31 @@ describe('Setup System', () => {
 
   it('Add and remove systems', () => {
     ecs.update();
-    expect(ecs.systemExists(FilterType.Adding, testFilter, testEntityAddingSystem)).toBeTruthy();
-    expect(ecs.systemExists(FilterType.Added, testFilter, testEntityAddedSystem)).toBeTruthy();
-    expect(ecs.systemExists(FilterType.Removing, testFilter, testEntityRemovingSystem)).toBeTruthy();
-    expect(ecs.systemExists(FilterType.Removed, testFilter, testEntityRemovedSystem)).toBeTruthy();
-    expect(ecs.systemExists(FilterType.Modifying, testFilter, testEntityModifingSystem)).toBeTruthy();
-    expect(ecs.systemExists(FilterType.Modified, testFilter, testEntityModifiedSystem)).toBeTruthy();
+    expect(ecs.systemExists(SystemEvent.Adding, testFilter, testEntityAddingSystem)).toBeTruthy();
+    expect(ecs.systemExists(SystemEvent.Added, testFilter, testEntityAddedSystem)).toBeTruthy();
+    expect(ecs.systemExists(SystemEvent.Removing, testFilter, testEntityRemovingSystem)).toBeTruthy();
+    expect(ecs.systemExists(SystemEvent.Removed, testFilter, testEntityRemovedSystem)).toBeTruthy();
+    expect(ecs.systemExists(SystemEvent.Modifying, testFilter, testEntityModifingSystem)).toBeTruthy();
+    expect(ecs.systemExists(SystemEvent.Modified, testFilter, testEntityModifiedSystem)).toBeTruthy();
 
-    const testEntityAddingSystemRemoved = ecs.removeSystem(FilterType.Adding, testFilter, testEntityAddingSystem);
-    const testEntityAddedSystemRemoved = ecs.removeSystem(FilterType.Added, testFilter, testEntityAddedSystem);
-    const testEntityRemovingSystemRemoved = ecs.removeSystem(FilterType.Removing, testFilter, testEntityRemovingSystem);
-    const testEntityRemovedSystemRemoved = ecs.removeSystem(FilterType.Removed, testFilter, testEntityRemovedSystem);
+    const testEntityAddingSystemRemoved = ecs.removeSystem(SystemEvent.Adding, testFilter, testEntityAddingSystem);
+    const testEntityAddedSystemRemoved = ecs.removeSystem(SystemEvent.Added, testFilter, testEntityAddedSystem);
+    const testEntityRemovingSystemRemoved = ecs.removeSystem(
+      SystemEvent.Removing,
+      testFilter,
+      testEntityRemovingSystem,
+    );
+    const testEntityRemovedSystemRemoved = ecs.removeSystem(SystemEvent.Removed, testFilter, testEntityRemovedSystem);
     const testEntityModifingSystemRemoved = ecs.removeSystem(
-      FilterType.Modifying,
+      SystemEvent.Modifying,
       testFilter,
       testEntityModifingSystem,
     );
-    const testEntityModifiedSystemRemoved = ecs.removeSystem(FilterType.Modified, testFilter, testEntityModifiedSystem);
+    const testEntityModifiedSystemRemoved = ecs.removeSystem(
+      SystemEvent.Modified,
+      testFilter,
+      testEntityModifiedSystem,
+    );
 
     expect(testEntityAddingSystemRemoved).toBeTruthy();
     expect(testEntityAddedSystemRemoved).toBeTruthy();
@@ -178,28 +186,28 @@ describe('Setup System', () => {
     expect(testEntityModifingSystemRemoved).toBeTruthy();
     expect(testEntityModifiedSystemRemoved).toBeTruthy();
 
-    expect(ecs.systemExists(FilterType.Adding, testFilter, testEntityAddingSystem)).toBeFalsy();
-    expect(ecs.systemExists(FilterType.Added, testFilter, testEntityAddedSystem)).toBeFalsy();
-    expect(ecs.systemExists(FilterType.Removing, testFilter, testEntityRemovingSystem)).toBeFalsy();
-    expect(ecs.systemExists(FilterType.Removed, testFilter, testEntityRemovedSystem)).toBeFalsy();
-    expect(ecs.systemExists(FilterType.Modifying, testFilter, testEntityModifingSystem)).toBeFalsy();
-    expect(ecs.systemExists(FilterType.Modified, testFilter, testEntityModifiedSystem)).toBeFalsy();
+    expect(ecs.systemExists(SystemEvent.Adding, testFilter, testEntityAddingSystem)).toBeFalsy();
+    expect(ecs.systemExists(SystemEvent.Added, testFilter, testEntityAddedSystem)).toBeFalsy();
+    expect(ecs.systemExists(SystemEvent.Removing, testFilter, testEntityRemovingSystem)).toBeFalsy();
+    expect(ecs.systemExists(SystemEvent.Removed, testFilter, testEntityRemovedSystem)).toBeFalsy();
+    expect(ecs.systemExists(SystemEvent.Modifying, testFilter, testEntityModifingSystem)).toBeFalsy();
+    expect(ecs.systemExists(SystemEvent.Modified, testFilter, testEntityModifiedSystem)).toBeFalsy();
   });
 
   it('Remove system by types', () => {
-    expect(ecs.removeSystemsByFilter(FilterType.Adding, testFilter)).toBeTruthy();
-    expect(ecs.removeSystemsByFilter(FilterType.Added, testFilter)).toBeTruthy();
-    expect(ecs.removeSystemsByFilter(FilterType.Removing, testFilter)).toBeTruthy();
-    expect(ecs.removeSystemsByFilter(FilterType.Removed, testFilter)).toBeTruthy();
-    expect(ecs.removeSystemsByFilter(FilterType.Modifying, testFilter)).toBeTruthy();
-    expect(ecs.removeSystemsByFilter(FilterType.Modified, testFilter)).toBeTruthy();
+    expect(ecs.removeSystemsByFilter(SystemEvent.Adding, testFilter)).toBeTruthy();
+    expect(ecs.removeSystemsByFilter(SystemEvent.Added, testFilter)).toBeTruthy();
+    expect(ecs.removeSystemsByFilter(SystemEvent.Removing, testFilter)).toBeTruthy();
+    expect(ecs.removeSystemsByFilter(SystemEvent.Removed, testFilter)).toBeTruthy();
+    expect(ecs.removeSystemsByFilter(SystemEvent.Modifying, testFilter)).toBeTruthy();
+    expect(ecs.removeSystemsByFilter(SystemEvent.Modified, testFilter)).toBeTruthy();
 
-    expect(ecs.systemExists(FilterType.Adding, testFilter, testEntityAddingSystem)).toBeFalsy();
-    expect(ecs.systemExists(FilterType.Added, testFilter, testEntityAddedSystem)).toBeFalsy();
-    expect(ecs.systemExists(FilterType.Removing, testFilter, testEntityRemovingSystem)).toBeFalsy();
-    expect(ecs.systemExists(FilterType.Removed, testFilter, testEntityRemovedSystem)).toBeFalsy();
-    expect(ecs.systemExists(FilterType.Modifying, testFilter, testEntityModifingSystem)).toBeFalsy();
-    expect(ecs.systemExists(FilterType.Modified, testFilter, testEntityModifiedSystem)).toBeFalsy();
+    expect(ecs.systemExists(SystemEvent.Adding, testFilter, testEntityAddingSystem)).toBeFalsy();
+    expect(ecs.systemExists(SystemEvent.Added, testFilter, testEntityAddedSystem)).toBeFalsy();
+    expect(ecs.systemExists(SystemEvent.Removing, testFilter, testEntityRemovingSystem)).toBeFalsy();
+    expect(ecs.systemExists(SystemEvent.Removed, testFilter, testEntityRemovedSystem)).toBeFalsy();
+    expect(ecs.systemExists(SystemEvent.Modifying, testFilter, testEntityModifingSystem)).toBeFalsy();
+    expect(ecs.systemExists(SystemEvent.Modified, testFilter, testEntityModifiedSystem)).toBeFalsy();
   });
 });
 
@@ -228,28 +236,28 @@ describe('Empty ECS Test', () => {
   });
 
   it('Removing non existing systems', () => {
-    // Test remoging non existing system in non existing filter in non exising filter type event.
-    expect(ecs.removeSystem(FilterType.Added, testFilter, emptySystem)).toBeFalsy();
+    // Test remoging non existing system in non existing filter in non exising system event event.
+    expect(ecs.removeSystem(SystemEvent.Added, testFilter, emptySystem)).toBeFalsy();
 
-    // Test removing missing filter from existing filter type event
-    ecs.addSystem(FilterType.Added, testFilter, emptySystem);
-    expect(ecs.removeSystem(FilterType.Added, testFilter2, emptySystem)).toBeFalsy();
+    // Test removing missing filter from existing system event event
+    ecs.addSystem(SystemEvent.Added, testFilter, emptySystem);
+    expect(ecs.removeSystem(SystemEvent.Added, testFilter2, emptySystem)).toBeFalsy();
   });
 
   it('Removing non existing systems by filters', () => {
-    expect(ecs.removeSystemsByFilter(FilterType.Added, testFilter)).toBeFalsy();
+    expect(ecs.removeSystemsByFilter(SystemEvent.Added, testFilter)).toBeFalsy();
 
-    // Test removing missing filter from existing filter type event
-    ecs.addSystem(FilterType.Added, testFilter, emptySystem);
-    expect(ecs.removeSystemsByFilter(FilterType.Added, testFilter2)).toBeFalsy();
+    // Test removing missing filter from existing system event event
+    ecs.addSystem(SystemEvent.Added, testFilter, emptySystem);
+    expect(ecs.removeSystemsByFilter(SystemEvent.Added, testFilter2)).toBeFalsy();
   });
 
   it('Checking non existing systems', () => {
-    expect(ecs.systemExists(FilterType.Added, testFilter, emptySystem)).toBeFalsy();
+    expect(ecs.systemExists(SystemEvent.Added, testFilter, emptySystem)).toBeFalsy();
 
-    // Test removing missing filter from existing filter type event
-    ecs.addSystem(FilterType.Added, testFilter, emptySystem);
-    expect(ecs.systemExists(FilterType.Added, testFilter, emptySystem2)).toBeFalsy();
-    expect(ecs.systemExists(FilterType.Added, testFilter2, emptySystem2)).toBeFalsy();
+    // Test removing missing filter from existing system event event
+    ecs.addSystem(SystemEvent.Added, testFilter, emptySystem);
+    expect(ecs.systemExists(SystemEvent.Added, testFilter, emptySystem2)).toBeFalsy();
+    expect(ecs.systemExists(SystemEvent.Added, testFilter2, emptySystem2)).toBeFalsy();
   });
 });

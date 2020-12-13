@@ -1,4 +1,4 @@
-import { ECSDefine, ECSComponentDefineTypes, FilterType, FilterToSystemMap } from '../types';
+import { ECSDefine, ECSComponentDefineTypes, SystemEvent, FilterToSystemMap } from '../types';
 import { ECS } from '..';
 import { Entity } from '../entity';
 
@@ -8,8 +8,8 @@ import { Entity } from '../entity';
 export class InternalECS<C extends ECSDefine> {
   public entities = new Map<string, Entity<C>>();
   public entitiesByComponent = new Map<keyof C['components'] & string, Set<Entity<C>>>();
-  public filters = new Map<FilterType, FilterToSystemMap<C>>();
-  public triggerQueue = new Map<FilterType, Set<Entity<C>>>();
+  public filters = new Map<SystemEvent, FilterToSystemMap<C>>();
+  public triggerQueue = new Map<SystemEvent, Set<Entity<C>>>();
 
   /**
    *
@@ -20,11 +20,11 @@ export class InternalECS<C extends ECSDefine> {
 
   /**
    * Broadcasts a trigger event to subscribed systems.
-   * @param filterType Filter trigger type
+   * @param event Filter trigger type
    * @param entities Entities to send.
    */
-  triggerSystemByFilter(filterType: FilterType, entities: Entity<C>[]) {
-    const filter = this.filters.get(filterType);
+  triggerSystemByFilter(event: SystemEvent, entities: Entity<C>[]) {
+    const filter = this.filters.get(event);
 
     if (filter) {
       for (const [fn, systems] of filter.entries()) {
@@ -33,70 +33,70 @@ export class InternalECS<C extends ECSDefine> {
 
           system(this.ecs, filteredEntities);
 
-          this.dequeueTrigger(FilterType.Modifying);
-          this.dequeueTrigger(FilterType.Adding);
-          this.dequeueTrigger(FilterType.Removing);
+          this.dequeueTrigger(SystemEvent.Adding);
+          this.dequeueTrigger(SystemEvent.Modifying);
+          this.dequeueTrigger(SystemEvent.Removing);
         }
       }
     }
 
-    if (filterType === FilterType.Adding) {
+    if (event === SystemEvent.Adding) {
       for (const entity of entities) {
         this.entities.set(entity.$id, entity);
-        this.enqueueTrigger(FilterType.Added, entity);
+        this.enqueueTrigger(SystemEvent.Added, entity);
       }
-    } else if (filterType === FilterType.Modifying) {
+    } else if (event === SystemEvent.Modifying) {
       for (const entity of entities) {
-        this.enqueueTrigger(FilterType.Modified, entity);
+        this.enqueueTrigger(SystemEvent.Modified, entity);
       }
-    } else if (filterType === FilterType.Removing) {
+    } else if (event === SystemEvent.Removing) {
       for (const entity of entities) {
         this.entities.delete(entity.$id);
-        this.enqueueTrigger(FilterType.Removed, entity);
+        this.enqueueTrigger(SystemEvent.Removed, entity);
       }
     }
   }
 
   /**
    * Gets a trigger queue where system events are stored.
-   * @param filterType Trigger filter type
+   * @param event Trigger system event
    */
-  getQueue(filterType: FilterType) {
-    if (!this.triggerQueue.has(filterType)) {
-      this.triggerQueue.set(filterType, new Set<Entity<C>>());
+  getQueue(event: SystemEvent) {
+    if (!this.triggerQueue.has(event)) {
+      this.triggerQueue.set(event, new Set<Entity<C>>());
     }
 
-    return this.triggerQueue.get(filterType) as Set<Entity<C>>;
+    return this.triggerQueue.get(event) as Set<Entity<C>>;
   }
 
   /**
    * Empties an event queue by trigger type.
-   * @param filterType Trigger filter type
+   * @param event Trigger system event
    */
-  resetQueue(filterType: FilterType) {
-    this.triggerQueue.delete(filterType);
+  resetQueue(event: SystemEvent) {
+    this.triggerQueue.delete(event);
   }
 
   /**
-   * Enqueues an entity into a queue defined by a trigger filter type.
-   * @param filterType Trigger filter type.
+   * Enqueues an entity into a queue defined by a trigger system event.
+   * @param event Trigger system event.
    * @param entity An entity to enqueue.
    */
-  enqueueTrigger(filterType: FilterType, entity: Entity<C>) {
-    const queue = this.getQueue(filterType);
+  enqueueTrigger(event: SystemEvent, entity: Entity<C>) {
+    const queue = this.getQueue(event);
     queue.add(entity);
   }
 
   /**
-   * Triggers a queue defined by a filter type and resets the queue.
-   * @param filterType Trigger filter type.
+   * Triggers a queue defined by a system event and resets the queue.
+   * @param event Trigger system event.
    */
-  dequeueTrigger(filterType: FilterType) {
-    const queue = this.getQueue(filterType);
+  dequeueTrigger(event: SystemEvent) {
+    const queue = this.getQueue(event);
     const entities = Array.from(queue.values());
     if (queue.size > 0) {
-      this.resetQueue(filterType);
-      this.triggerSystemByFilter(filterType, entities);
+      this.resetQueue(event);
+      this.triggerSystemByFilter(event, entities);
     }
   }
 
@@ -132,8 +132,8 @@ export class InternalECS<C extends ECSDefine> {
    * In an application loop, this method will trigger the `-ed` events such as `Added`, `Removed`, `Modified` events.
    */
   update() {
-    for (const filter of Object.values(FilterType)) {
-      this.dequeueTrigger(filter as FilterType);
+    for (const filter of Object.values(SystemEvent)) {
+      this.dequeueTrigger(filter as SystemEvent);
     }
   }
 }

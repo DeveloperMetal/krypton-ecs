@@ -1,5 +1,5 @@
 import { Entity } from './entity';
-import { ECSDefine, ECSComponentDefineTypes, FilterType, FilterCallback, System } from './types';
+import { ECSDefine, ECSComponentDefineTypes, SystemEvent, FilterCallback, System } from './types';
 import { InternalECS } from './internal';
 export * from './types';
 
@@ -49,7 +49,7 @@ export class ECS<C extends ECSDefine> {
     for (const component of components) {
       this.addComponent(entity, component as string);
     }
-    this._internal.enqueueTrigger(FilterType.Adding, entity);
+    this._internal.enqueueTrigger(SystemEvent.Adding, entity);
     return entity;
   }
 
@@ -60,7 +60,7 @@ export class ECS<C extends ECSDefine> {
   removeEntity(id: string) {
     const entity = this._internal.entities.get(id);
     if (entity) {
-      this._internal.enqueueTrigger(FilterType.Removing, entity);
+      this._internal.enqueueTrigger(SystemEvent.Removing, entity);
       return true;
     }
 
@@ -69,11 +69,11 @@ export class ECS<C extends ECSDefine> {
 
   /**
    * Adds a system and attaches it to a trigger event and filter query.
-   * @param type The trigger filter type.
+   * @param type The trigger system event.
    * @param filter A callback function to filter entities before they make it to the System
    * @param system A callback function which functions as a system.
    */
-  addSystem(type: FilterType, filter: FilterCallback<C>, system: System<C>) {
+  addSystem(type: SystemEvent, filter: FilterCallback<C>, system: System<C>) {
     let typeQueue: Map<FilterCallback<C>, Set<System<C>>>;
     let filterMap: Set<System<C>>;
 
@@ -100,7 +100,7 @@ export class ECS<C extends ECSDefine> {
    * @param filter The filter callback used to trigger this system.
    * @param system The system to remove.
    */
-  removeSystem(type: FilterType, filter: FilterCallback<C>, system: System<C>) {
+  removeSystem(type: SystemEvent, filter: FilterCallback<C>, system: System<C>) {
     let typeQueue: Map<FilterCallback<C>, Set<System<C>>>;
     let filterMap: Set<System<C>>;
 
@@ -120,7 +120,7 @@ export class ECS<C extends ECSDefine> {
    * @param type The trigger type to match.
    * @param filter The filter callback used to trigger one ore more systems.
    */
-  removeSystemsByFilter(type: FilterType, filter: FilterCallback<C>) {
+  removeSystemsByFilter(type: SystemEvent, filter: FilterCallback<C>) {
     let typeQueue: Map<FilterCallback<C>, Set<System<C>>>;
     let filterMap: Set<System<C>>;
 
@@ -143,7 +143,7 @@ export class ECS<C extends ECSDefine> {
    * @param filter The filter callback used to trigger this system.
    * @param system The system callback to check.
    */
-  systemExists(type: FilterType, filter: FilterCallback<C>, system: System<C>) {
+  systemExists(type: SystemEvent, filter: FilterCallback<C>, system: System<C>) {
     let typeQueue: Map<FilterCallback<C>, Set<System<C>>>;
     let filterMap: Set<System<C>>;
 
