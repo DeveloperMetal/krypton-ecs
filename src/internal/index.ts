@@ -1,6 +1,6 @@
-import { ECSDefine, ECSComponentDefineTypes, FilterType, FilterToSystemMap } from "./types";
-import { ECS } from ".";
-import { Entity } from "./entity";
+import { ECSDefine, ECSComponentDefineTypes, FilterType, FilterToSystemMap } from "../types";
+import { ECS } from "..";
+import { Entity } from "../entity";
 
 /**
  * Internal ECS Api used to manage message passing and caching.

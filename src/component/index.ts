@@ -1,7 +1,7 @@
-import { Identifiable } from './utils';
-import { Entity } from './entity';
-import { ComponentInterface, IComponent, ComponentFields, ECSDefine, FieldDefinition, FilterType } from './types';
-import { InternalECS } from './internal';
+import { Identifiable } from '../utils';
+import { Entity } from '../entity';
+import { ComponentInterface, IComponent, ComponentFields, ECSDefine, FieldDefinition, FilterType } from '../types';
+import { InternalECS } from '../internal';
 
 export class Component<T extends ComponentInterface, C extends ECSDefine>
   extends Identifiable<C> 

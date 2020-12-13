@@ -1,5 +1,5 @@
-import { ComponentInterface, ComponentFields, ECSDefine } from './types';
-import { ECS } from '.';
+import { ComponentInterface, ComponentFields, ECSDefine } from '../types';
+import { ECS } from '..';
 
 interface ITestComp1 extends ComponentInterface {
   fieldA: string;

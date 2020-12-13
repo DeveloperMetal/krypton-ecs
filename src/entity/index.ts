@@ -1,7 +1,7 @@
-import { Identifiable } from './utils';
-import { Component } from './component';
-import { ComponentInterface, ECSDefine } from './types';
-import { InternalECS } from './internal';
+import { Identifiable } from '../utils';
+import { Component } from '../component';
+import { ComponentInterface, ECSDefine } from '../types';
+import { InternalECS } from '../internal';
 
 /**
  * Entity class which groups components. This class is instantiated internally.
