@@ -124,7 +124,7 @@ const appECS = new ECS<AppECSDefine>({
 });
 ```
 
-The APPECSDefine enforces the relationship of teh `Component1` type name and its interface.
+The `APPECSDefine` enforces the relationship between the `Component1` type name and its interface.
 
 Once your are ready to instantiate the ECS system, you must pass the metadata definition into the ECSInstance. Because we have our own custom `AppECSDefine` the first argument of `ECS<AppECSDefine>` expects to take the metadata object for your components.
 
@@ -134,9 +134,9 @@ Systems marry the relationship between entities, components and the mutation of 
 
 Usually, systems limit themselves to mutate the components they control. But nothing prevents them from touching other components if they support and know other component interfaces.
 
-You can think of a system as an event handler when something happens in your application's state. Krypton-ECS forexample triggers systems which watch for entity additions or removals.  This allows a snowfall effect where multiple systems will trigger as data changes in during the application loop or lifetime of the application.
+You can think of a system as an event handler when something happens in your application's state. Krypton-ECS forexample triggers systems which monitor entity additions or removals.  This allows a snowfall effect where multiple systems will trigger as data changes during the application loop or lifetime of the application.
 
-All systems in Krypton-ECS MUST be tied to an event and a filter to reduce the number of entities work must be done on as they happen.
+All systems in Krypton-ECS MUST be tied to an event and a filter to reduce the number of entities your system must perform work on.
 
 The following example adds a system which injects a component on every entity added on the system. Notice the second parameter(the filter) which returns the entites being added at some point. The filter could return a smaller set of entities if we don't want to modify every entity on this event.
 

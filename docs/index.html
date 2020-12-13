@@ -151,15 +151,15 @@ appECS.update()
 <span class="hljs-keyword">const</span> appECS = <span class="hljs-keyword">new</span> ECS&lt;AppECSDefine&gt;({
   <span class="hljs-attr">Component1</span>: component1Definition
 });</code></pre>
-			<p>The APPECSDefine enforces the relationship of teh <code>Component1</code> type name and its interface.</p>
+			<p>The <code>APPECSDefine</code> enforces the relationship between the <code>Component1</code> type name and its interface.</p>
 			<p>Once your are ready to instantiate the ECS system, you must pass the metadata definition into the ECSInstance. Because we have our own custom <code>AppECSDefine</code> the first argument of <code>ECS&lt;AppECSDefine&gt;</code> expects to take the metadata object for your components.</p>
 			<a href="#systems-events-and-their-filters" id="systems-events-and-their-filters" style="color: inherit; text-decoration: none;">
 				<h3>Systems, events and their filters</h3>
 			</a>
 			<p>Systems marry the relationship between entities, components and the mutation of their data. When an application&#39;s behaviour is desired, a system is called to mutate the state of the application.</p>
 			<p>Usually, systems limit themselves to mutate the components they control. But nothing prevents them from touching other components if they support and know other component interfaces.</p>
-			<p>You can think of a system as an event handler when something happens in your application&#39;s state. Krypton-ECS forexample triggers systems which watch for entity additions or removals.  This allows a snowfall effect where multiple systems will trigger as data changes in during the application loop or lifetime of the application.</p>
-			<p>All systems in Krypton-ECS MUST be tied to an event and a filter to reduce the number of entities work must be done on as they happen.</p>
+			<p>You can think of a system as an event handler when something happens in your application&#39;s state. Krypton-ECS forexample triggers systems which monitor entity additions or removals.  This allows a snowfall effect where multiple systems will trigger as data changes during the application loop or lifetime of the application.</p>
+			<p>All systems in Krypton-ECS MUST be tied to an event and a filter to reduce the number of entities your system must perform work on.</p>
 			<p>The following example adds a system which injects a component on every entity added on the system. Notice the second parameter(the filter) which returns the entites being added at some point. The filter could return a smaller set of entities if we don&#39;t want to modify every entity on this event.</p>
 			<p>The system itself is called with the reduced entity list. This separation on reducing the data set a system acts on allows reusing systems with multiple filters on multiple events.</p>
 			<pre><code class="language-typescript"><span class="hljs-comment">// A system that adds a component on every entity added to the sytem.</span>
