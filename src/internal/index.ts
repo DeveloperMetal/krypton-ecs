@@ -126,7 +126,7 @@ export class InternalECS<C extends ECSDefine> {
    */
   onComponentRemovedFromEntity(entity: Entity<C>, component: keyof C["components"] & string) {
     if ( this.entitiesByComponent.has(component) ) {
-      let group = this.entitiesByComponent.get(component) as Set<Entity<C>>;
+      const group = this.entitiesByComponent.get(component) as Set<Entity<C>>;
       group.delete(entity);
     }
   }

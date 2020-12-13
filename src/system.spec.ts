@@ -200,15 +200,22 @@ describe('Setup System', () => {
 });
 
 describe("Empty ECS Test", () => {
+  /* tslint:disable:prefer-const */
   let ecs: ECS<ECSTest>;
+  /* tslint:disable:prefer-const */
   let testFilter: FilterCallback<ECSTest>;
+  /* tslint:disable:prefer-const */
   let testFilter2: FilterCallback<ECSTest>;
+  /* tslint:disable:prefer-const */
   let emptySystem: System<ECSTest>;
+  /* tslint:disable:prefer-const */
   let emptySystem2: System<ECSTest>;
   
   beforeEach(() => {
     testFilter = (_e: ECS<ECSTest>, entities: Entity<ECSTest>[]) => entities;
+    /* tslint:disable:no-empty */
     emptySystem = (_e: ECS<ECSTest>, _entities: Entity<ECSTest>[]) => {};
+    /* tslint:disable:no-empty */
     emptySystem2 = (_e: ECS<ECSTest>, _entities: Entity<ECSTest>[]) => {};
 
     ecs = new ECS<ECSTest>({

@@ -43,7 +43,7 @@ describe('Entity', () => {
     ecs.update();
 
     expect(ecs.entity('test') === entity).toBeTruthy();
-    expect(comp?.parentEntity == entity || false).toBeTruthy();
+    expect(comp?.parentEntity === entity || false).toBeTruthy();
     expect(comp?.keys()).toMatchObject(['fieldA', 'fieldB', 'fieldC']);
 
   })
