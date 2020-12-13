@@ -1,6 +1,7 @@
 import { Entity } from './entity';
 import { ECSDefine, ECSComponentDefineTypes, FilterType, FilterCallback, System } from './types';
 import { InternalECS } from './internal';
+export * from './types';
 
 /**
  * Type safe ECS system entry point.
