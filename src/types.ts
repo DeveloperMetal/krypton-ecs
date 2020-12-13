@@ -13,12 +13,36 @@ export type ECSComponentDefineTypes<E extends ECSDefine> = {
   [K in keyof E['components']]: ComponentFields<E['components'][K]>;
 };
 
+/**
+ * System event types.
+ * The dictiontion between `-ing` and `-ed` events is that of timing.
+ * `-ing` events happen after a system completes work while `-ed` events happen after the application
+ * loop is updated.
+ */
 export enum FilterType {
+  /**
+   * Called as an entity is being added after every system call.
+   */
   Adding = 1,
+  /**
+   * Called after an entity is added after the application loop update.
+   */
   Added = 2,
+  /**
+   * Called as an entity is removed after every system call.
+   */
   Removing = 4,
+  /**
+   * Called after an entity is removed after the application loop update.
+   */
   Removed = 8,
+  /**
+   * Called as an entity's component is updated after every system call.
+   */
   Modifying = 16,
+  /**
+   * Called after an entity's component is updated after the application loop update.
+   */
   Modified = 32,
 }
 
