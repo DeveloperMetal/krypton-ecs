@@ -4,9 +4,8 @@ import { ComponentInterface, IComponent, ComponentFields, ECSDefine, FieldDefini
 import { InternalECS } from '../internal';
 
 export class Component<T extends ComponentInterface, C extends ECSDefine>
-  extends Identifiable<C> 
-  implements IComponent<C>
-{
+  extends Identifiable<C>
+  implements IComponent<C> {
   private _fieldDef: ComponentFields<T>;
   private _parent: Entity<C>;
 
@@ -31,7 +30,7 @@ export class Component<T extends ComponentInterface, C extends ECSDefine>
           }
 
           const result = Reflect.set(obj, key, value);
-          if ( result  && !inConstructor ) {
+          if (result && !inConstructor) {
             me.$ecs.enqueueTrigger(FilterType.Modifying, me._parent);
           }
 

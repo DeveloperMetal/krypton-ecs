@@ -17,13 +17,16 @@ export class Entity<C extends ECSDefine> extends Identifiable<C> {
    * Adds a component to the entity.
    * @param component The component name to add.
    */
-  addComponent<
-    K extends keyof C['components'] & string
-  > (component: K) {
-    const newComponent = new Component<C['components'][K], C>(component, this.$ecs.components[component], this, this.$ecs);
+  addComponent<K extends keyof C['components'] & string>(component: K) {
+    const newComponent = new Component<C['components'][K], C>(
+      component,
+      this.$ecs.components[component],
+      this,
+      this.$ecs,
+    );
     this._components.set(newComponent.$id, newComponent);
     const newComponentObject = newComponent.as<C['components'][K]>();
-    this.$ecs.onComponentAddedToEntity(this, component as unknown as C['components'] & string)
+    this.$ecs.onComponentAddedToEntity(this, (component as unknown) as C['components'] & string);
     return newComponentObject;
   }
 
@@ -33,7 +36,7 @@ export class Entity<C extends ECSDefine> extends Identifiable<C> {
    */
   removeComponent<K extends keyof C['components'] & string>(component: K) {
     this._components.delete(component);
-    this.$ecs.onComponentRemovedFromEntity(this, component)
+    this.$ecs.onComponentRemovedFromEntity(this, component);
   }
 
   /**

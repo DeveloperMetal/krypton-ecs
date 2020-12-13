@@ -26,10 +26,8 @@ export class ECS<C extends ECSDefine> {
    * @param component Component name
    * @returns Array of entitities.
    */
-  entitiesByComponent<K extends keyof C["components"] & string>
-    (component: K)
-  {
-    return this._internal.entitiesByComponent.get(component)?.values() || [].values()
+  entitiesByComponent<K extends keyof C['components'] & string>(component: K) {
+    return this._internal.entitiesByComponent.get(component)?.values() || [].values();
   }
 
   /**
@@ -37,10 +35,8 @@ export class ECS<C extends ECSDefine> {
    * @param entity An entity instance to add component into.
    * @param component The component name to add.
    */
-  addComponent<
-    K extends keyof C['components'] & string
-  > (entity: Entity<C>, component: K) {
-    return entity.addComponent(component)
+  addComponent<K extends keyof C['components'] & string>(entity: Entity<C>, component: K) {
+    return entity.addComponent(component);
   }
 
   /**
@@ -50,7 +46,7 @@ export class ECS<C extends ECSDefine> {
    */
   addEntity(id: string, ...components: (keyof C['components'])[]) {
     const entity = new Entity<C>(id, this._internal);
-    for(const component of components) {
+    for (const component of components) {
       this.addComponent(entity, component as string);
     }
     this._internal.enqueueTrigger(FilterType.Adding, entity);
@@ -63,7 +59,7 @@ export class ECS<C extends ECSDefine> {
    */
   removeEntity(id: string) {
     const entity = this._internal.entities.get(id);
-    if ( entity ) {
+    if (entity) {
       this._internal.enqueueTrigger(FilterType.Removing, entity);
       return true;
     }
@@ -81,14 +77,14 @@ export class ECS<C extends ECSDefine> {
     let typeQueue: Map<FilterCallback<C>, Set<System<C>>>;
     let filterMap: Set<System<C>>;
 
-    if ( !this._internal.filters.has(type) ) {
-      this._internal.filters.set(type, typeQueue = new Map<FilterCallback<C>, Set<System<C>>>());
+    if (!this._internal.filters.has(type)) {
+      this._internal.filters.set(type, (typeQueue = new Map<FilterCallback<C>, Set<System<C>>>()));
     } else {
       typeQueue = this._internal.filters.get(type) as Map<FilterCallback<C>, Set<System<C>>>;
     }
 
-    if ( !typeQueue.has(filter) ) {
-      typeQueue.set(filter, filterMap = new Set<System<C>>());
+    if (!typeQueue.has(filter)) {
+      typeQueue.set(filter, (filterMap = new Set<System<C>>()));
     } else {
       filterMap = typeQueue.get(filter) as Set<System<C>>;
     }
@@ -108,9 +104,9 @@ export class ECS<C extends ECSDefine> {
     let typeQueue: Map<FilterCallback<C>, Set<System<C>>>;
     let filterMap: Set<System<C>>;
 
-    if ( this._internal.filters.has(type) ) {
+    if (this._internal.filters.has(type)) {
       typeQueue = this._internal.filters.get(type) as Map<FilterCallback<C>, Set<System<C>>>;
-      if ( typeQueue.has(filter) ) {
+      if (typeQueue.has(filter)) {
         filterMap = typeQueue.get(filter) as Set<System<C>>;
         return filterMap.delete(system);
       }
@@ -128,10 +124,10 @@ export class ECS<C extends ECSDefine> {
     let typeQueue: Map<FilterCallback<C>, Set<System<C>>>;
     let filterMap: Set<System<C>>;
 
-    if ( this._internal.filters.has(type) ) {
+    if (this._internal.filters.has(type)) {
       typeQueue = this._internal.filters.get(type) as Map<FilterCallback<C>, Set<System<C>>>;
 
-      if ( typeQueue.has(filter) ) {
+      if (typeQueue.has(filter)) {
         filterMap = typeQueue.get(filter) as Set<System<C>>;
         filterMap.clear();
         return true;
@@ -151,15 +147,15 @@ export class ECS<C extends ECSDefine> {
     let typeQueue: Map<FilterCallback<C>, Set<System<C>>>;
     let filterMap: Set<System<C>>;
 
-    if ( this._internal.filters.has(type) ) {
+    if (this._internal.filters.has(type)) {
       typeQueue = this._internal.filters.get(type) as Map<FilterCallback<C>, Set<System<C>>>;
-      if ( typeQueue.has(filter) ) {
+      if (typeQueue.has(filter)) {
         filterMap = typeQueue.get(filter) as Set<System<C>>;
         return filterMap.has(system);
       }
     }
 
-   return false;
+    return false;
   }
 
   /**

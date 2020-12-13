@@ -10,6 +10,7 @@
     "version": "yarn format && git add -A src",
     "postversion": "git push && git push --tags",
     "build": "tsc",
+    "build:cleanup": "yarn lint && yarn format && yarn test && yarn build",
     "test": "jest --coverage",
     "watch:test": "jest --watchAll --coverage",
     "format": "prettier --write \"src/**/*.ts\"",

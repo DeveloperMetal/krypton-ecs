@@ -18,8 +18,8 @@ const testComp1: ComponentFields<ITestComp1> = {
 
 interface ECSTest extends ECSDefine {
   components: {
-    ITestComp1: ITestComp1
-  }
+    ITestComp1: ITestComp1;
+  };
 }
 
 describe('Setup System', () => {
@@ -36,21 +36,21 @@ describe('Setup System', () => {
   beforeEach(() => {
     testEntityAddingSystem = jest.fn((e: ECS<ECSTest>, entities: Entity<ECSTest>[]) => {
       expect(e === ecs).toBeTruthy();
-      for(const ent of entities) {
+      for (const ent of entities) {
         expect(e.entity(ent.$id)).toBeFalsy();
       }
     });
 
     testEntityAddedSystem = jest.fn((e: ECS<ECSTest>, entities: Entity<ECSTest>[]) => {
       expect(e === ecs).toBeTruthy();
-      for(const ent of entities) {
+      for (const ent of entities) {
         expect(e.entity(ent.$id)).toBeTruthy();
       }
     });
 
     testEntityRemovingSystem = jest.fn((e: ECS<ECSTest>, entities: Entity<ECSTest>[]) => {
       expect(e === ecs).toBeTruthy();
-      for(const ent of entities) {
+      for (const ent of entities) {
         // not removed yet, should still exist in the system
         expect(e.entity(ent.$id)).toBeTruthy();
       }
@@ -58,7 +58,7 @@ describe('Setup System', () => {
 
     testEntityRemovedSystem = jest.fn((e: ECS<ECSTest>, entities: Entity<ECSTest>[]) => {
       expect(e === ecs).toBeTruthy();
-      for(const ent of entities) {
+      for (const ent of entities) {
         // should not exist in the system by now.
         expect(e.entity(ent.$id)).toBeFalsy();
       }
@@ -66,20 +66,20 @@ describe('Setup System', () => {
 
     testEntityModifiedSystem = jest.fn((e: ECS<ECSTest>, entities: Entity<ECSTest>[]) => {
       expect(e === ecs).toBeTruthy();
-      for(const ent of entities) {
+      for (const ent of entities) {
         expect(e.entity(ent.$id)).toBeTruthy();
       }
     });
 
     testEntityModifingSystem = jest.fn((e: ECS<ECSTest>, entities: Entity<ECSTest>[]) => {
       expect(e === ecs).toBeTruthy();
-      for(const ent of entities) {
+      for (const ent of entities) {
         expect(e.entity(ent.$id)).toBeTruthy();
       }
     });
 
     ecs = new ECS<ECSTest>({
-      ITestComp1: testComp1
+      ITestComp1: testComp1,
     });
 
     testFilter = jest.fn((e: ECS<ECSTest>, entities: Entity<ECSTest>[]) => {
@@ -91,17 +91,17 @@ describe('Setup System', () => {
     testFilter2 = jest.fn((_e: ECS<ECSTest>, entities: Entity<ECSTest>[]) => entities);
 
     ecs
-    // Define a filter to trigger a system when specific entities are added
-    .addSystem(FilterType.Adding, testFilter, testEntityAddingSystem)
-    .addSystem(FilterType.Added, testFilter, testEntityAddedSystem)
+      // Define a filter to trigger a system when specific entities are added
+      .addSystem(FilterType.Adding, testFilter, testEntityAddingSystem)
+      .addSystem(FilterType.Added, testFilter, testEntityAddedSystem)
 
-    // Define a filter to trigger a system when specific entities are removed
-    .addSystem(FilterType.Removing, testFilter, testEntityRemovingSystem)
-    .addSystem(FilterType.Removed, testFilter, testEntityRemovedSystem)
+      // Define a filter to trigger a system when specific entities are removed
+      .addSystem(FilterType.Removing, testFilter, testEntityRemovingSystem)
+      .addSystem(FilterType.Removed, testFilter, testEntityRemovedSystem)
 
-    // Define a filter to trigger a system when specific entities are modified
-    .addSystem(FilterType.Modifying, testFilter, testEntityModifingSystem)
-    .addSystem(FilterType.Modified, testFilter, testEntityModifiedSystem);
+      // Define a filter to trigger a system when specific entities are modified
+      .addSystem(FilterType.Modifying, testFilter, testEntityModifingSystem)
+      .addSystem(FilterType.Modified, testFilter, testEntityModifiedSystem);
   });
 
   it('Double add same system', () => {
@@ -117,19 +117,19 @@ describe('Setup System', () => {
   it('System event triggers', () => {
     // Test added system triggers
     const entity = ecs.addEntity('first');
-       
+
     ecs.update();
     expect(testEntityAddingSystem).toHaveBeenCalledWith(ecs, [entity]);
     expect(testEntityAddedSystem).toHaveBeenCalledWith(ecs, [entity]);
 
     // Test modified system triggers
-    const comp = ecs.addComponent(entity, "ITestComp1");
+    const comp = ecs.addComponent(entity, 'ITestComp1');
     comp.fieldA = 'test';
     comp.fieldB = 10;
     comp.fieldC = true;
     comp.fieldD = null;
 
-    ecs.update();    
+    ecs.update();
     expect(testEntityModifingSystem).toHaveBeenCalledWith(ecs, [entity]);
     expect(testEntityModifiedSystem).toHaveBeenCalledWith(ecs, [entity]);
 
@@ -149,7 +149,7 @@ describe('Setup System', () => {
     expect(testEntityRemovingSystem).toHaveBeenCalledTimes(1);
     expect(testEntityRemovedSystem).toHaveBeenCalledTimes(1);
     expect(testFilter).toHaveBeenCalledTimes(6);
-  })
+  });
 
   it('Add and remove systems', () => {
     ecs.update();
@@ -164,7 +164,11 @@ describe('Setup System', () => {
     const testEntityAddedSystemRemoved = ecs.removeSystem(FilterType.Added, testFilter, testEntityAddedSystem);
     const testEntityRemovingSystemRemoved = ecs.removeSystem(FilterType.Removing, testFilter, testEntityRemovingSystem);
     const testEntityRemovedSystemRemoved = ecs.removeSystem(FilterType.Removed, testFilter, testEntityRemovedSystem);
-    const testEntityModifingSystemRemoved = ecs.removeSystem(FilterType.Modifying, testFilter, testEntityModifingSystem);
+    const testEntityModifingSystemRemoved = ecs.removeSystem(
+      FilterType.Modifying,
+      testFilter,
+      testEntityModifingSystem,
+    );
     const testEntityModifiedSystemRemoved = ecs.removeSystem(FilterType.Modified, testFilter, testEntityModifiedSystem);
 
     expect(testEntityAddingSystemRemoved).toBeTruthy();
@@ -199,7 +203,7 @@ describe('Setup System', () => {
   });
 });
 
-describe("Empty ECS Test", () => {
+describe('Empty ECS Test', () => {
   /* tslint:disable:prefer-const */
   let ecs: ECS<ECSTest>;
   /* tslint:disable:prefer-const */
@@ -210,7 +214,7 @@ describe("Empty ECS Test", () => {
   let emptySystem: System<ECSTest>;
   /* tslint:disable:prefer-const */
   let emptySystem2: System<ECSTest>;
-  
+
   beforeEach(() => {
     testFilter = (_e: ECS<ECSTest>, entities: Entity<ECSTest>[]) => entities;
     /* tslint:disable:no-empty */
@@ -219,33 +223,32 @@ describe("Empty ECS Test", () => {
     emptySystem2 = (_e: ECS<ECSTest>, _entities: Entity<ECSTest>[]) => {};
 
     ecs = new ECS<ECSTest>({
-      ITestComp1: testComp1
+      ITestComp1: testComp1,
     });
   });
-  
-  it("Removing non existing systems", () => {
+
+  it('Removing non existing systems', () => {
     // Test remoging non existing system in non existing filter in non exising filter type event.
     expect(ecs.removeSystem(FilterType.Added, testFilter, emptySystem)).toBeFalsy();
 
     // Test removing missing filter from existing filter type event
-    ecs.addSystem(FilterType.Added, testFilter, emptySystem)
+    ecs.addSystem(FilterType.Added, testFilter, emptySystem);
     expect(ecs.removeSystem(FilterType.Added, testFilter2, emptySystem)).toBeFalsy();
   });
 
-  it("Removing non existing systems by filters", () => {
+  it('Removing non existing systems by filters', () => {
     expect(ecs.removeSystemsByFilter(FilterType.Added, testFilter)).toBeFalsy();
 
     // Test removing missing filter from existing filter type event
-    ecs.addSystem(FilterType.Added, testFilter, emptySystem)
+    ecs.addSystem(FilterType.Added, testFilter, emptySystem);
     expect(ecs.removeSystemsByFilter(FilterType.Added, testFilter2)).toBeFalsy();
-  })
+  });
 
-  it("Checking non existing systems", () => {
-
+  it('Checking non existing systems', () => {
     expect(ecs.systemExists(FilterType.Added, testFilter, emptySystem)).toBeFalsy();
 
     // Test removing missing filter from existing filter type event
-    ecs.addSystem(FilterType.Added, testFilter, emptySystem)
+    ecs.addSystem(FilterType.Added, testFilter, emptySystem);
     expect(ecs.systemExists(FilterType.Added, testFilter, emptySystem2)).toBeFalsy();
     expect(ecs.systemExists(FilterType.Added, testFilter2, emptySystem2)).toBeFalsy();
   });

@@ -1,5 +1,5 @@
-import { ECSDefine } from "./types";
-import { InternalECS } from "./internal";
+import { ECSDefine } from './types';
+import { InternalECS } from './internal';
 
 export class Identifiable<C extends ECSDefine> {
   private _$id: string = '';
