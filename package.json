@@ -3,6 +3,10 @@
   "version": "1.0.0-alpha.0",
   "main": "./lib/ecs.js",
   "types": "./lib/ecs.d.ts",
+  "repository": {
+    "url": "https://github.com/DeveloperMetal/krypton-ecs.git",
+    "type": "git"
+  },
   "scripts": {
     "prepublishOnly": "yarn test && yarn lint",
     "prepare": "yarn build",
