@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
     "incremental": true,
-    "module": "amd",
-    "outFile": "lib/ecs.js",
+    "module": "ES2020",
     "target": "ES2015",
+    "outDir": "lib/esm/",
     "moduleResolution": "node",
     "declaration": true,
     "declarationMap": true,
@@ -32,6 +32,8 @@
     "src/**/*"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "lib",
+    "**/*.spec.ts"
   ]
 }

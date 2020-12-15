@@ -1,8 +1,8 @@
 {
   "name": "@kryptonstudio/ecs",
   "version": "1.0.0-alpha.4",
-  "main": "./lib/ecs.js",
-  "types": "./lib/ecs.d.ts",
+  "main": "./lib/cjs/index.js",
+  "module": "./lib/esm/index.js",
   "repository": {
     "url": "https://github.com/DeveloperMetal/krypton-ecs.git",
     "type": "git"
@@ -13,7 +13,7 @@
     "preversion": "yarn lint",
     "version": "yarn format && git add -A src",
     "postversion": "git push && git push --tags",
-    "build": "tsc",
+    "build": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",
     "build:cleanup": "yarn lint && yarn format && yarn test && yarn build",
     "test": "jest --coverage",
     "watch:test": "jest --watchAll --coverage",
@@ -22,7 +22,8 @@
     "docs": "typedoc --theme minimal --exclude **/*.spec.ts --out ./docs ./src"
   },
   "files": [
-    "lib"
+    "lib",
+    "package.json"
   ],
   "dependencies": {},
   "devDependencies": {
