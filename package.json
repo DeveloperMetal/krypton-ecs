@@ -1,5 +1,5 @@
 {
-  "name": "@krypton/ecs",
+  "name": "@kryptonstudio/ecs",
   "version": "1.0.0",
   "main": "./lib/ecs.js",
   "types": "./lib/ecs.d.ts",
