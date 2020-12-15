@@ -23,7 +23,7 @@ import {
   ComponentInterface,
   ComponentFields,
   ECSDefine
-} from "@krypton/ecs";
+} from "@kryptonstudio/ecs";
 
 // Component interface to enforce type signatures
 interface Component1 extends ComponentInterface {
