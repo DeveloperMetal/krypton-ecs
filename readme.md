@@ -1,3 +1,5 @@
+![](https://github.com/DeveloperMetal/krypton-ecs/workflows/tests/badge.svg?branch=develop) 
+
 # Krypton ECS System
 
 An experimental type safe ECS system that supports an application loop and delayed bulk events.
