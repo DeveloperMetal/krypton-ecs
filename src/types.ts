@@ -46,14 +46,14 @@ export enum SystemEvent {
   Modified = 32,
 }
 
-export type FilterCallback<C extends ECSDefine> = (ecs: ECS<C>, entities: Entity<C>[]) => Entity<C>[];
-export type System<C extends ECSDefine> = (ecs: ECS<C>, entities: Entity<C>[]) => Promise<void> | void;
+export type FilterCallback = (ecs: ECS, entities: Entity[]) => Entity[];
+export type System = (ecs: ECS, entities: Entity[]) => Promise<void> | void;
 
 export type ComponentDefinitions = {
   [name: string]: ComponentFields<ComponentInterface>;
 };
 
-export type FilterToSystemMap<C extends ECSDefine> = Map<FilterCallback<C>, Set<System<C>>>;
+export type FilterToSystemMap = Map<FilterCallback, Set<System>>;
 
 export type FieldTypeof = 'number' | 'string' | 'bigint' | 'boolean';
 export type FieldType = string | number | bigint | boolean;
@@ -68,9 +68,9 @@ export type ComponentFields<T extends ComponentInterface> = {
   [field in keyof T]: FieldDefinition;
 };
 
-export interface IComponent<C extends ECSDefine> {
+export interface IComponent {
   $id: string;
-  parentEntity: Entity<C>;
+  parentEntity: Entity;
   keys(): string[];
 }
 
@@ -78,7 +78,7 @@ export interface ComponentInterface {
   [index: string]: FieldType | null;
 }
 
-export type ComponentConstructor<T extends ComponentInterface, C extends ECSDefine> = new (
+export type ComponentConstructor<T extends ComponentInterface> = new (
   id: string,
   fieldDef: ComponentFields<T>,
-) => IComponent<C>;
+) => IComponent;

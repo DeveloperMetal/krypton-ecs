@@ -1,17 +1,20 @@
 import { Identifiable } from '../utils';
 import { Entity } from '../entity';
-import { ComponentInterface, IComponent, ComponentFields, ECSDefine, FieldDefinition, SystemEvent } from '../types';
+import { ComponentInterface, IComponent, ComponentFields, FieldDefinition, SystemEvent, ECSDefine } from '../types';
 import { InternalECS } from '../internal';
 
-export class Component<T extends ComponentInterface, C extends ECSDefine>
-  extends Identifiable<C>
-  implements IComponent<C> {
-  private _fieldDef: ComponentFields<T>;
-  private _parent: Entity<C>;
+export class Component extends Identifiable implements IComponent {
+  private _fieldDef: ComponentFields<ComponentInterface>;
+  private _parent: Entity;
 
-  constructor(id: string, fieldDef: ComponentFields<T>, parent: Entity<C>, ecs: InternalECS<C>) {
+  constructor(id: string, parent: Entity, ecs: InternalECS) {
     super(id, ecs);
-    this._fieldDef = fieldDef;
+    const fieldDef = ecs.components.get(id);
+    if (fieldDef) {
+      this._fieldDef = fieldDef;
+    } else {
+      throw Error(`Component definition missing for ${id}`);
+    }
     this._parent = parent;
     let inConstructor = true;
 
@@ -64,7 +67,7 @@ export class Component<T extends ComponentInterface, C extends ECSDefine>
     return Object.keys(this._fieldDef);
   }
 
-  as<A extends ComponentInterface>() {
-    return (this as unknown) as A & IComponent<C>;
+  as<C extends ECSDefine, K extends keyof C['components']>() {
+    return (this as unknown) as C['components'][K] & IComponent;
   }
 }

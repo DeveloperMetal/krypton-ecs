@@ -1,15 +1,15 @@
 import { Identifiable } from '../utils';
 import { Component } from '../component';
-import { ComponentInterface, ECSDefine } from '../types';
+import { ECSDefine } from '../types';
 import { InternalECS } from '../internal';
 
 /**
  * Entity class which groups components. This class is instantiated internally.
  */
-export class Entity<C extends ECSDefine> extends Identifiable<C> {
-  private _components = new Map<string, Component<ComponentInterface, C>>();
+export class Entity extends Identifiable {
+  private _components = new Map<string, Component>();
 
-  constructor($id: string, ecs: InternalECS<C>) {
+  constructor($id: string, ecs: InternalECS) {
     super($id, ecs);
   }
 
@@ -17,15 +17,10 @@ export class Entity<C extends ECSDefine> extends Identifiable<C> {
    * Adds a component to the entity.
    * @param component The component name to add.
    */
-  addComponent<K extends keyof C['components'] & string>(component: K) {
-    const newComponent = new Component<C['components'][K], C>(
-      component,
-      this.$ecs.components[component],
-      this,
-      this.$ecs,
-    );
+  addComponent<C extends ECSDefine>(component: keyof C['components'] & string) {
+    const newComponent = new Component(component, this, this.$ecs);
     this._components.set(newComponent.$id, newComponent);
-    const newComponentObject = newComponent.as<C['components'][K]>();
+    const newComponentObject = newComponent.as<C, typeof component>();
     this.$ecs.onComponentAddedToEntity(this, (component as unknown) as C['components'] & string);
     return newComponentObject;
   }
@@ -34,7 +29,7 @@ export class Entity<C extends ECSDefine> extends Identifiable<C> {
    * Removes a component from this entity.
    * @param component The component to remove by name.
    */
-  removeComponent<K extends keyof C['components'] & string>(component: K) {
+  removeComponent<C extends ECSDefine>(component: keyof C['components'] & string) {
     this._components.delete(component);
     this.$ecs.onComponentRemovedFromEntity(this, component);
   }
@@ -50,7 +45,7 @@ export class Entity<C extends ECSDefine> extends Identifiable<C> {
    * Retrieves a component object instance attached to this entity.
    * @param name The component name.
    */
-  component<K extends keyof C['components'] & string>(name: K) {
-    return this._components.get(name)?.as<C['components'][K]>();
+  component<C extends ECSDefine>(name: keyof C['components'] & string) {
+    return this._components.get(name)?.as<C, typeof name>();
   }
 }

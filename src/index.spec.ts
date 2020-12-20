@@ -33,7 +33,7 @@ interface ECSTest extends ECSDefine {
 
 describe('Build ECS', () => {
   it('Add and Remove Entity', () => {
-    const ecs = new ECS<ECSTest>({
+    const ecs = new ECS({
       ITestComp1: testComp1,
       ITestComp2: testComp2,
       ITestComp3: testComp3,
@@ -49,13 +49,13 @@ describe('Build ECS', () => {
   });
 
   it('Find entities by component', () => {
-    const ecs = new ECS<ECSTest>({
+    const ecs = new ECS({
       ITestComp1: testComp1,
       ITestComp2: testComp2,
       ITestComp3: testComp3,
     });
     const entity = ecs.addEntity('first');
-    ecs.addComponent(entity, 'ITestComp1');
+    ecs.addComponent<ECSTest>(entity, 'ITestComp1');
     ecs.update();
 
     const foundEntities = Array.from(ecs.entitiesByComponent('ITestComp1'));
@@ -65,13 +65,13 @@ describe('Build ECS', () => {
   });
 
   it('Add entity with components', () => {
-    const ecs = new ECS<ECSTest>({
+    const ecs = new ECS({
       ITestComp1: testComp1,
       ITestComp2: testComp2,
       ITestComp3: testComp3,
     });
-    const entity1 = ecs.addEntity('first', 'ITestComp1', 'ITestComp2');
-    const entity2 = ecs.addEntity('first', 'ITestComp2');
+    const entity1 = ecs.addEntity<ECSTest>('first', 'ITestComp1', 'ITestComp2');
+    const entity2 = ecs.addEntity<ECSTest>('first', 'ITestComp2');
     ecs.update();
 
     const foundEntitiesQ1 = Array.from(ecs.entitiesByComponent('ITestComp1'));

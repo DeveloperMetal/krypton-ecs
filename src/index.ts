@@ -6,11 +6,11 @@ export * from './types';
 /**
  * Type safe ECS system entry point.
  */
-export class ECS<C extends ECSDefine> {
-  private _internal: InternalECS<C>;
+export class ECS {
+  private _internal: InternalECS;
 
-  constructor(components: ECSComponentDefineTypes<C>) {
-    this._internal = new InternalECS<C>(this, components);
+  constructor(components: ECSComponentDefineTypes<ECSDefine>) {
+    this._internal = new InternalECS(this, components);
   }
 
   /**
@@ -26,7 +26,7 @@ export class ECS<C extends ECSDefine> {
    * @param component Component name
    * @returns Array of entitities.
    */
-  entitiesByComponent<K extends keyof C['components'] & string>(component: K) {
+  entitiesByComponent<C extends ECSDefine, K extends keyof C['components'] & string>(component: K) {
     return this._internal.entitiesByComponent.get(component)?.values() || [].values();
   }
 
@@ -35,8 +35,8 @@ export class ECS<C extends ECSDefine> {
    * @param entity An entity instance to add component into.
    * @param component The component name to add.
    */
-  addComponent<K extends keyof C['components'] & string>(entity: Entity<C>, component: K) {
-    return entity.addComponent(component);
+  addComponent<C extends ECSDefine>(entity: Entity, component: keyof C['components']) {
+    return entity.addComponent(component as string);
   }
 
   /**
@@ -44,8 +44,8 @@ export class ECS<C extends ECSDefine> {
    * @param id The entity id
    * @param components Component names to add into the entity.
    */
-  addEntity(id: string, ...components: (keyof C['components'])[]) {
-    const entity = new Entity<C>(id, this._internal);
+  addEntity<C extends ECSDefine>(id: string, ...components: (keyof C['components'])[]) {
+    const entity = new Entity(id, this._internal);
     for (const component of components) {
       this.addComponent(entity, component as string);
     }
@@ -73,20 +73,20 @@ export class ECS<C extends ECSDefine> {
    * @param filter A callback function to filter entities before they make it to the System
    * @param system A callback function which functions as a system.
    */
-  addSystem(type: SystemEvent, filter: FilterCallback<C>, system: System<C>) {
-    let typeQueue: Map<FilterCallback<C>, Set<System<C>>>;
-    let filterMap: Set<System<C>>;
+  addSystem(type: SystemEvent, filter: FilterCallback, system: System) {
+    let typeQueue: Map<FilterCallback, Set<System>>;
+    let filterMap: Set<System>;
 
     if (!this._internal.filters.has(type)) {
-      this._internal.filters.set(type, (typeQueue = new Map<FilterCallback<C>, Set<System<C>>>()));
+      this._internal.filters.set(type, (typeQueue = new Map<FilterCallback, Set<System>>()));
     } else {
-      typeQueue = this._internal.filters.get(type) as Map<FilterCallback<C>, Set<System<C>>>;
+      typeQueue = this._internal.filters.get(type) as Map<FilterCallback, Set<System>>;
     }
 
     if (!typeQueue.has(filter)) {
-      typeQueue.set(filter, (filterMap = new Set<System<C>>()));
+      typeQueue.set(filter, (filterMap = new Set<System>()));
     } else {
-      filterMap = typeQueue.get(filter) as Set<System<C>>;
+      filterMap = typeQueue.get(filter) as Set<System>;
     }
 
     filterMap.add(system);
@@ -100,14 +100,14 @@ export class ECS<C extends ECSDefine> {
    * @param filter The filter callback used to trigger this system.
    * @param system The system to remove.
    */
-  removeSystem(type: SystemEvent, filter: FilterCallback<C>, system: System<C>) {
-    let typeQueue: Map<FilterCallback<C>, Set<System<C>>>;
-    let filterMap: Set<System<C>>;
+  removeSystem(type: SystemEvent, filter: FilterCallback, system: System) {
+    let typeQueue: Map<FilterCallback, Set<System>>;
+    let filterMap: Set<System>;
 
     if (this._internal.filters.has(type)) {
-      typeQueue = this._internal.filters.get(type) as Map<FilterCallback<C>, Set<System<C>>>;
+      typeQueue = this._internal.filters.get(type) as Map<FilterCallback, Set<System>>;
       if (typeQueue.has(filter)) {
-        filterMap = typeQueue.get(filter) as Set<System<C>>;
+        filterMap = typeQueue.get(filter) as Set<System>;
         return filterMap.delete(system);
       }
     }
@@ -120,15 +120,15 @@ export class ECS<C extends ECSDefine> {
    * @param type The trigger type to match.
    * @param filter The filter callback used to trigger one ore more systems.
    */
-  removeSystemsByFilter(type: SystemEvent, filter: FilterCallback<C>) {
-    let typeQueue: Map<FilterCallback<C>, Set<System<C>>>;
-    let filterMap: Set<System<C>>;
+  removeSystemsByFilter(type: SystemEvent, filter: FilterCallback) {
+    let typeQueue: Map<FilterCallback, Set<System>>;
+    let filterMap: Set<System>;
 
     if (this._internal.filters.has(type)) {
-      typeQueue = this._internal.filters.get(type) as Map<FilterCallback<C>, Set<System<C>>>;
+      typeQueue = this._internal.filters.get(type) as Map<FilterCallback, Set<System>>;
 
       if (typeQueue.has(filter)) {
-        filterMap = typeQueue.get(filter) as Set<System<C>>;
+        filterMap = typeQueue.get(filter) as Set<System>;
         filterMap.clear();
         return true;
       }
@@ -143,14 +143,14 @@ export class ECS<C extends ECSDefine> {
    * @param filter The filter callback used to trigger this system.
    * @param system The system callback to check.
    */
-  systemExists(type: SystemEvent, filter: FilterCallback<C>, system: System<C>) {
-    let typeQueue: Map<FilterCallback<C>, Set<System<C>>>;
-    let filterMap: Set<System<C>>;
+  systemExists(type: SystemEvent, filter: FilterCallback, system: System) {
+    let typeQueue: Map<FilterCallback, Set<System>>;
+    let filterMap: Set<System>;
 
     if (this._internal.filters.has(type)) {
-      typeQueue = this._internal.filters.get(type) as Map<FilterCallback<C>, Set<System<C>>>;
+      typeQueue = this._internal.filters.get(type) as Map<FilterCallback, Set<System>>;
       if (typeQueue.has(filter)) {
-        filterMap = typeQueue.get(filter) as Set<System<C>>;
+        filterMap = typeQueue.get(filter) as Set<System>;
         return filterMap.has(system);
       }
     }

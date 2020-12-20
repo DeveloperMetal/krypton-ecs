@@ -1,29 +1,41 @@
-import { ECSDefine, ECSComponentDefineTypes, SystemEvent, FilterToSystemMap } from '../types';
+import {
+  SystemEvent,
+  FilterToSystemMap,
+  ECSComponentDefineTypes,
+  ECSDefine,
+  ComponentFields,
+  ComponentInterface,
+} from '../types';
 import { ECS } from '..';
 import { Entity } from '../entity';
 
 /**
  * Internal ECS Api used to manage message passing and caching.
  */
-export class InternalECS<C extends ECSDefine> {
-  public entities = new Map<string, Entity<C>>();
-  public entitiesByComponent = new Map<keyof C['components'] & string, Set<Entity<C>>>();
-  public filters = new Map<SystemEvent, FilterToSystemMap<C>>();
-  public triggerQueue = new Map<SystemEvent, Set<Entity<C>>>();
+export class InternalECS {
+  public entities = new Map<string, Entity>();
+  public entitiesByComponent = new Map<string, Set<Entity>>();
+  public filters = new Map<SystemEvent, FilterToSystemMap>();
+  public triggerQueue = new Map<SystemEvent, Set<Entity>>();
+  public components = new Map<string, ComponentFields<ComponentInterface>>();
 
   /**
    *
    * @param ecs The parent ECS instance linking all apis.
    * @param components The user defined component definition.
    */
-  constructor(public readonly ecs: ECS<C>, public readonly components: ECSComponentDefineTypes<C>) {}
+  constructor(public readonly ecs: ECS, components: ECSComponentDefineTypes<ECSDefine>) {
+    for (const key of Object.keys(components)) {
+      this.components.set(key, components[key]);
+    }
+  }
 
   /**
    * Broadcasts a trigger event to subscribed systems.
    * @param event Filter trigger type
    * @param entities Entities to send.
    */
-  triggerSystemByFilter(event: SystemEvent, entities: Entity<C>[]) {
+  triggerSystemByFilter(event: SystemEvent, entities: Entity[]) {
     const filter = this.filters.get(event);
 
     if (filter) {
@@ -63,10 +75,10 @@ export class InternalECS<C extends ECSDefine> {
    */
   getQueue(event: SystemEvent) {
     if (!this.triggerQueue.has(event)) {
-      this.triggerQueue.set(event, new Set<Entity<C>>());
+      this.triggerQueue.set(event, new Set<Entity>());
     }
 
-    return this.triggerQueue.get(event) as Set<Entity<C>>;
+    return this.triggerQueue.get(event) as Set<Entity>;
   }
 
   /**
@@ -82,7 +94,7 @@ export class InternalECS<C extends ECSDefine> {
    * @param event Trigger system event.
    * @param entity An entity to enqueue.
    */
-  enqueueTrigger(event: SystemEvent, entity: Entity<C>) {
+  enqueueTrigger(event: SystemEvent, entity: Entity) {
     const queue = this.getQueue(event);
     queue.add(entity);
   }
@@ -105,12 +117,12 @@ export class InternalECS<C extends ECSDefine> {
    * @param entity An entity which a component was added.
    * @param component The new component added.
    */
-  onComponentAddedToEntity(entity: Entity<C>, component: C['components'] & string) {
-    let group: Set<Entity<C>>;
+  onComponentAddedToEntity(entity: Entity, component: string) {
+    let group: Set<Entity>;
     if (!this.entitiesByComponent.has(component)) {
       this.entitiesByComponent.set(component, (group = new Set()));
     } else {
-      group = this.entitiesByComponent.get(component) as Set<Entity<C>>;
+      group = this.entitiesByComponent.get(component) as Set<Entity>;
     }
 
     group.add(entity);
@@ -121,9 +133,9 @@ export class InternalECS<C extends ECSDefine> {
    * @param entity The entity which a component was removed.
    * @param component The component removed.
    */
-  onComponentRemovedFromEntity(entity: Entity<C>, component: keyof C['components'] & string) {
+  onComponentRemovedFromEntity(entity: Entity, component: string) {
     if (this.entitiesByComponent.has(component)) {
-      const group = this.entitiesByComponent.get(component) as Set<Entity<C>>;
+      const group = this.entitiesByComponent.get(component) as Set<Entity>;
       group.delete(entity);
     }
   }

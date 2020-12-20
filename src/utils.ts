@@ -1,11 +1,10 @@
-import { ECSDefine } from './types';
 import { InternalECS } from './internal';
 
-export class Identifiable<C extends ECSDefine> {
+export class Identifiable {
   private _$id: string = '';
-  private _$ecs: InternalECS<C>;
+  private _$ecs: InternalECS;
 
-  constructor($id: string, ecs: InternalECS<C>) {
+  constructor($id: string, ecs: InternalECS) {
     this._$id = $id;
     this._$ecs = ecs;
   }
