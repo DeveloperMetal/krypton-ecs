@@ -45,7 +45,7 @@ interface AppECSDefine extends ECSDefine {
 }
 
 // The final application ECS
-const appECS = new ECS<AppECSDefine>({
+const appECS = new ECS({
   Component1: component1Definition
 });
 
@@ -54,10 +54,10 @@ appECS.addSystem(
   // Watch entites added to the application state
   FilterType.Added, 
   // We want to add our component on all entities, so we just return all entities on the event.
-  (ecs: ECS<AppECSDefine>, entities: Entity<AppECSDefine>[]) => entities,
+  (ecs: ECS, entities: Entity[]) => entities,
   // The actuall system implementation. Adds Component1 to all added entities.
-  (ecs: ECS<AppECSDefine>, entities: Entity<AppECSDefine>[]) => {
-    entities.forEach(e => e.addComponent("Component1"));
+  (ecs: ECS, entities: Entity[]) => {
+    entities.forEach(e => e.addComponent<AppECSDefine>("Component1"));
   }
 )
 
@@ -85,7 +85,7 @@ app.addEntity('my-entity');
 or if you want to seed the entity with existing components:
 
 ```typescript
-app.addEntity('my-entity', 'Component1');
+app.addEntity<AppECSDefine>('my-entity', 'Component1');
 ```
 
 ### Components
@@ -121,14 +121,14 @@ interface AppECSDefine extends ECSDefine {
 }
 
 // The final application ECS
-const appECS = new ECS<AppECSDefine>({
+const appECS = new ECS({
   Component1: component1Definition
 });
 ```
 
 The `APPECSDefine` enforces the relationship between the `Component1` type name and its interface.
 
-Once your are ready to instantiate the ECS system, you must pass the metadata definition into the ECSInstance. Because we have our own custom `AppECSDefine` the first argument of `ECS<AppECSDefine>` expects to take the metadata object for your components.
+Once your are ready to instantiate the ECS system, you must pass the metadata definition into the ECSInstance. Because we have our own custom `AppECSDefine` the first argument of `ECS` expects to take the metadata object for your components.
 
 ### Systems, events and their filters
 
@@ -150,9 +150,9 @@ appECS.addSystem(
   // Watch entites added to the application state
   FilterType.Added, 
   // We want to add our component on all entities, so we just return all entities on the event.
-  (ecs: ECS<AppECSDefine>, entities: Entity<AppECSDefine>[]) => entities,
+  (ecs: ECS, entities: Entity[]) => entities,
   // The actuall system implementation. Adds Component1 to all added entities.
-  (ecs: ECS<AppECSDefine>, entities: Entity<AppECSDefine>[]) => {
+  (ecs: ECS, entities: Entity[]) => {
     entities.forEach(e => e.addComponent("Component1"));
   }
 )
