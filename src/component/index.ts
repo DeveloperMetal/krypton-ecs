@@ -67,7 +67,7 @@ export class Component extends Identifiable implements IComponent {
     return Object.keys(this._fieldDef);
   }
 
-  as<C extends ECSDefine, K extends keyof C['components']>() {
-    return (this as unknown) as C['components'][K] & IComponent;
+  as<C extends ECSDefine, K extends keyof C>(): C[K] & IComponent {
+    return (this as unknown) as C[K] & IComponent;
   }
 }

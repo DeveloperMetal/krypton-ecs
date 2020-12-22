@@ -10,7 +10,12 @@ export class ECS {
   private _internal: InternalECS;
 
   constructor(components: ECSComponentDefineTypes<ECSDefine>) {
-    this._internal = new InternalECS(this, components);
+    this._internal = new InternalECS(this);
+    this.addComponent(components)
+  }
+  
+  addComponent<C extends ECSDefine>(components: ECSComponentDefineTypes<C>) {
+    this._internal.defineComponent(components)
   }
 
   /**
@@ -26,17 +31,8 @@ export class ECS {
    * @param component Component name
    * @returns Array of entitities.
    */
-  entitiesByComponent<C extends ECSDefine, K extends keyof C['components'] & string>(component: K) {
+  entitiesByComponent<C extends ECSDefine, K extends keyof C & string>(component: K) {
     return this._internal.entitiesByComponent.get(component)?.values() || [].values();
-  }
-
-  /**
-   * Adds a component to the provided entity.
-   * @param entity An entity instance to add component into.
-   * @param component The component name to add.
-   */
-  addComponent<C extends ECSDefine>(entity: Entity, component: keyof C['components']) {
-    return entity.addComponent(component as string);
   }
 
   /**
@@ -44,10 +40,10 @@ export class ECS {
    * @param id The entity id
    * @param components Component names to add into the entity.
    */
-  addEntity<C extends ECSDefine>(id: string, ...components: (keyof C['components'])[]) {
+  addEntity<C extends ECSDefine>(id: string, ...components: (keyof C)[]) {
     const entity = new Entity(id, this._internal);
     for (const component of components) {
-      this.addComponent(entity, component as string);
+      entity.addComponent(component as string);
     }
     this._internal.enqueueTrigger(SystemEvent.Adding, entity);
     return entity;

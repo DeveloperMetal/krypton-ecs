@@ -24,11 +24,9 @@ const testComp3: ComponentFields<ITestComp3> = {
 };
 
 interface ECSTest extends ECSDefine {
-  components: {
-    ITestComp1: ITestComp1;
-    ITestComp2: ITestComp2;
-    ITestComp3: ITestComp3;
-  };
+  ITestComp1: ITestComp1
+  ITestComp2: ITestComp2
+  ITestComp3: ITestComp3
 }
 
 describe('Build ECS', () => {
@@ -54,8 +52,7 @@ describe('Build ECS', () => {
       ITestComp2: testComp2,
       ITestComp3: testComp3,
     });
-    const entity = ecs.addEntity('first');
-    ecs.addComponent<ECSTest>(entity, 'ITestComp1');
+    const entity = ecs.addEntity<ECSTest>('first', 'ITestComp1');
     ecs.update();
 
     const foundEntities = Array.from(ecs.entitiesByComponent('ITestComp1'));

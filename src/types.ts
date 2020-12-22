@@ -2,15 +2,11 @@ import { ECS } from '.';
 import { Entity } from './entity';
 
 export type ECSDefine = {
-  components: ECSComponentsDefine;
-};
-
-export type ECSComponentsDefine = {
   [component: string]: ComponentInterface;
 };
 
 export type ECSComponentDefineTypes<E extends ECSDefine> = {
-  [K in keyof E['components']]: ComponentFields<E['components'][K]>;
+  [K in keyof E]: ComponentFields<E[K]>;
 };
 
 /**
@@ -55,8 +51,8 @@ export type ComponentDefinitions = {
 
 export type FilterToSystemMap = Map<FilterCallback, Set<System>>;
 
-export type FieldTypeof = 'number' | 'string' | 'bigint' | 'boolean';
-export type FieldType = string | number | bigint | boolean;
+export type FieldTypeof = 'number' | 'string' | 'bigint' | 'boolean' | 'complex';
+export type FieldType = string | number | bigint | boolean | object;
 
 export type FieldDefinition = {
   defaultValue?: FieldType;

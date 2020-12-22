@@ -17,38 +17,36 @@ const testComp1: ComponentFields<ITestComp1> = {
 };
 
 interface ECSTest extends ECSDefine {
-  components: {
-    ITestComp1: ITestComp1;
-  };
+  ITestComp1: ITestComp1;
 }
 
 describe('Setup System', () => {
-  let ecs: ECS<ECSTest>;
-  let testEntityAddingSystem: System<ECSTest>;
-  let testEntityAddedSystem: System<ECSTest>;
-  let testEntityRemovingSystem: System<ECSTest>;
-  let testEntityRemovedSystem: System<ECSTest>;
-  let testEntityModifiedSystem: System<ECSTest>;
-  let testEntityModifingSystem: System<ECSTest>;
-  let testFilter: FilterCallback<ECSTest>;
-  let testFilter2: FilterCallback<ECSTest>;
+  let ecs: ECS;
+  let testEntityAddingSystem: System;
+  let testEntityAddedSystem: System;
+  let testEntityRemovingSystem: System;
+  let testEntityRemovedSystem: System;
+  let testEntityModifiedSystem: System;
+  let testEntityModifingSystem: System;
+  let testFilter: FilterCallback;
+  let testFilter2: FilterCallback;
 
   beforeEach(() => {
-    testEntityAddingSystem = jest.fn((e: ECS<ECSTest>, entities: Entity<ECSTest>[]) => {
+    testEntityAddingSystem = jest.fn((e: ECS, entities: Entity[]) => {
       expect(e === ecs).toBeTruthy();
       for (const ent of entities) {
         expect(e.entity(ent.$id)).toBeFalsy();
       }
     });
 
-    testEntityAddedSystem = jest.fn((e: ECS<ECSTest>, entities: Entity<ECSTest>[]) => {
+    testEntityAddedSystem = jest.fn((e: ECS, entities: Entity[]) => {
       expect(e === ecs).toBeTruthy();
       for (const ent of entities) {
         expect(e.entity(ent.$id)).toBeTruthy();
       }
     });
 
-    testEntityRemovingSystem = jest.fn((e: ECS<ECSTest>, entities: Entity<ECSTest>[]) => {
+    testEntityRemovingSystem = jest.fn((e: ECS, entities: Entity[]) => {
       expect(e === ecs).toBeTruthy();
       for (const ent of entities) {
         // not removed yet, should still exist in the system
@@ -56,7 +54,7 @@ describe('Setup System', () => {
       }
     });
 
-    testEntityRemovedSystem = jest.fn((e: ECS<ECSTest>, entities: Entity<ECSTest>[]) => {
+    testEntityRemovedSystem = jest.fn((e: ECS, entities: Entity[]) => {
       expect(e === ecs).toBeTruthy();
       for (const ent of entities) {
         // should not exist in the system by now.
@@ -64,31 +62,31 @@ describe('Setup System', () => {
       }
     });
 
-    testEntityModifiedSystem = jest.fn((e: ECS<ECSTest>, entities: Entity<ECSTest>[]) => {
+    testEntityModifiedSystem = jest.fn((e: ECS, entities: Entity[]) => {
       expect(e === ecs).toBeTruthy();
       for (const ent of entities) {
         expect(e.entity(ent.$id)).toBeTruthy();
       }
     });
 
-    testEntityModifingSystem = jest.fn((e: ECS<ECSTest>, entities: Entity<ECSTest>[]) => {
+    testEntityModifingSystem = jest.fn((e: ECS, entities: Entity[]) => {
       expect(e === ecs).toBeTruthy();
       for (const ent of entities) {
         expect(e.entity(ent.$id)).toBeTruthy();
       }
     });
 
-    ecs = new ECS<ECSTest>({
+    ecs = new ECS({
       ITestComp1: testComp1,
     });
 
-    testFilter = jest.fn((e: ECS<ECSTest>, entities: Entity<ECSTest>[]) => {
+    testFilter = jest.fn((e: ECS, entities: Entity[]) => {
       expect(e).toStrictEqual(ecs);
       expect(entities.length).toBeGreaterThan(0);
       return entities;
     });
 
-    testFilter2 = jest.fn((_e: ECS<ECSTest>, entities: Entity<ECSTest>[]) => entities);
+    testFilter2 = jest.fn((_e: ECS, entities: Entity[]) => entities);
 
     ecs
       // Define a filter to trigger a system when specific entities are added
@@ -123,7 +121,7 @@ describe('Setup System', () => {
     expect(testEntityAddedSystem).toHaveBeenCalledWith(ecs, [entity]);
 
     // Test modified system triggers
-    const comp = ecs.addComponent(entity, 'ITestComp1');
+    const comp = entity.addComponent<ECSTest, 'ITestComp1'>('ITestComp1');
     comp.fieldA = 'test';
     comp.fieldB = 10;
     comp.fieldC = true;
@@ -213,24 +211,24 @@ describe('Setup System', () => {
 
 describe('Empty ECS Test', () => {
   /* tslint:disable:prefer-const */
-  let ecs: ECS<ECSTest>;
+  let ecs: ECS;
   /* tslint:disable:prefer-const */
-  let testFilter: FilterCallback<ECSTest>;
+  let testFilter: FilterCallback;
   /* tslint:disable:prefer-const */
-  let testFilter2: FilterCallback<ECSTest>;
+  let testFilter2: FilterCallback;
   /* tslint:disable:prefer-const */
-  let emptySystem: System<ECSTest>;
+  let emptySystem: System;
   /* tslint:disable:prefer-const */
-  let emptySystem2: System<ECSTest>;
+  let emptySystem2: System;
 
   beforeEach(() => {
-    testFilter = (_e: ECS<ECSTest>, entities: Entity<ECSTest>[]) => entities;
+    testFilter = (_e: ECS, entities: Entity[]) => entities;
     /* tslint:disable:no-empty */
-    emptySystem = (_e: ECS<ECSTest>, _entities: Entity<ECSTest>[]) => {};
+    emptySystem = (_e: ECS, _entities: Entity[]) => {};
     /* tslint:disable:no-empty */
-    emptySystem2 = (_e: ECS<ECSTest>, _entities: Entity<ECSTest>[]) => {};
+    emptySystem2 = (_e: ECS, _entities: Entity[]) => {};
 
-    ecs = new ECS<ECSTest>({
+    ecs = new ECS({
       ITestComp1: testComp1,
     });
   });
