@@ -24,7 +24,7 @@ export class InternalECS {
    * @param ecs The parent ECS instance linking all apis.
    * @param components The user defined component definition.
    */
-  constructor(public readonly ecs: ECS) { }
+  constructor(public readonly ecs: ECS) {}
 
   defineComponent<C extends ECSDefine>(components: ECSComponentDefineTypes<C>) {
     for (const key of Object.keys(components)) {

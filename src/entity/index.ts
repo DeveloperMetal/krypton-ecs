@@ -22,7 +22,7 @@ export class Entity extends Identifiable {
     this._components.set(newComponent.$id, newComponent);
     const newComponentObject = newComponent.as<C, K>();
     this.$ecs.onComponentAddedToEntity(this, component as string);
-    return newComponentObject
+    return newComponentObject;
   }
 
   /**
@@ -47,7 +47,7 @@ export class Entity extends Identifiable {
    */
   component<C extends ECSDefine, K extends keyof C>(name: K) {
     const comp = this._components.get(name as string);
-    if ( comp ) {
+    if (comp) {
       return comp.as<C, K>();
     } else {
       throw new Error(`Component Missing: ${name}`);

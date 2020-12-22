@@ -21,11 +21,11 @@ const testComp2: ComponentFields<ITestComp2> = {
   fieldD: { type: 'string' },
 };
 interface ECSTest extends ECSDefine {
-  ITestComp1: ITestComp1
+  ITestComp1: ITestComp1;
 }
 
 interface ECSInvalidTest extends ECSDefine {
-  ITEstComp2: ITestComp2
+  ITEstComp2: ITestComp2;
 }
 
 describe('Entity', () => {
@@ -82,7 +82,7 @@ describe('Entity', () => {
 
     // Force a bad key call
     expect(() => {
-      entity.component('bad-name')
+      entity.component('bad-name');
     }).toThrowError();
   });
 

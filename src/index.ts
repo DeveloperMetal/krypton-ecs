@@ -11,11 +11,11 @@ export class ECS {
 
   constructor(components: ECSComponentDefineTypes<ECSDefine>) {
     this._internal = new InternalECS(this);
-    this.addComponent(components)
+    this.addComponent(components);
   }
-  
+
   addComponent<C extends ECSDefine>(components: ECSComponentDefineTypes<C>) {
-    this._internal.defineComponent(components)
+    this._internal.defineComponent(components);
   }
 
   /**

@@ -24,9 +24,9 @@ const testComp3: ComponentFields<ITestComp3> = {
 };
 
 interface ECSTest extends ECSDefine {
-  ITestComp1: ITestComp1
-  ITestComp2: ITestComp2
-  ITestComp3: ITestComp3
+  ITestComp1: ITestComp1;
+  ITestComp2: ITestComp2;
+  ITestComp3: ITestComp3;
 }
 
 describe('Build ECS', () => {
