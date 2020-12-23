@@ -1,4 +1,4 @@
-![](https://github.com/DeveloperMetal/krypton-ecs/workflows/tests/badge.svg?branch=develop) 
+![](https://github.com/DeveloperMetal/krypton-ecs/workflows/tests/badge.svg?branch=develop)
 
 # Krypton ECS System
 
@@ -10,7 +10,7 @@ An Entity-Component-System is an software architectural pattern which follows th
 
 This pattern generalizes a highly flexible and extensible systems that achieve polyphormic behaviour via interfaces over inheritance. This removes many ambiguity issues caused by deep inheritance hierarches as an application grows over time.
 
-ECS systems are most useful on large systems where adding or removing behaviours without interfeering with existing behaviours is desired. To achieve this the ECS pattern separates data and implementation into separate systems. 
+ECS systems are most useful on large systems where adding or removing behaviours without interfeering with existing behaviours is desired. To achieve this the ECS pattern separates data and implementation into separate systems.
 
 ## Usage
 
@@ -19,7 +19,7 @@ Using Krypton-ECS you must first define the components a system supports. Then y
 Example of the smallest ECS bootstrap:
 
 ```typescript
-import { 
+import {
   ECS,
   FilterType,
   ComponentInterface,
@@ -52,12 +52,12 @@ const appECS = new ECS({
 // A system that adds a component on every entity added to the sytem.
 appECS.addSystem(
   // Watch entites added to the application state
-  FilterType.Added, 
+  FilterType.Added,
   // We want to add our component on all entities, so we just return all entities on the event.
   (ecs: ECS, entities: Entity[]) => entities,
   // The actuall system implementation. Adds Component1 to all added entities.
   (ecs: ECS, entities: Entity[]) => {
-    entities.forEach(e => e.addComponent<AppECSDefine>("Component1"));
+    entities.forEach(e => e.add<AppECSDefine>("Component1"));
   }
 )
 
@@ -148,12 +148,12 @@ The system itself is called with the reduced entity list. This separation on red
 // A system that adds a component on every entity added to the sytem.
 appECS.addSystem(
   // Watch entites added to the application state
-  FilterType.Added, 
+  FilterType.Added,
   // We want to add our component on all entities, so we just return all entities on the event.
   (ecs: ECS, entities: Entity[]) => entities,
   // The actuall system implementation. Adds Component1 to all added entities.
   (ecs: ECS, entities: Entity[]) => {
-    entities.forEach(e => e.addComponent("Component1"));
+    entities.forEach(e => e.add("Component1"));
   }
 )
 ```

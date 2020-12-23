@@ -30,11 +30,11 @@ interface ECSInvalidTest extends ECSDefine {
 
 describe('Entity', () => {
   it('Add Entity', () => {
-    const ecs = new ECS({
+    const ecs = new ECS<ECSTest>({
       ITestComp1: testComp1,
     });
     const entity = ecs.addEntity('test');
-    const comp = entity.addComponent('ITestComp1');
+    const comp = entity.add('ITestComp1');
     ecs.update();
 
     expect(ecs.entity('test') === entity).toBeTruthy();
@@ -43,55 +43,55 @@ describe('Entity', () => {
   });
 
   it('Add/Remove Component', () => {
-    const ecs = new ECS({
+    const ecs = new ECS<ECSTest>({
       ITestComp1: testComp1,
     });
     const entity = ecs.addEntity('test');
-    const comp1 = entity.addComponent<ECSTest, 'ITestComp1'>('ITestComp1');
+    const comp1 = entity.add('ITestComp1');
 
     ecs.update();
     expect(comp1).toBeTruthy();
-    expect(entity.listComponents()).toStrictEqual(['ITestComp1']);
+    expect(entity.list()).toStrictEqual(['ITestComp1']);
 
-    entity.removeComponent<ECSTest>('ITestComp1');
+    entity.remove('ITestComp1');
     ecs.update();
 
-    expect(entity.listComponents()).toStrictEqual([]);
+    expect(entity.list()).toStrictEqual([]);
   });
 
   it('Invalid Component definition', () => {
-    const ecs = new ECS({
+    const ecs = new ECS<ECSInvalidTest>({
       ITEstComp2: testComp2,
     });
     const entity = ecs.addEntity('test');
     expect(() => {
-      entity.addComponent<ECSInvalidTest, 'ITEstComp2'>('ITEstComp2');
+      entity.add('ITEstComp2');
     }).toThrow('Default Value is required when field is not nullable');
   });
 
   it('Get component', () => {
-    const ecs = new ECS({
+    const ecs = new ECS<ECSTest>({
       ITestComp1: testComp1,
     });
     const entity = ecs.addEntity('test');
-    entity.addComponent('ITestComp1');
-    const comp1 = entity.component<ECSTest, 'ITestComp1'>('ITestComp1');
+    entity.add('ITestComp1');
+    const comp1 = entity.get<'ITestComp1'>('ITestComp1');
 
     ecs.update();
     expect(comp1?.$id).toBe('ITestComp1');
 
     // Force a bad key call
     expect(() => {
-      entity.component('bad-name');
+      entity.get('bad-name');
     }).toThrowError();
   });
 
   it('Invalid types', () => {
-    const ecs = new ECS({
+    const ecs = new ECS<ECSTest>({
       ITestComp1: testComp1,
     });
     const entity = ecs.addEntity('test');
-    const comp1 = entity.addComponent<ECSTest, 'ITestComp1'>('ITestComp1');
+    const comp1 = entity.add('ITestComp1');
 
     expect(comp1).toBeTruthy();
 
@@ -103,11 +103,11 @@ describe('Entity', () => {
   });
 
   it('Removing a component on an entity without such component', () => {
-    const ecs = new ECS({
+    const ecs = new ECS<ECSTest>({
       ITestComp1: testComp1,
     });
     const entity = ecs.addEntity('test');
     // Try removing first to test non existing component cache branch
-    entity.removeComponent('ITestComp1');
+    entity.remove('ITestComp1');
   });
 });

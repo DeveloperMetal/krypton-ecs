@@ -4,4 +4,12 @@
     "module": "CommonJS",
     "outDir": "./lib/cjs"
   },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "lib",
+    "**/*.spec.ts"
+  ]
 }

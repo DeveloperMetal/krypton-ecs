@@ -3,11 +3,11 @@ import { Entity } from '../entity';
 import { ComponentInterface, IComponent, ComponentFields, FieldDefinition, SystemEvent, ECSDefine } from '../types';
 import { InternalECS } from '../internal';
 
-export class Component extends Identifiable implements IComponent {
+export class Component<C extends ECSDefine> extends Identifiable<C> implements IComponent<C> {
   private _fieldDef: ComponentFields<ComponentInterface>;
-  private _parent: Entity;
+  private _parent: Entity<C>;
 
-  constructor(id: string, parent: Entity, ecs: InternalECS) {
+  constructor(id: string, parent: Entity<C>, ecs: InternalECS<C>) {
     super(id, ecs);
     const fieldDef = ecs.components.get(id);
     if (fieldDef) {
@@ -67,7 +67,7 @@ export class Component extends Identifiable implements IComponent {
     return Object.keys(this._fieldDef);
   }
 
-  as<C extends ECSDefine, K extends keyof C>(): C[K] & IComponent {
-    return (this as unknown) as C[K] & IComponent;
+  as<K extends keyof C>(): C[K] & IComponent<C> {
+    return (this as unknown) as C[K] & IComponent<C>;
   }
 }

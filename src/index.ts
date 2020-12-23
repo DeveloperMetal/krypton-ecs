@@ -2,19 +2,22 @@ import { Entity } from './entity';
 import { ECSDefine, ECSComponentDefineTypes, SystemEvent, FilterCallback, System } from './types';
 import { InternalECS } from './internal';
 export * from './types';
+export * from './entity';
+export * from './component';
+export * from './internal';
 
 /**
  * Type safe ECS system entry point.
  */
-export class ECS {
-  private _internal: InternalECS;
+export class ECS<C extends ECSDefine> {
+  private _internal: InternalECS<C>;
 
-  constructor(components: ECSComponentDefineTypes<ECSDefine>) {
+  constructor(components: ECSComponentDefineTypes<C>) {
     this._internal = new InternalECS(this);
     this.addComponent(components);
   }
 
-  addComponent<C extends ECSDefine>(components: ECSComponentDefineTypes<C>) {
+  addComponent(components: ECSComponentDefineTypes<C>) {
     this._internal.defineComponent(components);
   }
 
@@ -23,7 +26,19 @@ export class ECS {
    * @param name Entity name
    */
   entity(id: string) {
-    return this._internal.entities.get(id);
+    if ( this._internal.entities.has(id) ) {
+      return this._internal.entities.get(id) as Entity<C>;
+    } else {
+      throw new Error(`Entity not found: ${id}`);
+    }
+  }
+
+  /**
+   * Returns true or false if entity exists in the system.
+   * @param id The entity id.
+   */
+  entityExists(id: string) {
+    return this._internal.entities.has(id);
   }
 
   /**
@@ -31,8 +46,8 @@ export class ECS {
    * @param component Component name
    * @returns Array of entitities.
    */
-  entitiesByComponent<C extends ECSDefine, K extends keyof C & string>(component: K) {
-    return this._internal.entitiesByComponent.get(component)?.values() || [].values();
+  entitiesByComponent<K extends keyof C>(component: K) {
+    return this._internal.entitiesByComponent.get(component as string)?.values() || [].values();
   }
 
   /**
@@ -40,10 +55,10 @@ export class ECS {
    * @param id The entity id
    * @param components Component names to add into the entity.
    */
-  addEntity<C extends ECSDefine>(id: string, ...components: (keyof C)[]) {
-    const entity = new Entity(id, this._internal);
+  addEntity(id: string, ...components: (keyof C)[]) {
+    const entity = new Entity<C>(id, this._internal);
     for (const component of components) {
-      entity.addComponent(component as string);
+      entity.add(component as string);
     }
     this._internal.enqueueTrigger(SystemEvent.Adding, entity);
     return entity;
@@ -69,20 +84,20 @@ export class ECS {
    * @param filter A callback function to filter entities before they make it to the System
    * @param system A callback function which functions as a system.
    */
-  addSystem(type: SystemEvent, filter: FilterCallback, system: System) {
-    let typeQueue: Map<FilterCallback, Set<System>>;
-    let filterMap: Set<System>;
+  addSystem(type: SystemEvent, filter: FilterCallback<C>, system: System<C>) {
+    let typeQueue: Map<FilterCallback<C>, Set<System<C>>>;
+    let filterMap: Set<System<C>>;
 
     if (!this._internal.filters.has(type)) {
-      this._internal.filters.set(type, (typeQueue = new Map<FilterCallback, Set<System>>()));
+      this._internal.filters.set(type, (typeQueue = new Map<FilterCallback<C>, Set<System<C>>>()));
     } else {
-      typeQueue = this._internal.filters.get(type) as Map<FilterCallback, Set<System>>;
+      typeQueue = this._internal.filters.get(type) as Map<FilterCallback<C>, Set<System<C>>>;
     }
 
     if (!typeQueue.has(filter)) {
-      typeQueue.set(filter, (filterMap = new Set<System>()));
+      typeQueue.set(filter, (filterMap = new Set<System<C>>()));
     } else {
-      filterMap = typeQueue.get(filter) as Set<System>;
+      filterMap = typeQueue.get(filter) as Set<System<C>>;
     }
 
     filterMap.add(system);
@@ -96,14 +111,14 @@ export class ECS {
    * @param filter The filter callback used to trigger this system.
    * @param system The system to remove.
    */
-  removeSystem(type: SystemEvent, filter: FilterCallback, system: System) {
-    let typeQueue: Map<FilterCallback, Set<System>>;
-    let filterMap: Set<System>;
+  removeSystem(type: SystemEvent, filter: FilterCallback<C>, system: System<C>) {
+    let typeQueue: Map<FilterCallback<C>, Set<System<C>>>;
+    let filterMap: Set<System<C>>;
 
     if (this._internal.filters.has(type)) {
-      typeQueue = this._internal.filters.get(type) as Map<FilterCallback, Set<System>>;
+      typeQueue = this._internal.filters.get(type) as Map<FilterCallback<C>, Set<System<C>>>;
       if (typeQueue.has(filter)) {
-        filterMap = typeQueue.get(filter) as Set<System>;
+        filterMap = typeQueue.get(filter) as Set<System<C>>;
         return filterMap.delete(system);
       }
     }
@@ -116,15 +131,15 @@ export class ECS {
    * @param type The trigger type to match.
    * @param filter The filter callback used to trigger one ore more systems.
    */
-  removeSystemsByFilter(type: SystemEvent, filter: FilterCallback) {
-    let typeQueue: Map<FilterCallback, Set<System>>;
-    let filterMap: Set<System>;
+  removeSystemsByFilter(type: SystemEvent, filter: FilterCallback<C>) {
+    let typeQueue: Map<FilterCallback<C>, Set<System<C>>>;
+    let filterMap: Set<System<C>>;
 
     if (this._internal.filters.has(type)) {
-      typeQueue = this._internal.filters.get(type) as Map<FilterCallback, Set<System>>;
+      typeQueue = this._internal.filters.get(type) as Map<FilterCallback<C>, Set<System<C>>>;
 
       if (typeQueue.has(filter)) {
-        filterMap = typeQueue.get(filter) as Set<System>;
+        filterMap = typeQueue.get(filter) as Set<System<C>>;
         filterMap.clear();
         return true;
       }
@@ -139,14 +154,14 @@ export class ECS {
    * @param filter The filter callback used to trigger this system.
    * @param system The system callback to check.
    */
-  systemExists(type: SystemEvent, filter: FilterCallback, system: System) {
-    let typeQueue: Map<FilterCallback, Set<System>>;
-    let filterMap: Set<System>;
+  systemExists(type: SystemEvent, filter: FilterCallback<C>, system: System<C>) {
+    let typeQueue: Map<FilterCallback<C>, Set<System<C>>>;
+    let filterMap: Set<System<C>>;
 
     if (this._internal.filters.has(type)) {
-      typeQueue = this._internal.filters.get(type) as Map<FilterCallback, Set<System>>;
+      typeQueue = this._internal.filters.get(type) as Map<FilterCallback<C>, Set<System<C>>>;
       if (typeQueue.has(filter)) {
-        filterMap = typeQueue.get(filter) as Set<System>;
+        filterMap = typeQueue.get(filter) as Set<System<C>>;
         return filterMap.has(system);
       }
     }
