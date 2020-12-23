@@ -26,7 +26,7 @@ export class ECS<C extends ECSDefine> {
    * @param name Entity name
    */
   entity(id: string) {
-    if ( this._internal.entities.has(id) ) {
+    if (this._internal.entities.has(id)) {
       return this._internal.entities.get(id) as Entity<C>;
     } else {
       throw new Error(`Entity not found: ${id}`);

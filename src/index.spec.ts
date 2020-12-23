@@ -72,7 +72,7 @@ describe('Build ECS', () => {
     const entity2 = ecs.addEntity('first', 'ITestComp2');
     ecs.update();
 
-    entity2.get("ITestComp2")
+    entity2.get('ITestComp2');
 
     const foundEntitiesQ1 = Array.from(ecs.entitiesByComponent('ITestComp1'));
     const foundEntitiesQ2 = Array.from(ecs.entitiesByComponent('ITestComp2'));

@@ -3,7 +3,7 @@ import { Entity } from './entity';
 
 export interface ECSDefine {
   [component: string]: ComponentInterface;
-};
+}
 
 export type ECSComponentDefineTypes<E extends ECSDefine> = {
   [K in keyof E]: ComponentFields<E[K]>;

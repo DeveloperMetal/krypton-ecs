@@ -12,7 +12,7 @@ import { Entity } from '../entity';
 /**
  * Internal ECS Api used to manage message passing and caching.
  */
-export class InternalECS<C extends ECSDefine>{
+export class InternalECS<C extends ECSDefine> {
   public entities = new Map<string, Entity<C>>();
   public entitiesByComponent = new Map<string, Set<Entity<C>>>();
   public filters = new Map<SystemEvent, FilterToSystemMap<C>>();
@@ -26,7 +26,7 @@ export class InternalECS<C extends ECSDefine>{
    */
   constructor(public readonly ecs: ECS<C>) {}
 
-  defineComponent<C extends ECSDefine>(components: ECSComponentDefineTypes<C>) {
+  defineComponent(components: ECSComponentDefineTypes<C>) {
     for (const key of Object.keys(components)) {
       this.components.set(key, components[key]);
     }
