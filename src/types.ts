@@ -62,13 +62,19 @@ export type ComponentDefinitions = {
 
 export type FilterToSystemMap<C extends ECSDefine> = Map<FilterCallback<C>, Set<System<C>>>;
 
-export type FieldTypeof = 'number' | 'string' | 'boolean' | 'object';
+export enum FieldTypeOf {
+  number = 0,
+  string = 1,
+  boolean = 2,
+  object = 3,
+  float32Array = 4
+}
 export type FieldType = number | string | boolean | object;
 
 export type FieldDefinition<T> = {
   defaultValue?: T;
   description?: string;
-  type: FieldTypeof;
+  typeof: FieldTypeOf;
   isArray?: boolean;
   nullable?: boolean;
 };

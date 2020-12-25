@@ -1,10 +1,11 @@
-import { IComponent, ComponentFields, ECSDefine } from '../types';
+import { IComponent, ComponentFields, ECSDefine, FieldTypeOf } from '../types';
 import { ECS } from '..';
 
 interface ITestComp1 extends IComponent {
   fieldA: string;
   fieldB: number;
   fieldC: boolean;
+  fieldFloat32Array: Float32Array
 }
 
 interface ITestComp2 extends IComponent {
@@ -12,13 +13,14 @@ interface ITestComp2 extends IComponent {
 }
 
 const testComp1: ComponentFields<ITestComp1> = {
-  fieldA: { defaultValue: 'I am a string', type: 'string' },
-  fieldB: { defaultValue: 123, type: 'number' },
-  fieldC: { defaultValue: true, type: 'boolean' },
+  fieldA: { defaultValue: 'I am a string', typeof: FieldTypeOf.string },
+  fieldB: { defaultValue: 123, typeof: FieldTypeOf.number },
+  fieldC: { defaultValue: true, typeof: FieldTypeOf.boolean },
+  fieldFloat32Array: { defaultValue: new Float32Array(1), typeof: FieldTypeOf.float32Array }
 };
 
 const testComp2: ComponentFields<ITestComp2> = {
-  fieldD: { type: 'string' },
+  fieldD: { typeof: FieldTypeOf.string },
 };
 interface ECSTest extends ECSDefine {
   ITestComp1: ITestComp1;
@@ -39,7 +41,7 @@ describe('Entity', () => {
 
     expect(ecs.entity('test') === entity).toBeTruthy();
     expect(comp?.parentEntity === entity || false).toBeTruthy();
-    expect(comp?.keys()).toMatchObject(['fieldA', 'fieldB', 'fieldC']);
+    expect(comp?.keys()).toMatchObject(['fieldA', 'fieldB', 'fieldC', 'fieldFloat32Array']);
   });
 
   it('Add/Remove Component', () => {
@@ -110,7 +112,10 @@ describe('Entity', () => {
 
     if (comp1) {
       expect(() => Reflect.set(comp1, 'fieldA', null)).toThrowError('Invalid Type. Field is not nullable');
-      expect(() => Reflect.set(comp1, 'fieldA', 1)).toThrowError('Invalid Type');
+      expect(() => Reflect.set(comp1, 'fieldA', 1)).toThrowError('Value is not a number');
+      expect(() => Reflect.set(comp1, 'fieldA', true)).toThrowError('Value is not a boolean');
+      expect(() => Reflect.set(comp1, 'fieldB', 'test')).toThrowError('Value is not a string');
+      expect(() => Reflect.set(comp1, 'fieldFloat32Array', [])).toThrowError('Value is not a Float32Array');
       expect(() => Reflect.set(comp1, 'invalidField', 1)).toThrowError('Field invalidField not found');
     }
   });

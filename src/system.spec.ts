@@ -1,5 +1,5 @@
 import { ECS } from '.';
-import { IComponent, ComponentFields, ECSDefine, SystemEvent, System, FilterCallback } from './types';
+import { IComponent, ComponentFields, ECSDefine, SystemEvent, System, FilterCallback, FieldTypeOf } from './types';
 import { Entity } from './entity';
 
 interface ITestComp1 extends IComponent {
@@ -10,10 +10,10 @@ interface ITestComp1 extends IComponent {
 }
 
 const testComp1: ComponentFields<ITestComp1> = {
-  fieldA: { defaultValue: 'I am a string', type: 'string' },
-  fieldB: { defaultValue: 123, type: 'number' },
-  fieldC: { defaultValue: true, type: 'boolean' },
-  fieldD: { type: 'string', nullable: true },
+  fieldA: { defaultValue: 'I am a string', typeof: FieldTypeOf.string },
+  fieldB: { defaultValue: 123, typeof: FieldTypeOf.number },
+  fieldC: { defaultValue: true, typeof: FieldTypeOf.boolean },
+  fieldD: { typeof: FieldTypeOf.string, nullable: true },
 };
 
 interface ECSTest extends ECSDefine {
