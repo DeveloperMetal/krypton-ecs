@@ -1,14 +1,14 @@
 import { ECS } from '.';
-import { ECSDefine, ComponentInterface, ComponentFields } from './types';
-interface ITestComp1 extends ComponentInterface {
+import { ECSDefine, IComponent, ComponentFields } from './types';
+interface ITestComp1 extends IComponent {
   fieldA: string;
   fieldB: number;
 }
-interface ITestComp2 extends ComponentInterface {
+interface ITestComp2 extends IComponent {
   fieldC: boolean;
 }
 
-interface ITestComp3 extends ComponentInterface {
+interface ITestComp3 extends IComponent {
   fieldD: boolean;
 }
 

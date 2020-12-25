@@ -1,11 +1,12 @@
 import { Identifiable } from '../utils';
 import { Entity } from '../entity';
-import { ComponentInterface, IComponent, ComponentFields, FieldDefinition, SystemEvent, ECSDefine } from '../types';
+import { IComponent, IComponentAPI, ComponentFields, FieldDefinition, SystemEvent, ECSDefine } from '../types';
 import { InternalECS } from '../internal';
 
-export class Component<C extends ECSDefine> extends Identifiable<C> implements IComponent<C> {
-  private _fieldDef: ComponentFields<ComponentInterface>;
+export class Component<C extends ECSDefine> extends Identifiable<C> implements IComponentAPI<C> {
+  private _fieldDef: ComponentFields<IComponent>;
   private _parent: Entity<C>;
+  private _modifiedFields: Set<string | number | symbol> = new Set<string | number | symbol>();
 
   constructor(id: string, parent: Entity<C>, ecs: InternalECS<C>) {
     super(id, ecs);
@@ -23,7 +24,7 @@ export class Component<C extends ECSDefine> extends Identifiable<C> implements I
     const prox = new Proxy(this, {
       set(obj, key, value) {
         if (key in obj._fieldDef) {
-          const def = Reflect.get(obj._fieldDef, key) as FieldDefinition;
+          const def = Reflect.get(obj._fieldDef, key) as FieldDefinition<unknown>;
           if (!def.nullable && value === null) {
             throw new TypeError('Invalid Type. Field is not nullable');
           }
@@ -34,6 +35,7 @@ export class Component<C extends ECSDefine> extends Identifiable<C> implements I
 
           const result = Reflect.set(obj, key, value);
           if (result && !inConstructor) {
+            me._modifiedFields.add(key);
             me.$ecs.enqueueTrigger(SystemEvent.Modifying, me._parent);
           }
 
@@ -67,7 +69,15 @@ export class Component<C extends ECSDefine> extends Identifiable<C> implements I
     return Object.keys(this._fieldDef);
   }
 
-  as<K extends keyof C>(): C[K] & IComponent<C> {
-    return (this as unknown) as C[K] & IComponent<C>;
+  as<K extends keyof C>(): C[K] & IComponentAPI<C> {
+    return (this as unknown) as C[K] & IComponentAPI<C>;
+  }
+
+  modifiedFields(): (string | number | symbol)[] {
+    return Array.from(this._modifiedFields.values());
+  }
+
+  resetModifiedFields() {
+    this._modifiedFields.clear();
   }
 }

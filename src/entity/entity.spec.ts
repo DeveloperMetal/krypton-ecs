@@ -1,13 +1,13 @@
-import { ComponentInterface, ComponentFields, ECSDefine } from '../types';
+import { IComponent, ComponentFields, ECSDefine } from '../types';
 import { ECS } from '..';
 
-interface ITestComp1 extends ComponentInterface {
+interface ITestComp1 extends IComponent {
   fieldA: string;
   fieldB: number;
   fieldC: boolean;
 }
 
-interface ITestComp2 extends ComponentInterface {
+interface ITestComp2 extends IComponent {
   fieldD: string;
 }
 
@@ -84,6 +84,19 @@ describe('Entity', () => {
     expect(() => {
       entity.get('bad-name');
     }).toThrowError();
+  });
+
+  it('Modify Component', () => {
+    const ecs = new ECS<ECSTest>({
+      ITestComp1: testComp1,
+    });
+    const entity = ecs.addEntity('test');
+    entity.add('ITestComp1');
+    const comp1 = entity.get<'ITestComp1'>('ITestComp1');
+    comp1.fieldA = 'new value';
+    expect(comp1.modifiedFields()).toEqual(['fieldA']);
+    ecs.update();
+    expect(comp1.modifiedFields().length).toBe(0);
   });
 
   it('Invalid types', () => {

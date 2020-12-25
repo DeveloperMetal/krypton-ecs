@@ -2,7 +2,7 @@ import { ECS } from '.';
 import { Entity } from './entity';
 
 export interface ECSDefine {
-  [component: string]: ComponentInterface;
+  [component: string]: IComponent;
 }
 
 export type ECSComponentDefineTypes<E extends ECSDefine> = {
@@ -42,11 +42,22 @@ export enum SystemEvent {
   Modified = 32,
 }
 
+export const SystemEventInOrder = [
+  SystemEvent.Adding,
+  SystemEvent.Modifying,
+  SystemEvent.Removing,
+  SystemEvent.Added,
+  SystemEvent.Modified,
+  SystemEvent.Removed,
+];
+export const SystemEdEvents = [SystemEvent.Added, SystemEvent.Modified, SystemEvent.Removed];
+export const SystemIngEvents = [SystemEvent.Adding, SystemEvent.Modifying, SystemEvent.Removing];
+
 export type FilterCallback<C extends ECSDefine> = (ecs: ECS<C>, entities: Entity<C>[]) => Entity<C>[];
 export type System<C extends ECSDefine> = (ecs: ECS<C>, entities: Entity<C>[]) => Promise<void> | void;
 
 export type ComponentDefinitions = {
-  [name: string]: ComponentFields<ComponentInterface>;
+  [name: string]: ComponentFields<IComponent>;
 };
 
 export type FilterToSystemMap<C extends ECSDefine> = Map<FilterCallback<C>, Set<System<C>>>;
@@ -54,27 +65,30 @@ export type FilterToSystemMap<C extends ECSDefine> = Map<FilterCallback<C>, Set<
 export type FieldTypeof = 'number' | 'string' | 'boolean' | 'object';
 export type FieldType = number | string | boolean | object;
 
-export type FieldDefinition = {
-  defaultValue?: FieldType;
+export type FieldDefinition<T> = {
+  defaultValue?: T;
+  description?: string;
   type: FieldTypeof;
+  isArray?: boolean;
   nullable?: boolean;
 };
 
-export type ComponentFields<T extends ComponentInterface> = {
-  [field in keyof T]: FieldDefinition;
+export type ComponentFields<T extends IComponent> = {
+  [field in keyof T]: FieldDefinition<T[field]>;
 };
 
-export interface IComponent<C extends ECSDefine> {
+export interface IComponentAPI<C extends ECSDefine> {
   $id: string;
   parentEntity: Entity<C>;
   keys(): string[];
+  modifiedFields(): (string | number | symbol)[];
 }
 
-export interface ComponentInterface {
-  [index: string]: FieldType | null;
+export interface IComponent {
+  [index: string]: FieldType | FieldType[] | null;
 }
 
-export type ComponentConstructor<C extends ECSDefine, T extends ComponentInterface> = new (
+export type ComponentConstructor<C extends ECSDefine, T extends IComponent> = new (
   id: string,
   fieldDef: ComponentFields<T>,
-) => IComponent<C>;
+) => IComponentAPI<C>;

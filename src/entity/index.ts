@@ -1,6 +1,6 @@
 import { Identifiable } from '../utils';
 import { Component } from '../component';
-import { ECSDefine, IComponent } from '../types';
+import { ECSDefine, IComponentAPI } from '../types';
 import { InternalECS } from '../internal';
 
 /**
@@ -17,7 +17,7 @@ export class Entity<C extends ECSDefine> extends Identifiable<C> {
    * Adds a component to the entity.
    * @param component The component name to add.
    */
-  add<K extends keyof C>(component: K): C[K] & IComponent<C> {
+  add<K extends keyof C>(component: K): C[K] & IComponentAPI<C> {
     const newComponent = new Component<C>(component as string, this, this.$ecs);
     this._components.set(newComponent.$id, newComponent);
     const newComponentObject = newComponent.as<K>();
@@ -60,5 +60,9 @@ export class Entity<C extends ECSDefine> extends Identifiable<C> {
    */
   has<K extends keyof C>(name: K) {
     return this._components.has(name as string);
+  }
+
+  resetModifiedComponents() {
+    this._components.forEach((c) => c.resetModifiedFields());
   }
 }

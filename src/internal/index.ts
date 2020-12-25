@@ -4,7 +4,9 @@ import {
   ECSComponentDefineTypes,
   ECSDefine,
   ComponentFields,
-  ComponentInterface,
+  IComponent,
+  SystemIngEvents,
+  SystemEventInOrder,
 } from '../types';
 import { ECS } from '..';
 import { Entity } from '../entity';
@@ -17,7 +19,7 @@ export class InternalECS<C extends ECSDefine> {
   public entitiesByComponent = new Map<string, Set<Entity<C>>>();
   public filters = new Map<SystemEvent, FilterToSystemMap<C>>();
   public triggerQueue = new Map<SystemEvent, Set<Entity<C>>>();
-  public components = new Map<string, ComponentFields<ComponentInterface>>();
+  public components = new Map<string, ComponentFields<IComponent>>();
 
   /**
    *
@@ -42,18 +44,19 @@ export class InternalECS<C extends ECSDefine> {
 
     if (filter) {
       for (const [fn, systems] of filter.entries()) {
+        const filteredEntities = fn(this.ecs, entities);
         for (const system of systems.values()) {
-          const filteredEntities = fn(this.ecs, entities);
-
           system(this.ecs, filteredEntities);
-
-          this.dequeueTrigger(SystemEvent.Adding);
-          this.dequeueTrigger(SystemEvent.Modifying);
-          this.dequeueTrigger(SystemEvent.Removing);
         }
+      }
+
+      // trigger -ing events after system call
+      for (const ingEvent of Object.values(SystemIngEvents)) {
+        this.dequeueTrigger(ingEvent);
       }
     }
 
+    // queue -ed events after -ing events have run
     if (event === SystemEvent.Adding) {
       for (const entity of entities) {
         this.entities.set(entity.$id, entity);
@@ -68,6 +71,8 @@ export class InternalECS<C extends ECSDefine> {
         this.entities.delete(entity.$id);
         this.enqueueTrigger(SystemEvent.Removed, entity);
       }
+    } else if (event === SystemEvent.Modified) {
+      entities.forEach((e) => e.resetModifiedComponents());
     }
   }
 
@@ -107,8 +112,8 @@ export class InternalECS<C extends ECSDefine> {
    */
   dequeueTrigger(event: SystemEvent) {
     const queue = this.getQueue(event);
-    const entities = Array.from(queue.values());
     if (queue.size > 0) {
+      const entities = Array.from(queue.values());
       this.resetQueue(event);
       this.triggerSystemByFilter(event, entities);
     }
@@ -146,7 +151,7 @@ export class InternalECS<C extends ECSDefine> {
    * In an application loop, this method will trigger the `-ed` events such as `Added`, `Removed`, `Modified` events.
    */
   update() {
-    for (const filter of Object.values(SystemEvent)) {
+    for (const filter of Object.values(SystemEventInOrder)) {
       this.dequeueTrigger(filter as SystemEvent);
     }
   }

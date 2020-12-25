@@ -1,8 +1,8 @@
 import { ECS } from '.';
-import { ComponentInterface, ComponentFields, ECSDefine, SystemEvent, System, FilterCallback } from './types';
+import { IComponent, ComponentFields, ECSDefine, SystemEvent, System, FilterCallback } from './types';
 import { Entity } from './entity';
 
-interface ITestComp1 extends ComponentInterface {
+interface ITestComp1 extends IComponent {
   fieldA: string;
   fieldB: number;
   fieldC: boolean;
