@@ -67,7 +67,7 @@ export enum FieldTypeOf {
   string = 1,
   boolean = 2,
   object = 3,
-  float32Array = 4
+  float32Array = 4,
 }
 export type FieldType = number | string | boolean | object;
 

@@ -5,7 +5,7 @@ interface ITestComp1 extends IComponent {
   fieldA: string;
   fieldB: number;
   fieldC: boolean;
-  fieldFloat32Array: Float32Array
+  fieldFloat32Array: Float32Array;
 }
 
 interface ITestComp2 extends IComponent {
@@ -16,7 +16,7 @@ const testComp1: ComponentFields<ITestComp1> = {
   fieldA: { defaultValue: 'I am a string', typeof: FieldTypeOf.string },
   fieldB: { defaultValue: 123, typeof: FieldTypeOf.number },
   fieldC: { defaultValue: true, typeof: FieldTypeOf.boolean },
-  fieldFloat32Array: { defaultValue: new Float32Array(1), typeof: FieldTypeOf.float32Array }
+  fieldFloat32Array: { defaultValue: new Float32Array(1), typeof: FieldTypeOf.float32Array },
 };
 
 const testComp2: ComponentFields<ITestComp2> = {

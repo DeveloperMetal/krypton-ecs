@@ -1,6 +1,14 @@
 import { Identifiable } from '../utils';
 import { Entity } from '../entity';
-import { IComponent, IComponentAPI, ComponentFields, FieldDefinition, SystemEvent, ECSDefine, FieldTypeOf } from '../types';
+import {
+  IComponent,
+  IComponentAPI,
+  ComponentFields,
+  FieldDefinition,
+  SystemEvent,
+  ECSDefine,
+  FieldTypeOf,
+} from '../types';
 import { InternalECS } from '../internal';
 
 export class Component<C extends ECSDefine> extends Identifiable<C> implements IComponentAPI<C> {
@@ -29,17 +37,16 @@ export class Component<C extends ECSDefine> extends Identifiable<C> implements I
             throw new TypeError('Invalid Type. Field is not nullable');
           }
 
-
           if (!def.nullable) {
             const typeOf = typeof value;
-            if (typeOf === "string" && def.typeof != FieldTypeOf.string ) {
+            if (typeOf === 'string' && def.typeof !== FieldTypeOf.string) {
               throw new TypeError(`Value is not a string`);
-            } else if (typeOf === "number" && def.typeof != FieldTypeOf.number) {
+            } else if (typeOf === 'number' && def.typeof !== FieldTypeOf.number) {
               throw new TypeError('Value is not a number');
-            } else if (typeOf === "boolean" && def.typeof != FieldTypeOf.boolean) {
+            } else if (typeOf === 'boolean' && def.typeof !== FieldTypeOf.boolean) {
               throw new TypeError('Value is not a boolean');
-            } else if (typeOf === "object") {
-              if ( value.constructor !== Float32Array && def.typeof == FieldTypeOf.float32Array) {
+            } else if (typeOf === 'object') {
+              if (value.constructor !== Float32Array && def.typeof === FieldTypeOf.float32Array) {
                 throw new TypeError('Value is not a Float32Array');
               }
             }
