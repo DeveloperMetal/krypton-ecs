@@ -18,7 +18,7 @@ export class ECS<C extends ECSDefine> {
   }
 
   addComponent(...components: ECSComponentDefineTypes<C>[]) {
-    for(const component of components) {
+    for (const component of components) {
       this._internal.defineComponent(component);
     }
   }
