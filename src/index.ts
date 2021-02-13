@@ -17,10 +17,10 @@ export class ECS {
   public readonly pipeline:Pipeline;
   public readonly componentManager: ComponentManager;
 
-  constructor(private readonly _options: ECSOpts) {
+  constructor(public readonly opts: ECSOpts) {
     this.pipeline = new Pipeline(this);
     this.entities = new EntityCollection(this);
-    this.componentManager = new ComponentManager(this, _options);
+    this.componentManager = new ComponentManager(this);
 
     // Default pipeline
     this.pipeline.children.set(EXEC_PER_FRAME, new Pipeline(this));
@@ -28,11 +28,11 @@ export class ECS {
   }
 
   get name(): string {
-    return this._options.name;
+    return this.opts.name || "default";
   }
 
   get schema(): IECSSchema {
-    return this._options.schema;
+    return this.opts.schema;
   }
 
   get systems() {

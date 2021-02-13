@@ -1,11 +1,10 @@
 import { ECS, Entity, IComponentSchema } from "..";
-import { ECSOpts } from "../types";
 import { Component } from "./component";
 
 export class ComponentManager {
   private _componentSchemas = new Map<string, IComponentSchema>();
 
-  constructor(private _ecs: ECS, private _ecsOpts: ECSOpts) {
+  constructor(private _ecs: ECS) {
     for(const schema of this._ecs.schema.components) {
       this._componentSchemas.set(schema.component, schema);
     }
@@ -21,7 +20,7 @@ export class ComponentManager {
   }
 
   get useTypeGuards(): boolean {
-    return this._ecsOpts.useTypeGuards || false;
+    return this._ecs.opts.useTypeGuards || false;
   }
 
 }

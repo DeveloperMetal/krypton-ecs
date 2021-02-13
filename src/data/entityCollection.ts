@@ -10,13 +10,11 @@ export class EntityCollection {
 
   constructor(private readonly _ecs: ECS) {}
 
-  async add(schema: IEntitySchema, pipeline?: string) {
+  async add(schema: IEntitySchema) {
 
     const entity = new Entity(schema, this._ecs.componentManager);
     this._entities.set(schema.entity, entity);
-    if ( pipeline ) {
-      this._ecs.pipeline.children.get(pipeline)?.addEntity(entity);
-    }
+    this._ecs.pipeline.addEntity(entity);
   }
 
   async remove(id: string) {

@@ -29,7 +29,7 @@ export class Pipeline {
     // revise entities in pipeline on exit
     if ( this._pipelineExitFilter ) {
       const exitEntities = this._pipelineExitFilter(this._ecs, this._entities.values());
-      
+
       this._entities.clear();
       for(const entity of exitEntities) {
         this._entities.add(entity);
@@ -57,6 +57,16 @@ export class Pipeline {
 
     for(const child of this.children.values()) {
       child.removeEntity(entity);
+    }
+  }
+
+  flush(flushChildren: boolean = false) {
+    this._entities.clear();
+    
+    if ( flushChildren ) {
+      for(const child of this.children.values()) {
+        child.flush(flushChildren);
+      }
     }
   }
 }
