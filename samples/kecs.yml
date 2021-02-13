@@ -1,0 +1,5 @@
+include:
+  - module: "@krypton/abyss-core"
+    include: "core.yml"
+  - "./components"
+  - "./entities"
