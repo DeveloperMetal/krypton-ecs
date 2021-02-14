@@ -9,29 +9,39 @@ import { Identifiable } from './utils';
 export class Entity extends Identifiable {
   constructor(public schema: IEntitySchema, private componentManager: ComponentManager) {
     super(schema.entity);
+    let inConstructor = true;
 
     const prox = new Proxy(this, {
       get(target, prop) {
-        if(target.hasOwnProperty(prop)) {
+        if(Reflect.has(target, prop)) {
           return Reflect.get(target, prop);
         }
 
-        throw new Error("Component does not exist");
+        throw new Error(`Component "${String(prop)}" does not exist`);
       },
 
-      set(_target, _prop, _value, _receiver) {
-        throw new Error("You can not add components directly to an entity");
+      set(target, prop, value, _receiver) {
+        if ( !inConstructor ) {
+          throw new Error("You can not add components directly to an entity");
+        }
+
+        return Reflect.set(target, prop, value);
       }
     });
 
     for(const componentName of this.schema.components) {
-      Reflect.set(prox, componentName, this.componentManager.newComponentInstance(componentName, this));
+      Reflect.set(prox, componentName, this.componentManager.newComponentInstance(componentName, prox));
     }
+
+    inConstructor = false;
 
     return prox;
   }
 
-  typed<T>() {
+  /**
+   * Convenient helper to cast this entity to an interface to ease component invocations.
+   */
+  as<T>() {
     return this as unknown as Entity & T;
   }
 

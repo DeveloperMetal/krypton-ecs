@@ -1,6 +1,9 @@
 import { ECS, Entity, IComponentSchema } from "..";
 import { Component } from "./component";
 
+/**
+ * Component Manager handles tracking component schemas and instantiating components referenced in entities.
+ */
 export class ComponentManager {
   private _componentSchemas = new Map<string, IComponentSchema>();
 

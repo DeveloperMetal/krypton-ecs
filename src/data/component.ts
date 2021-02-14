@@ -6,14 +6,15 @@ export class Component extends Identifiable {
 
   constructor(public readonly _schema: IComponentSchema, private _parent: Entity, useTypeGuards: boolean = true) {
     super(_schema.component);
+    let inConstructor = true;
 
     // Build a proxy to guard component fields agaisnt invalid value types
     const prox = new Proxy(this, {
       set(obj, key, value) {
 
-        if ( Reflect.has(_schema, key) ) {
-          if ( useTypeGuards ) {
-            const fieldSchema = Reflect.get(_schema, key) as IFieldSchema;
+        if ( Reflect.has(_schema.fields, key) ) {
+          if ( !inConstructor && useTypeGuards ) {
+            const fieldSchema = Reflect.get(_schema.fields, key) as IFieldSchema;
             if (!fieldSchema.allowNull && value === null) {
               throw new TypeError('Invalid Type. Field is not nullable');
             }
@@ -27,7 +28,7 @@ export class Component extends Identifiable {
               } else if (typeOf === 'boolean' && fieldSchema.type !== "boolean") {
                 throw new TypeError('Value is not a boolean');
               } else if (typeOf === 'object') {
-                if (value.constructor !== Float32Array && fieldSchema.type === "float32Array") {
+                if (value.constructor === Float32Array && fieldSchema.type !== "float32Array") {
                   throw new TypeError('Value is not a Float32Array');
                 }
               }
@@ -47,25 +48,35 @@ export class Component extends Identifiable {
     // prime component fields
     for(const [fieldName, fieldSchema] of Object.entries(_schema.fields)) {
 
-      // Prime dfault values
-      if (fieldSchema.defaultValue !== undefined) {
+      // Prime default values
+      if (fieldSchema.defaultValue !== null) {
         if ( fieldSchema.type === "string") {
+          if ( typeof fieldSchema.defaultValue !== "string" ) {
+            throw new TypeError(`Default value for field "${fieldName}" must be of type ${fieldSchema.type}`);
+          }
           Reflect.set(prox, fieldName, ""+fieldSchema.defaultValue);
         } else if ( fieldSchema.type === "boolean" ) {
+          if (typeof fieldSchema.defaultValue !== "boolean") {
+            throw new TypeError(`Default value for field "${fieldName}" must be of type ${fieldSchema.type}`);
+          }
           Reflect.set(prox, fieldName, !!fieldSchema.defaultValue);
         } else if ( fieldSchema.type === "number" ) {
-          if ( typeof fieldSchema.defaultValue !== "number" ) {
-            Reflect.set(prox, fieldName, parseFloat(""+fieldSchema.defaultValue));
-          } else {
-            Reflect.set(prox, fieldName, fieldSchema.defaultValue);
+          if (typeof fieldSchema.defaultValue !== "number") {
+            throw new TypeError(`Default value for field "${fieldName}" must be of type ${fieldSchema.type}`);
           }
+          Reflect.set(prox, fieldName, fieldSchema.defaultValue);
         } else if ( fieldSchema.type === "float32Array" ) {
           if ( fieldSchema.defaultValue && fieldSchema.defaultValue.constructor === Float32Array ) {
             Reflect.set(prox, fieldName, fieldSchema.defaultValue);
           } else if ( fieldSchema.defaultValue && fieldSchema.defaultValue.constructor === Array ) {
             Reflect.set(prox, fieldName, Float32Array.from(fieldSchema.defaultValue));
+          } else {
+            throw new TypeError(`Default value for field "${fieldName}" must be of type ${fieldSchema.type}`);
           }
         } else {
+          if (typeof fieldSchema.defaultValue !== "object") {
+            throw new TypeError(`Default value for field "${fieldName}" must be of type ${fieldSchema.type}`);
+          }
           Reflect.set(prox, fieldName, fieldSchema.defaultValue);
         }
       } else if (fieldSchema.allowNull) {
@@ -75,10 +86,12 @@ export class Component extends Identifiable {
       }
     }
 
-     return prox;
+    inConstructor = false;
+
+    return prox;
   }
 
-  parentEntity(): Entity {
+  get parentEntity(): Entity {
     return this._parent;
   }
 
