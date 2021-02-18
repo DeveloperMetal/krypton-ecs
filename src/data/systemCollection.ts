@@ -11,13 +11,13 @@ export type QueuePromiseValue = {
 export class SystemCollection {
   private _filters = new Map<IFilter | undefined, Set<ISystem>>();
 
-  constructor(public readonly ecs: ECS, public readonly executionGroup: Pipeline) { }
+  constructor(public readonly ecs: ECS, public readonly pipeline: Pipeline) { }
 
   async executeSystems() {
     for(const [filter, systemSet] of this._filters.entries()) {
-      let filteredEntities = this.executionGroup.entities;
+      let filteredEntities = this.pipeline.entities;
       if ( filter ) {
-        filteredEntities = filter(this.ecs, this.executionGroup.entities);
+        filteredEntities = filter(this.ecs, this.pipeline.entities);
       }
 
       for(const system of systemSet.values()) {
@@ -32,10 +32,8 @@ export class SystemCollection {
       this._filters.set(filter, new Set<ISystem>());
     }
 
-    const filterSystemMap = this._filters.get(filter);
-    if ( filterSystemMap ) {
-      filterSystemMap.add(system);
-    }
+    const filterSystemMap = this._filters.get(filter) as Set<ISystem>;
+    filterSystemMap.add(system);
   }
 
   removeByFilter(filter: IFilter | undefined) {

@@ -1,4 +1,5 @@
-import { ECS, Entity } from "..";
+import { ECS } from "..";
+import { Entity } from ".";
 import { IEntitySchema } from "../schema/types";
 
 export interface IQuery {
@@ -10,19 +11,21 @@ export class EntityCollection {
 
   constructor(private readonly _ecs: ECS) {}
 
-  async add(schema: IEntitySchema) {
-
+  add(schema: IEntitySchema) {
     const entity = new Entity(schema, this._ecs.componentManager);
     this._entities.set(schema.entity, entity);
     this._ecs.pipeline.addEntity(entity);
   }
 
-  async remove(id: string) {
+  remove(id: string) {
     const entity = this._entities.get(id);
     if ( entity ) {
       this._entities.delete(id);
-      this._ecs.pipeline.removeEntity(entity);
+      this._ecs.pipeline.removeEntity(entity, true);
+      return true;
     }
+
+    return false;
   }
 
   get(id: string) {

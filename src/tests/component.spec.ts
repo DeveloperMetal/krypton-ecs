@@ -2,6 +2,7 @@ import { ECS, IECSSchema } from "..";
 import { Component } from "../data/component";
 import { ComponentManager } from "../data/componentManager";
 import { Entity } from "../data/entity";
+import { IComponentSchema } from "../schema/types";
 
 interface ITestComponent extends Component{
   fieldA: string
@@ -10,6 +11,7 @@ interface ITestComponent extends Component{
   fieldD: object
   fieldE: Float32Array
   fieldF: Float32Array
+  fieldNull: number | null
 }
 
 interface IHaveTestComponent extends Entity {
@@ -19,48 +21,50 @@ interface IHaveTestComponent extends Entity {
 describe("Components", () => {
   let testComponentManager: ComponentManager;
   let testEcs: ECS;
+  const testComponentSchema: IComponentSchema = {
+    component: "TestComponent",
+    fields: {
+      fieldA: {
+        type: "string",
+        defaultValue: "test value",
+        allowNull: false
+      },
+      fieldB: {
+        type: "number",
+        defaultValue: 1,
+        allowNull: false,
+      },
+      fieldC: {
+        type: "boolean",
+        defaultValue: true,
+        allowNull: false
+      },
+      fieldD: {
+        type: "object",
+        defaultValue: {},
+        allowNull: false
+      },
+      fieldE: {
+        type: "float32Array",
+        defaultValue: new Float32Array(),
+        allowNull: false
+      },
+      fieldF: {
+        type: "float32Array",
+        defaultValue: [],
+        allowNull: false
+      },
+      fieldNull: {
+        type: "number",
+        defaultValue: null,
+        allowNull: true
+      }
+    }
+  };
   const schema: IECSSchema = {
     components: [
-      {
-        component: "TestComponent",
-        fields: {
-          fieldA: {
-            type: "string",
-            defaultValue: "test value",
-            allowNull: false
-          },
-          fieldB: {
-            type: "number",
-            defaultValue: 1,
-            allowNull: false,
-          },
-          fieldC: {
-            type: "boolean",
-            defaultValue: true,
-            allowNull: false
-          },
-          fieldD: {
-            type: "object",
-            defaultValue: {},
-            allowNull: false
-          },
-          fieldE: {
-            type: "float32Array",
-            defaultValue: new Float32Array(),
-            allowNull: false
-          },
-          fieldF: {
-            type: "float32Array",
-            defaultValue: [],
-            allowNull: false
-          },
-          fieldNull: {
-            type: "number",
-            defaultValue: null,
-            allowNull: true
-          }
-        }
-      }, {
+      testComponentSchema
+      , {
         component: "BadNumberComponent",
         fields: {
           fielda: {
@@ -169,6 +173,8 @@ describe("Components", () => {
       components: ["TestComponent"]
     }, testComponentManager).as<IHaveTestComponent>();
 
+    entity.TestComponent.fieldNull = null
+
     expect(() => Reflect.set(entity.TestComponent, "fieldA", null)).toThrow();
   });
 
@@ -217,6 +223,19 @@ describe("Components", () => {
     const component = entity.getComponent("TestComponent").as<ITestComponent>();
 
     expect(component.parentEntity == entity).toBeTruthy();
+  })
+
+  it("Test constructor, infer guard", () => {
+    const entity = new Entity({
+      entity: "testEntity",
+      components: ["TestComponent"]
+    }, testComponentManager)
+
+    const component = new Component(testComponentSchema, entity).as<ITestComponent>();
+
+    expect(() => Reflect.set(component, "fieldA", 10)).toThrow();
+    expect(component.$id).toBe("TestComponent");
+    
   })
 
 })
