@@ -7,6 +7,9 @@ import { ECSOpts } from './types';
 export * from './schema/types';
 export * from './data/entity';
 
+/**
+ * Manages multiple ECS Instances
+ */
 export const globalECSCache = new Map<string, ECS>();
 
 /**

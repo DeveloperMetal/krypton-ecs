@@ -1,4 +1,5 @@
-import { ECS, Entity } from "..";
+import { ECS } from "..";
+import { Entity} from "./entity";
 import { SystemCollection } from "./systemCollection";
 import { IFilter } from "./types";
 
@@ -15,6 +16,10 @@ export class Pipeline {
     this.systems = new SystemCollection(this._ecs, this);
   }
 
+  get entityCount() {
+    return this._entities.size;
+  }
+
   get entities() {
     return this._entities.values();
   }
@@ -22,8 +27,8 @@ export class Pipeline {
   /**
    * Executes pipeline, calling child pipelines in added order.
    */
-  execute() {
-    this.systems.executeSystems();
+  async execute() {
+    await this.systems.executeSystems();
 
     // 1) transition entities into next child entities.
     for(const child of this.children.values()) {
