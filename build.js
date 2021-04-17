@@ -1,8 +1,7 @@
-import fs from "fs/promises";
-import path from "path";
-import utils from "util";
-import { exec as execOld } from "child_process";
-const exec = utils.promisify(execOld);
+const fs = require("fs/promises");
+const path = require("path");
+const utils = require("util");
+const exec = utils.promisify(require("child_process").exec);
 
 async function configureModule(modulePath, moduleName) {
   const tsConfigPath = path.join(modulePath, "tsconfig.json");
@@ -21,13 +20,15 @@ async function configureModule(modulePath, moduleName) {
 }
 
 async function main() {
-  const modulesDir = await fs.readdir(path.join(".", "modules"));
-  for(modPath in modulesDir) {
-    console.log("-- ", modPath);
-    const stat = await fs.stat(modPath);
+  const modulesDir = path.join(".", "modules");
+  const moduleNames = await fs.readdir(path.join(".", "modules"));
+  for (const moduleName of moduleNames) {
+    const modulePath = path.join(modulesDir, moduleName)
+    console.log("-- ", modulePath);
+    const stat = await fs.stat(modulePath);
     if ( stat.isDirectory() ) {
-      const moduleConfigPath = configureModule(path.join(modulesDir, modPath), modPath);
-      await exec(`tsc -p ${moduleConfigPath}`);
+      const moduleConfigPath = configureModule(modulePath, moduleName);
+      await exec(path.join(".", "node_modules", ".bin", `tsc -p ${moduleConfigPath} ${modulePath}/index.ts`));
     }
   }
 }
