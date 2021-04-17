@@ -28,32 +28,48 @@ async function globSearch(searchPaths: string[], pattern: string): Promise<strin
   return results;
 }
 
-export async function parseYaml(yamlPath: string, data: IECSSchema) {
+export async function parseYaml(yamlPath: string, data: IECSSchema, depth=0, openCache: { [name: string]: boolean }={}) {
+  const prefix = "  ".repeat(depth);
+  console.log(prefix + "-------------------------------------------")
+  console.log(prefix + "-- Parsing: ", yamlPath);
   const input = yaml.load(fs.readFileSync(yamlPath, 'utf8')) as GeneratorInput;
   const inputPathDir = path.resolve(path.dirname(yamlPath));
   const searchPaths = [inputPathDir]
 
   // load includes
   if ( "include" in input) {
+    console.log(prefix + "--------------", input);
     for (const include of input.include) {
       if (typeof include === "string") {
+        console.log(prefix + "--- include: ", include);
         const results = await globSearch(searchPaths, include);
         for(const result of results) {
-          parseYaml(result, data);
+          if ( result != yamlPath ) {
+            const resultYamlPath = result.endsWith('.yml') ? result : path.join(result, 'index.yml');
+            if ( Reflect.has(openCache, resultYamlPath) ) {
+              // File already parsed, skip
+              console.log(prefix + "--- skip");
+              return;
+            } else {
+              openCache[resultYamlPath] = true;
+              await parseYaml(resultYamlPath, data, depth + 1, openCache);
+            }
+          }
         }
       } else {
         try {
+          console.log(prefix + "--- module: ", include.module);
           const modulePath = require.resolve(include.module);
           if (modulePath) {
             const results = await globSearch([modulePath], include.import);
             if ( results.length === 0 ) {
               // tslint:disable-next-line: no-console
-              console.error(`[ERROR] Missing module import file: ${include.module}/${include.import}`);
+              console.error(prefix + `[ERROR] Missing module import file: ${include.module}/${include.import}`);
             }
           }
         } catch(e) {
           // tslint:disable-next-line: no-console
-          console.error(`[ERROR] Missing module: ${include.module}`);
+          console.error(prefix + `[ERROR] Missing module: ${include.module}`);
           throw e;
         }
       }
@@ -77,5 +93,5 @@ export async function parseYaml(yamlPath: string, data: IECSSchema) {
       }
     }
   }
-  
+
 }

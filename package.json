@@ -24,7 +24,8 @@
     "watch:test": "jest --watchAll --coverage",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "tslint -p tsconfig.json",
-    "docs": "typedoc --theme minimal --exclude **/*.spec.ts --out ./docs ./src"
+    "docs": "typedoc --theme minimal --exclude **/*.spec.ts --out ./docs ./src",
+    "kecs": "node ./cli/kecs"
   },
   "files": [
     "cli",
@@ -32,14 +33,15 @@
     "package.json"
   ],
   "dependencies": {
-    "@types/minimist": "^1.2.1",
+    "findup-sync": "^4.0.0",
     "glob": "^7.1.6",
     "js-yaml": "^4.0.0",
     "minimist": "^1.2.5",
-    "plop": "^2.7.4",
     "yargs": "^16.2.0"
   },
   "devDependencies": {
+    "@types/minimist": "^1.2.1",
+    "@types/findup-sync": "^2.0.2",
     "@types/glob": "^7.1.3",
     "@types/jest": "^26.0.14",
     "@types/js-yaml": "^4.0.0",

@@ -14,7 +14,7 @@ yargs
       out: {
           alias: "o",
           string: true,
-          demandOption: true
+          demandOption: false
         }
     },
     // tslint:disable-next-line: no-shadowed-variable

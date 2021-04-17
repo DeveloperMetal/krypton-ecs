@@ -27,7 +27,7 @@ export class ECS {
 
     // Default pipeline
     this.pipeline.children.set(EXEC_PER_FRAME, new Pipeline(this));
-    globalECSCache.set(name, this);
+    globalECSCache.set(this.name, this);
   }
 
   get name(): string {
