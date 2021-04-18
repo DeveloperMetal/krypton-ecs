@@ -1,5 +1,5 @@
 import { Entity } from ".";
-import { IComponentSchema, IFieldSchema } from "@modules/schemas";
+import { IComponentSchema, IFieldSchema } from "@kryptonstudio/ecs/schemas";
 import { Identifiable } from "./utils";
 
 export class Component extends Identifiable {

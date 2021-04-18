@@ -1,4 +1,5 @@
-import { ECS, Entity, IComponentSchema } from "..";
+import { ECS, IComponentSchema } from "@kryptonstudio/ecs/core";
+import { Entity } from "./entity";
 import { Component } from "./component";
 
 /**

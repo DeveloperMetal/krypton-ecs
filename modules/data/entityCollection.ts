@@ -1,6 +1,6 @@
-import { ECS } from "..";
+import { ECS } from "@kryptonstudio/ecs/core";
 import { Entity } from ".";
-import { IEntitySchema } from "../schema/types";
+import { IEntitySchema } from "@kryptonstudio/ecs/schemas";
 
 export interface IQuery {
   [key: string]: string

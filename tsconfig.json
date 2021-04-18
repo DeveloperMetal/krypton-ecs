@@ -3,10 +3,11 @@
     "incremental": true,
     "module": "ES2020",
     "target": "ES2015",
-    "outDir": "./",
+    "outDir": "./dist",
     "paths": {
-      "@modules/*": ["./modules/*"]
+      "@kryptonstudio/ecs/*": ["./modules/*"]
     },
+    "baseUrl": "./src",
     "moduleResolution": "node",
     "declaration": true,
     "declarationMap": true,
@@ -33,7 +34,6 @@
   },
   "include": [
     "src/**/*",
-    "modules/**/*"
   ],
   "exclude": [
     "node_modules",

@@ -1,4 +1,4 @@
-import { IECSSchema } from "./schema/types";
+import { IECSSchema } from "./schemas/types";
 
 export interface ECSOpts {
   readonly name?: string

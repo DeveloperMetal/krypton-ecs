@@ -1,11 +1,11 @@
-import { EXEC_PER_FRAME } from '@modules/constants';
-import { ComponentManager } from '@modules/data/componentManager';
-import { EntityCollection } from '@modules/data/entityCollection';
-import { Pipeline } from '@modules/data/pipeline';
-import { IComponentSchema, IECSSchema } from '@modules/schemas';
+import { EXEC_PER_FRAME } from '@kryptonstudio/ecs/constants';
+import { ComponentManager } from '@kryptonstudio/ecs/data/componentManager';
+import { EntityCollection } from '@kryptonstudio/ecs/data/entityCollection';
+import { Pipeline } from '@kryptonstudio/ecs/data/pipeline';
+import { IComponentSchema, IECSSchema } from '@kryptonstudio/ecs/schemas';
 import { ECSOpts } from './types';
-export * from '@modules/schemas/types';
-export * from '@modules/data/entity';
+export * from '@kryptonstudio/ecs/schemas/types';
+export * from '@kryptonstudio/ecs/data/entity';
 
 /**
  * Manages multiple ECS Instances

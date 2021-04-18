@@ -1,0 +1,23 @@
+{
+  "extends": "C:\\projects\\krypton-ecs\\tsconfig.json",
+  "compilerOptions": {
+    "outDir": "C:\\projects\\krypton-ecs\\schemas",
+    "paths": {
+      "@kryptonstudio/ecs/*": [
+        "C:\\projects\\krypton-ecs\\modules\\*"
+      ]
+    },
+    "baseUrl": "C:\\projects\\krypton-ecs\\modules\\schemas"
+  },
+  "include": [
+    "C:\\projects\\krypton-ecs\\modules\\schemas\\**\\*"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts",
+    "C:\\projects\\krypton-ecs\\modules\\constants",
+    "C:\\projects\\krypton-ecs\\modules\\core",
+    "C:\\projects\\krypton-ecs\\modules\\data",
+    "C:\\projects\\krypton-ecs\\modules\\decorators"
+  ]
+}

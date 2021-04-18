@@ -1,5 +1,5 @@
 import { Entity } from "..";
-import { IComponentSchema, IFieldSchema } from "../schema/types";
+import { IComponentSchema, IFieldSchema } from "../schemas/types";
 import { Identifiable } from "./utils";
 
 export class Component extends Identifiable {

@@ -1,4 +1,4 @@
-import { IECSSchema } from "@modules/schemas/types";
+import { IECSSchema } from "@kryptonstudio/ecs/schemas/types";
 
 export interface ECSOpts {
   readonly name?: string

@@ -1,4 +1,4 @@
-import { ECS } from "..";
+import { ECS } from "@kryptonstudio/ecs/core";
 import { FilterPredicate } from "./types";
 
 export function* filter<T>(iterable: IterableIterator<T>, predicate: FilterPredicate<T>) {

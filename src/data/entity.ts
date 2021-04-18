@@ -1,4 +1,4 @@
-import { IEntitySchema } from '../schema/types';
+import { IEntitySchema } from '../schemas/types';
 import { Component } from './component';
 import { ComponentManager } from './componentManager';
 import { Identifiable } from './utils';

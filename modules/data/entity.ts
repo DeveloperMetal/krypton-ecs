@@ -1,4 +1,4 @@
-import { IEntitySchema } from '../schema/types';
+import { IEntitySchema } from '@kryptonstudio/ecs/schemas';
 import { Component } from './component';
 import { ComponentManager } from './componentManager';
 import { Identifiable } from './utils';

@@ -1,4 +1,4 @@
-import { ECS } from "..";
+import { ECS } from "@kryptonstudio/ecs/core";
 import { Entity} from "./entity";
 import { SystemCollection } from "./systemCollection";
 import { IFilter } from "./types";

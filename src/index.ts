@@ -2,9 +2,9 @@ import { EXEC_PER_FRAME } from './contants';
 import { ComponentManager } from './data/componentManager';
 import { EntityCollection } from './data/entityCollection';
 import { Pipeline } from './data/pipeline';
-import { IComponentSchema, IECSSchema } from './schema/types';
+import { IComponentSchema, IECSSchema } from './schemas/types';
 import { ECSOpts } from './types';
-export * from './schema/types';
+export * from './schemas/types';
 export * from './data/entity';
 
 /**

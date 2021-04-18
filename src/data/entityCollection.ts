@@ -1,6 +1,6 @@
 import { ECS } from "..";
 import { Entity } from ".";
-import { IEntitySchema } from "../schema/types";
+import { IEntitySchema } from "../schemas/types";
 
 export interface IQuery {
   [key: string]: string

@@ -1,4 +1,4 @@
-import { ECS } from "..";
+import { ECS } from "@kryptonstudio/ecs/core";
 import { Pipeline } from "./pipeline";
 import { IFilter, ISystem } from "./types";
 

@@ -1,4 +1,5 @@
-import { ECS, Entity } from "..";
+import { ECS } from "@kryptonstudio/ecs/core";
+import { Entity } from ".";
 
 export enum EntityState {
   None = 0,

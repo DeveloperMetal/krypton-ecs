@@ -50,6 +50,7 @@
 <div class="container container-main">
 	<div class="content-wrap">
 		<div class="tsd-panel tsd-typography">
+			<p><img src="https://github.com/DeveloperMetal/krypton-ecs/workflows/tests/badge.svg?branch=develop" alt=""></p>
 			<a href="#krypton-ecs-system" id="krypton-ecs-system" style="color: inherit; text-decoration: none;">
 				<h1>Krypton ECS System</h1>
 			</a>
@@ -59,120 +60,47 @@
 			</a>
 			<p>An Entity-Component-System is an software architectural pattern which follows the composition over inheritance principle.</p>
 			<p>This pattern generalizes a highly flexible and extensible systems that achieve polyphormic behaviour via interfaces over inheritance. This removes many ambiguity issues caused by deep inheritance hierarches as an application grows over time.</p>
-			<p>ECS systems are most useful on large systems where adding or removing behaviours without interfeering with existing behaviours is desired. To achieve this the ECS pattern separates data and implementation into separate systems. </p>
+			<p>ECS systems are most useful on large systems where adding or removing behaviours without interfeering with existing ones is desired. To achieve this the ECS pattern separates data and implementation into separate systems.</p>
 			<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
 				<h2>Usage</h2>
 			</a>
-			<p>Using Krypton-ECS you must first define the components a system supports. Then you must define the systems and their filters which act on changes in the application state.</p>
-			<p>Example of the smallest ECS bootstrap:</p>
-			<pre><code class="language-typescript"><span class="hljs-keyword">import</span> {
-  ECS,
-  FilterType,
-  ComponentInterface,
-  ComponentFields,
-  ECSDefine
-} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@kryptonstudio/ecs&quot;</span>;
-
-<span class="hljs-comment">// Component interface to enforce type signatures</span>
-<span class="hljs-keyword">interface</span> Component1 <span class="hljs-keyword">extends</span> ComponentInterface {
-  <span class="hljs-attr">field</span>: <span class="hljs-built_in">string</span>
-}
-
-<span class="hljs-comment">// Component meta data</span>
-<span class="hljs-keyword">const</span> component1Definition: ComponentFields&lt;Component1&gt; = {
-  <span class="hljs-attr">field</span>: { <span class="hljs-attr">defaultValue</span>: <span class="hljs-string">&#x27;I am a string&#x27;</span>, <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;string&#x27;</span> }
-}
-
-<span class="hljs-comment">// Our ECS System Definition. Here we list our components by interface name and meta</span>
-<span class="hljs-keyword">interface</span> AppECSDefine <span class="hljs-keyword">extends</span> ECSDefine {
-  <span class="hljs-attr">components</span>: {
-    <span class="hljs-attr">Component1</span>: Component1
-  }
-}
-
-<span class="hljs-comment">// The final application ECS</span>
-<span class="hljs-keyword">const</span> appECS = <span class="hljs-keyword">new</span> ECS&lt;AppECSDefine&gt;({
-  <span class="hljs-attr">Component1</span>: component1Definition
-});
-
-<span class="hljs-comment">// A system that adds a component on every entity added to the sytem.</span>
-appECS.addSystem(
-  <span class="hljs-comment">// Watch entites added to the application state</span>
-  FilterType.Added, 
-  <span class="hljs-comment">// We want to add our component on all entities, so we just return all entities on the event.</span>
-  <span class="hljs-function">(<span class="hljs-params">ecs: ECS&lt;AppECSDefine&gt;, entities: Entity&lt;AppECSDefine&gt;[]</span>) =&gt;</span> entities,
-  <span class="hljs-comment">// The actuall system implementation. Adds Component1 to all added entities.</span>
-  <span class="hljs-function">(<span class="hljs-params">ecs: ECS&lt;AppECSDefine&gt;, entities: Entity&lt;AppECSDefine&gt;[]</span>) =&gt;</span> {
-    entities.forEach(<span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span> e.addComponent(<span class="hljs-string">&quot;Component1&quot;</span>));
-  }
-)
-
-<span class="hljs-comment">// Adding our first entity</span>
-appECS.addEntity(<span class="hljs-string">&quot;entity-1&quot;</span>);
-
-<span class="hljs-comment">// Somewhere in your application loop</span>
-appECS.update()
-</code></pre>
+			<p>Krypton ECS uses a configurable pipeline approach to managing processing of entities and their components.</p>
+			<p>...</p>
 			<a href="#entities" id="entities" style="color: inherit; text-decoration: none;">
 				<h3>Entities</h3>
 			</a>
-			<p>An entity can be through of as a specific grouping of one or many components.
-			At no point an entity contains its own data, this is due to internal components&#39;s job is to encapsulate data and state for any specific feature or behaviour.</p>
+			<p>An entity can be through of as a specific grouping of components.
+			At no point should an entity contains its own data. It is the components&#39;s job to encapsulate data and state for any specific feature or behaviour.</p>
 			<p>This distiction between an entity holding components and the components holding data allows behaviour changes during runtime by a system that mutates components.</p>
-			<p>Defining an entity with Krypton-ECS is very easy, all you need is an entity id:</p>
-			<pre><code class="language-typescript">app.addEntity(<span class="hljs-string">&#x27;my-entity&#x27;</span>);</code></pre>
-			<p>or if you want to seed the entity with existing components:</p>
-			<pre><code class="language-typescript">app.addEntity(<span class="hljs-string">&#x27;my-entity&#x27;</span>, <span class="hljs-string">&#x27;Component1&#x27;</span>);</code></pre>
+			<p>Defining an entity with Krypton-ECS is very easy, all you need is to define a schema that defines its name and the components to use.</p>
+			<p>Via the schema file:</p>
+			<pre><code class="language-yml"><span class="hljs-attr">entities:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">entity:</span> <span class="hljs-string">&quot;my-entity&quot;</span>
+    <span class="hljs-attr">components:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;Component1&quot;</span>
+<span class="hljs-attr">components:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">component:</span> <span class="hljs-string">&quot;Component1&quot;</span>
+    <span class="hljs-attr">fields:</span>
+      <span class="hljs-attr">fieldA:</span>
+        <span class="hljs-attr">type:</span> <span class="hljs-string">string</span></code></pre>
+			<p>then to generate the ecs client:</p>
+			<pre><code class="language-bash">kecs generate</code></pre>
+			<p>At runtime:</p>
+			<pre><code class="language-typescript">app.entities.add({
+  <span class="hljs-attr">entity</span>: <span class="hljs-string">&quot;my-entity&quot;</span>,
+  <span class="hljs-attr">components</span>: [<span class="hljs-string">&quot;Component1&quot;</span>]
+})</code></pre>
 			<a href="#components" id="components" style="color: inherit; text-decoration: none;">
 				<h3>Components</h3>
 			</a>
 			<p>Components hold all data related to a feature and should always hold the minimum amount of data to implement a feature. In fact it is highly desired to split features into multiple components that contain very specific data about the different behaviours a feature might require.</p>
-			<p>To specify a component for Krypton-ECS you need an interface and metadata about the component fields:</p>
-			<pre><code class="language-typescript"><span class="hljs-comment">// Component interface to enforce type signatures</span>
-<span class="hljs-keyword">interface</span> Component1 <span class="hljs-keyword">extends</span> ComponentInterface {
-  <span class="hljs-attr">field</span>: <span class="hljs-built_in">string</span>
-}
-
-<span class="hljs-comment">// Component meta data</span>
-<span class="hljs-keyword">const</span> component1Definition: ComponentFields&lt;Component1&gt; = {
-  <span class="hljs-attr">field</span>: { <span class="hljs-attr">defaultValue</span>: <span class="hljs-string">&#x27;I am a string&#x27;</span>, <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;string&#x27;</span> }
-}</code></pre>
-			<p>The interface is used internally to enfoce types throughout the ECS api which facilitates code completion on your components and in editor documentation.</p>
-			<p>The metadata as of writing only uses the defaultValue and nullable fields actively to seed component instantiation.</p>
-			<p>Once your component&#39;s interface and metadata is ready you must define it on your application ECS&#39;s interface:</p>
-			<pre><code class="language-typescript"><span class="hljs-comment">// Our ECS System Definition. Here we list our components by interface name and meta</span>
-<span class="hljs-keyword">interface</span> AppECSDefine <span class="hljs-keyword">extends</span> ECSDefine {
-  <span class="hljs-attr">components</span>: {
-    <span class="hljs-attr">Component1</span>: Component1
-  }
-}
-
-<span class="hljs-comment">// The final application ECS</span>
-<span class="hljs-keyword">const</span> appECS = <span class="hljs-keyword">new</span> ECS&lt;AppECSDefine&gt;({
-  <span class="hljs-attr">Component1</span>: component1Definition
-});</code></pre>
-			<p>The <code>APPECSDefine</code> enforces the relationship between the <code>Component1</code> type name and its interface.</p>
-			<p>Once your are ready to instantiate the ECS system, you must pass the metadata definition into the ECSInstance. Because we have our own custom <code>AppECSDefine</code> the first argument of <code>ECS&lt;AppECSDefine&gt;</code> expects to take the metadata object for your components.</p>
+			<p>...</p>
 			<a href="#systems-events-and-their-filters" id="systems-events-and-their-filters" style="color: inherit; text-decoration: none;">
 				<h3>Systems, events and their filters</h3>
 			</a>
 			<p>Systems marry the relationship between entities, components and the mutation of their data. When an application&#39;s behaviour is desired, a system is called to mutate the state of the application.</p>
 			<p>Usually, systems limit themselves to mutate the components they control. But nothing prevents them from touching other components if they support and know other component interfaces.</p>
-			<p>You can think of a system as an event handler when something happens in your application&#39;s state. Krypton-ECS forexample triggers systems which monitor entity additions or removals.  This allows a snowfall effect where multiple systems will trigger as data changes during the application loop or lifetime of the application.</p>
-			<p>All systems in Krypton-ECS MUST be tied to an event and a filter to reduce the number of entities your system must perform work on.</p>
-			<p>The following example adds a system which injects a component on every entity added on the system. Notice the second parameter(the filter) which returns the entites being added at some point. The filter could return a smaller set of entities if we don&#39;t want to modify every entity on this event.</p>
-			<p>The system itself is called with the reduced entity list. This separation on reducing the data set a system acts on allows reusing systems with multiple filters on multiple events.</p>
-			<pre><code class="language-typescript"><span class="hljs-comment">// A system that adds a component on every entity added to the sytem.</span>
-appECS.addSystem(
-  <span class="hljs-comment">// Watch entites added to the application state</span>
-  FilterType.Added, 
-  <span class="hljs-comment">// We want to add our component on all entities, so we just return all entities on the event.</span>
-  <span class="hljs-function">(<span class="hljs-params">ecs: ECS&lt;AppECSDefine&gt;, entities: Entity&lt;AppECSDefine&gt;[]</span>) =&gt;</span> entities,
-  <span class="hljs-comment">// The actuall system implementation. Adds Component1 to all added entities.</span>
-  <span class="hljs-function">(<span class="hljs-params">ecs: ECS&lt;AppECSDefine&gt;, entities: Entity&lt;AppECSDefine&gt;[]</span>) =&gt;</span> {
-    entities.forEach(<span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span> e.addComponent(<span class="hljs-string">&quot;Component1&quot;</span>));
-  }
-)</code></pre>
+			<p>...</p>
 		</div>
 		<div style="position:relative;"><a name="typedoc-main-index" class="tsd-anchor"></a></div>
 		<section class="tsd-panel-group tsd-index-group">
@@ -182,12 +110,22 @@ appECS.addSystem(
 					<section class="tsd-index-section ">
 						<h3>Modules</h3>
 						<ul class="tsd-index-list">
-							<li class="tsd-kind-module"><a href="modules/_component_index_.html" class="tsd-kind-icon">&quot;component/index&quot;</a></li>
-							<li class="tsd-kind-module"><a href="modules/_entity_index_.html" class="tsd-kind-icon">&quot;entity/index&quot;</a></li>
+							<li class="tsd-kind-module"><a href="modules/_contants_.html" class="tsd-kind-icon">&quot;contants&quot;</a></li>
+							<li class="tsd-kind-module"><a href="modules/_data_component_.html" class="tsd-kind-icon">&quot;data/component&quot;</a></li>
+							<li class="tsd-kind-module"><a href="modules/_data_componentmanager_.html" class="tsd-kind-icon">&quot;data/component<wbr>Manager&quot;</a></li>
+							<li class="tsd-kind-module"><a href="modules/_data_entity_.html" class="tsd-kind-icon">&quot;data/entity&quot;</a></li>
+							<li class="tsd-kind-module"><a href="modules/_data_entitycollection_.html" class="tsd-kind-icon">&quot;data/entity<wbr>Collection&quot;</a></li>
+							<li class="tsd-kind-module"><a href="modules/_data_index_.html" class="tsd-kind-icon">&quot;data/index&quot;</a></li>
+							<li class="tsd-kind-module"><a href="modules/_data_pipeline_.html" class="tsd-kind-icon">&quot;data/pipeline&quot;</a></li>
+							<li class="tsd-kind-module"><a href="modules/_data_systemcollection_.html" class="tsd-kind-icon">&quot;data/system<wbr>Collection&quot;</a></li>
+							<li class="tsd-kind-module"><a href="modules/_data_types_.html" class="tsd-kind-icon">&quot;data/types&quot;</a></li>
+							<li class="tsd-kind-module"><a href="modules/_data_utils_.html" class="tsd-kind-icon">&quot;data/utils&quot;</a></li>
+							<li class="tsd-kind-module"><a href="modules/_decorators_index_.html" class="tsd-kind-icon">&quot;decorators/index&quot;</a></li>
+							<li class="tsd-kind-module"><a href="modules/_decorators_system_.html" class="tsd-kind-icon">&quot;decorators/system&quot;</a></li>
 							<li class="tsd-kind-module"><a href="modules/_index_.html" class="tsd-kind-icon">&quot;index&quot;</a></li>
-							<li class="tsd-kind-module"><a href="modules/_internal_index_.html" class="tsd-kind-icon">&quot;internal/index&quot;</a></li>
+							<li class="tsd-kind-module"><a href="modules/_schemas_index_.html" class="tsd-kind-icon">&quot;schemas/index&quot;</a></li>
+							<li class="tsd-kind-module"><a href="modules/_schemas_types_.html" class="tsd-kind-icon">&quot;schemas/types&quot;</a></li>
 							<li class="tsd-kind-module"><a href="modules/_types_.html" class="tsd-kind-icon">&quot;types&quot;</a></li>
-							<li class="tsd-kind-module"><a href="modules/_utils_.html" class="tsd-kind-icon">&quot;utils&quot;</a></li>
 						</ul>
 					</section>
 				</div>
@@ -198,18 +136,20 @@ appECS.addSystem(
 				<h2>Legend</h2>
 				<div class="tsd-legend-group">
 					<ul class="tsd-legend">
+						<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+						<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+						<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
 						<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
 						<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
-					</ul>
-					<ul class="tsd-legend">
-						<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
-						<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
 					</ul>
 					<ul class="tsd-legend">
 						<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
 					</ul>
 					<ul class="tsd-legend">
-						<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+						<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+					</ul>
+					<ul class="tsd-legend">
+						<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
 					</ul>
 				</div>
 			</div>
