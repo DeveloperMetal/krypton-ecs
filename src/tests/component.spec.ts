@@ -2,7 +2,7 @@ import { ECS, IECSSchema } from "..";
 import { Component } from "../data/component";
 import { ComponentManager } from "../data/componentManager";
 import { Entity } from "../data/entity";
-import { IComponentSchema } from "../schema/types";
+import { IComponentSchema } from "../schemas/types";
 
 interface ITestComponent extends Component{
   fieldA: string
@@ -235,7 +235,7 @@ describe("Components", () => {
 
     expect(() => Reflect.set(component, "fieldA", 10)).toThrow();
     expect(component.$id).toBe("TestComponent");
-    
+
   })
 
 })

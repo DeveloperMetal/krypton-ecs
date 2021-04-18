@@ -1,8 +1,0 @@
-component: Component1
-fields:
-  fieldA:
-    type: string
-  fieldB:
-    type: number
-  fieldC:
-    type: boolean

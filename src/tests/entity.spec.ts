@@ -1,7 +1,7 @@
 import { ECS } from "..";
 import { ComponentManager } from "../data/componentManager";
 import { Entity } from "../data/entity";
-import { IECSSchema } from "../schema/types";
+import { IECSSchema } from "../schemas/types";
 
 interface ITestComponent {
   fieldA: string

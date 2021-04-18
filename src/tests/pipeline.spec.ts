@@ -4,7 +4,7 @@ import { Entity } from "../data/entity";
 import { Pipeline } from "../data/pipeline";
 import { SystemCollection } from "../data/systemCollection";
 import { IFilter } from "../data/types";
-import { IEntitySchema } from "../schema/types";
+import { IEntitySchema } from "../schemas/types";
 
 jest.mock('../index', () => ({
   ECS: jest.fn().mockImplementation(() => ({
