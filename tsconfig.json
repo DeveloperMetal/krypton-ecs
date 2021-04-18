@@ -4,9 +4,6 @@
     "module": "ES2020",
     "target": "ES2015",
     "outDir": "./dist",
-    "paths": {
-      "@kryptonstudio/ecs/*": ["./modules/*"]
-    },
     "baseUrl": "./src",
     "moduleResolution": "node",
     "declaration": true,
