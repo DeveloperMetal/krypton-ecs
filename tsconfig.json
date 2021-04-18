@@ -3,7 +3,11 @@
     "incremental": true,
     "module": "ES2020",
     "target": "ES2015",
-    "outDir": "lib/esm/",
+    "outDir": "./dist",
+    "paths": {
+      "@kryptonstudio/ecs/*": ["./modules/*"]
+    },
+    "baseUrl": "./src",
     "moduleResolution": "node",
     "declaration": true,
     "declarationMap": true,
@@ -29,11 +33,10 @@
     "forceConsistentCasingInFileNames": true
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
   ],
   "exclude": [
     "node_modules",
-    "lib",
     "**/*.spec.ts"
   ]
 }

@@ -1,0 +1,17 @@
+{
+  "name": "@kryptonstudio/ecs",
+  "version": "1.0.0-alpha.11",
+  "main": "./index.js",
+  "types": "./index.d.ts",
+  "repository": {
+    "url": "https://github.com/DeveloperMetal/krypton-ecs.git",
+    "type": "git"
+  },
+  "dependencies": {
+    "findup-sync": "^4.0.0",
+    "glob": "^7.1.6",
+    "js-yaml": "^4.1.0",
+    "minimist": "^1.2.5",
+    "yargs": "^16.2.0"
+  }
+}
