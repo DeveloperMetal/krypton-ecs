@@ -30,19 +30,32 @@ export class ECS {
     globalECSCache.set(this.name, this);
   }
 
+  /**
+   * ECS instance name
+   */
   get name(): string {
     return this.opts.name || "default";
   }
 
+  /**
+   * ECS Component/Entity Schema
+   */
   get schema(): IECSSchema {
     return this.opts.schema;
   }
 
+  /**
+   * Collection of systems on the default pipeline
+   */
   get systems() {
     const perFrame = this.pipeline.children.get(EXEC_PER_FRAME) as Pipeline;
     return perFrame?.systems;
   }
 
+  /**
+   * Dynamically adds a component definition to the running ecs instance.
+   * @param schema
+   */
   addComponent(schema: IComponentSchema) {
     this.schema.components.push(schema);
   }
