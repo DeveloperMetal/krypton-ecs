@@ -4,4 +4,7 @@ export interface ECSOpts {
     readonly schema: IECSSchema;
     useTypeGuards?: boolean;
 }
+export interface IComponentDefinition {
+    [name: string]: any;
+}
 //# sourceMappingURL=types.d.ts.map

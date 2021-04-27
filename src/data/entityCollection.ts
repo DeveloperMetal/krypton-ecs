@@ -1,20 +1,22 @@
-import { ECS } from "..";
+import { ECSBase } from "..";
 import { Entity } from ".";
 import { IEntitySchema } from "../schemas/types";
+import { IComponentDefinition } from "types";
 
 export interface IQuery {
   [key: string]: string
 }
 
-export class EntityCollection {
-  private _entities = new Map<string, Entity>();
+export class EntityCollection<C extends IComponentDefinition> {
+  private _entities = new Map<string, Entity<C>>();
 
-  constructor(private readonly _ecs: ECS) {}
+  constructor(private readonly _ecs: ECSBase<C>) {}
 
   add(schema: IEntitySchema) {
-    const entity = new Entity(schema, this._ecs.componentManager);
+    const entity = new Entity<C>(schema, this._ecs.componentManager);
     this._entities.set(schema.entity, entity);
     this._ecs.pipeline.addEntity(entity);
+    return entity;
   }
 
   remove(id: string) {

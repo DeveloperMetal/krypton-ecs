@@ -1,4 +1,5 @@
-import { ECS, Entity } from "..";
+import { IComponentDefinition } from "types";
+import { ECSBase, Entity } from "..";
 
 export enum EntityState {
   None = 0,
@@ -9,8 +10,8 @@ export enum EntityState {
   Removed = 5
 }
 
-export type IFilter = (ecs: ECS, entities: IterableIterator<Entity>) => IterableIterator<Entity>;
+export type IFilter = <C extends IComponentDefinition>(ecs: ECSBase<C>, entities: IterableIterator<Entity<C>>) => IterableIterator<Entity<C>>;
 
-export type ISystem = (ecs: ECS, entities: IterableIterator<Entity>) => Promise<void> | void;
+export type ISystem = <C extends IComponentDefinition>(ecs: ECSBase<C>, entities: IterableIterator<Entity<C>>) => Promise<void> | void;
 
 export type FilterPredicate<T> = (item: T, index: number) => boolean;

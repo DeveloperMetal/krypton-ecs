@@ -1,3 +1,4 @@
+import { IComponentDefinition } from 'types';
 import { IEntitySchema } from '../schemas/types';
 import { Component } from './component';
 import { ComponentManager } from './componentManager';
@@ -6,8 +7,8 @@ import { Identifiable } from './utils';
 /**
  * Entity class which groups components. This class is instantiated internally.
  */
-export class Entity extends Identifiable {
-  constructor(public schema: IEntitySchema, private componentManager: ComponentManager) {
+export class Entity<C extends IComponentDefinition> extends Identifiable {
+  constructor(public schema: IEntitySchema, private componentManager: ComponentManager<C>) {
     super(schema.entity);
     let inConstructor = true;
 
@@ -42,7 +43,7 @@ export class Entity extends Identifiable {
    * Convenient helper to cast this entity to an interface to ease component invocations.
    */
   as<T>() {
-    return this as unknown as Entity & T;
+    return this as unknown as Entity<C> & T;
   }
 
   /**
@@ -56,7 +57,7 @@ export class Entity extends Identifiable {
    * Retrieves a component object instance attached to this entity.
    * @param name The component name.
    */
-  getComponent<T>(name: string): Component & T {
+  getComponent<T>(name: string): Component<C> & T {
     return Reflect.get(this, name);
   }
 

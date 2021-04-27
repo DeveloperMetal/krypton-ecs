@@ -1,3 +1,4 @@
+import { IComponentDefinition } from "types";
 import { ECS } from "..";
 import { Pipeline } from "./pipeline";
 import { IFilter, ISystem } from "./types";
@@ -8,10 +9,10 @@ export type QueuePromiseValue = {
   promise?: Promise<void>
 }
 
-export class SystemCollection {
+export class SystemCollection<C extends IComponentDefinition> {
   private _filters = new Map<IFilter | undefined, Set<ISystem>>();
 
-  constructor(public readonly ecs: ECS, public readonly pipeline: Pipeline) { }
+  constructor(public readonly ecs: ECS, public readonly pipeline: Pipeline<C>) { }
 
   async executeSystems() {
     for(const [filter, systemSet] of this._filters.entries()) {

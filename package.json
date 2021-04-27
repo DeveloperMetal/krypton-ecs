@@ -1,12 +1,9 @@
 {
   "name": "@kryptonstudio/ecs",
   "version": "1.0.0-alpha.11",
-  "main": "./lib/cjs/index.js",
-  "module": "./lib/esm/index.js",
-  "types": "./lib/esm/index.d.ts",
-  "bin": {
-    "kecs": "./cli/kecs"
-  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "repository": {
     "url": "https://github.com/DeveloperMetal/krypton-ecs.git",
     "type": "git"
@@ -22,8 +19,7 @@
     "docs": "typedoc --theme minimal --exclude **/*.spec.ts --out ./docs ./src"
   },
   "files": [
-    "cli",
-    "lib",
+    "dist",
     "package.json"
   ],
   "dependencies": {

@@ -8,6 +8,7 @@ export class EntityCollection {
         const entity = new Entity(schema, this._ecs.componentManager);
         this._entities.set(schema.entity, entity);
         this._ecs.pipeline.addEntity(entity);
+        return entity;
     }
     remove(id) {
         const entity = this._entities.get(id);

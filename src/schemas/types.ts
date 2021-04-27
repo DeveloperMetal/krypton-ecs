@@ -4,7 +4,7 @@ export type ISchemaInclude = {
 } | string;
 
 export interface IFieldSchema {
-  type: "string" | "boolean" | "number" | "float32Array" | "object"
+  type: "string" | "boolean" | "number" | "float32Array" | "object" | string
   defaultValue: string | boolean | number | object | null
   allowNull: boolean
 }

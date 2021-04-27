@@ -1,3 +1,4 @@
+import { IComponentDefinition } from "types";
 import { ECS } from "..";
 import { Pipeline } from "./pipeline";
 import { IFilter, ISystem } from "./types";
@@ -6,11 +7,11 @@ export declare type QueuePromiseValue = {
     reject?: (value?: unknown) => void;
     promise?: Promise<void>;
 };
-export declare class SystemCollection {
+export declare class SystemCollection<C extends IComponentDefinition> {
     readonly ecs: ECS;
-    readonly pipeline: Pipeline;
+    readonly pipeline: Pipeline<C>;
     private _filters;
-    constructor(ecs: ECS, pipeline: Pipeline);
+    constructor(ecs: ECS, pipeline: Pipeline<C>);
     executeSystems(): Promise<void>;
     add(system: ISystem, filter?: IFilter): void;
     removeByFilter(filter: IFilter | undefined): boolean;

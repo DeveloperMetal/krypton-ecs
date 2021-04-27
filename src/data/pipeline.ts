@@ -1,3 +1,4 @@
+import { IComponentDefinition } from "types";
 import { ECS } from "..";
 import { Entity} from "./entity";
 import { SystemCollection } from "./systemCollection";
@@ -6,11 +7,11 @@ import { IFilter } from "./types";
 /**
  * An execution pipeline to handle tight control of systems execution and orchestration.
  */
-export class Pipeline {
-  public readonly systems: SystemCollection;
-  public readonly children = new Map<string, Pipeline>();
+export class Pipeline<C extends IComponentDefinition> {
+  public readonly systems: SystemCollection<C>;
+  public readonly children = new Map<string, Pipeline<C>>();
 
-  private readonly _entities = new Set<Entity>();
+  private readonly _entities = new Set<Entity<C>>();
 
   constructor(private _ecs: ECS, private _pipelineEntryFilter?: IFilter, private _pipelineExitFilter?: IFilter) {
     this.systems = new SystemCollection(this._ecs, this);
@@ -53,7 +54,7 @@ export class Pipeline {
    * run all passed entities through that filter before adding them.
    * @param entities An iterable list of entities to add into the pipeline.
    */
-  addEntities(entities: IterableIterator<Entity>) {
+  addEntities(entities: IterableIterator<Entity<C>>) {
     let filteredEntities = entities;
     if ( this._pipelineEntryFilter ) {
       filteredEntities = this._pipelineEntryFilter(this._ecs, entities);
@@ -69,7 +70,7 @@ export class Pipeline {
    * @see addEntities
    * @param entity
    */
-  addEntity(entity: Entity) {
+  addEntity(entity: Entity<C>) {
     this.addEntities([entity].values());
   }
 
@@ -77,7 +78,7 @@ export class Pipeline {
    * Removes an entity from the pipeline. Optionally will remove from every child pipeline recursevly.
    * @param entity The entity to remove
    */
-  removeEntity(entity: Entity, recurively: boolean = false) {
+  removeEntity(entity: Entity<C>, recurively: boolean = false) {
     this._entities.delete(entity);
 
     if ( recurively ) {
