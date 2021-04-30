@@ -13,9 +13,9 @@ export class Component<C extends IComponentDefinition> extends Identifiable {
     const prox = new Proxy(this, {
       set(obj, key, value) {
 
-        if ( Reflect.has(_schema.fields, key) ) {
+        if ( Reflect.has(_schema.fields || {}, key) ) {
           if ( !inConstructor && useTypeGuards ) {
-            const fieldSchema = Reflect.get(_schema.fields, key) as IFieldSchema;
+            const fieldSchema = Reflect.get(_schema.fields || {}, key) as IFieldSchema;
             if (!fieldSchema.allowNull && value === null) {
               throw new TypeError('Invalid Type. Field is not nullable');
             }
@@ -47,7 +47,7 @@ export class Component<C extends IComponentDefinition> extends Identifiable {
     });
 
     // prime component fields
-    for(const [fieldName, fieldSchema] of Object.entries(_schema.fields)) {
+    for(const [fieldName, fieldSchema] of Object.entries(_schema.fields || {})) {
 
       // Prime default values
       if (fieldSchema.defaultValue !== null) {

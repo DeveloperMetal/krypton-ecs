@@ -1,6 +1,6 @@
 import { ECSBase } from "..";
 import { Entity } from ".";
-import { IEntitySchema } from "../schemas/types";
+import { IEntitySchema, IRTEntitySchema } from "../schemas/types";
 import { IComponentDefinition } from "types";
 
 export interface IQuery {
@@ -12,8 +12,8 @@ export class EntityCollection<C extends IComponentDefinition> {
 
   constructor(private readonly _ecs: ECSBase<C>) {}
 
-  add(schema: IEntitySchema) {
-    const entity = new Entity<C>(schema, this._ecs.componentManager);
+  add(schema: IRTEntitySchema<C>) {
+    const entity = new Entity<C>(schema as unknown as IEntitySchema, this._ecs.componentManager);
     this._entities.set(schema.entity, entity);
     this._ecs.pipeline.addEntity(entity);
     return entity;

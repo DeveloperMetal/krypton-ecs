@@ -7,9 +7,9 @@ export class Component extends Identifiable {
         let inConstructor = true;
         const prox = new Proxy(this, {
             set(obj, key, value) {
-                if (Reflect.has(_schema.fields, key)) {
+                if (Reflect.has(_schema.fields || {}, key)) {
                     if (!inConstructor && useTypeGuards) {
-                        const fieldSchema = Reflect.get(_schema.fields, key);
+                        const fieldSchema = Reflect.get(_schema.fields || {}, key);
                         if (!fieldSchema.allowNull && value === null) {
                             throw new TypeError('Invalid Type. Field is not nullable');
                         }
@@ -39,7 +39,7 @@ export class Component extends Identifiable {
                 }
             },
         });
-        for (const [fieldName, fieldSchema] of Object.entries(_schema.fields)) {
+        for (const [fieldName, fieldSchema] of Object.entries(_schema.fields || {})) {
             if (fieldSchema.defaultValue !== null) {
                 if (fieldSchema.type === "string") {
                     if (typeof fieldSchema.defaultValue !== "string") {
