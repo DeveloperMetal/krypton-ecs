@@ -1,11 +1,11 @@
-import { IComponentDefinition } from "types";
-import { Entity } from "..";
-import { IComponentSchema, IFieldSchema } from "../schemas/types";
+import { IDefinitions } from "types";
+import { ECSEntity } from "..";
+import { IComponents, IComponentSchema, IFieldSchema } from "../schemas/types";
 import { Identifiable } from "./utils";
 
-export class Component<C extends IComponentDefinition> extends Identifiable {
+export class Component<C extends IDefinitions, COMPS extends IComponents> extends Identifiable {
 
-  constructor(public readonly _schema: IComponentSchema, private _parent: Entity<C>, useTypeGuards: boolean = true) {
+  constructor(public readonly _schema: IComponentSchema, private _parent: ECSEntity<C, COMPS>, useTypeGuards: boolean = true) {
     super(_schema.component);
     let inConstructor = true;
 
@@ -92,11 +92,11 @@ export class Component<C extends IComponentDefinition> extends Identifiable {
     return prox;
   }
 
-  get parentEntity(): Entity<C> {
+  get parentEntity(): ECSEntity<C, COMPS> {
     return this._parent;
   }
 
   as<T>() {
-    return this as unknown as Component<C> & T;
+    return this as unknown as Component<C, COMPS> & T;
   }
 }

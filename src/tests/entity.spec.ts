@@ -1,6 +1,6 @@
 import { ECS } from "..";
 import { ComponentManager } from "../data/componentManager";
-import { Entity } from "../data/entity";
+import { ECSEntity } from "../data/entity";
 import { IECSSchema } from "../schemas/types";
 
 interface ITestComponent {
@@ -12,9 +12,9 @@ interface IHaveTestComponent {
 }
 
 describe("Entity", () => {
-  let testComponentManager: ComponentManager;
+  let testComponentManager: ComponentManager<{}, string>;
   let testEcs: ECS;
-  const schema: IECSSchema = {
+  const schema: IECSSchema<string> = {
     components: [
       {
         component: "TestComponent",
@@ -47,7 +47,7 @@ describe("Entity", () => {
   })
 
   it("Define Entity", () => {
-    const entity = new Entity({
+    const entity = new ECSEntity({
       entity: "test-entity",
       components: ["TestComponent"]
     }, testComponentManager);
@@ -59,7 +59,7 @@ describe("Entity", () => {
   });
 
   it("Guard entity from component injection", () => {
-    const entity = new Entity({
+    const entity = new ECSEntity({
       entity: "test-entity",
       components: ["TestComponent"]
     }, testComponentManager);
@@ -68,7 +68,7 @@ describe("Entity", () => {
   });
 
   it("List components", () => {
-    const entity = new Entity({
+    const entity = new ECSEntity({
       entity: "test-entity",
       components: ["TestComponent", "TestComponent2"],
     }, testComponentManager);
@@ -78,7 +78,7 @@ describe("Entity", () => {
   })
 
   it("Casting", () => {
-    const entity = new Entity({
+    const entity = new ECSEntity({
       entity: "test-entity",
       components: ["TestComponent"],
     }, testComponentManager).as<IHaveTestComponent>();

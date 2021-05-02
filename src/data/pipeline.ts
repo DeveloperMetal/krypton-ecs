@@ -1,19 +1,20 @@
-import { IComponentDefinition } from "types";
-import { ECS } from "..";
-import { Entity} from "./entity";
+import { IComponents } from "schemas";
+import { IDefinitions } from "types";
+import { ECSBase } from "..";
+import { ECSEntity} from "./entity";
 import { SystemCollection } from "./systemCollection";
-import { IFilter } from "./types";
+import { IFilter } from "../types";
 
 /**
  * An execution pipeline to handle tight control of systems execution and orchestration.
  */
-export class Pipeline<C extends IComponentDefinition> {
-  public readonly systems: SystemCollection<C>;
-  public readonly children = new Map<string, Pipeline<C>>();
+export class Pipeline<D extends IDefinitions, C extends IComponents> {
+  public readonly systems: SystemCollection<D, C>;
+  public readonly children = new Map<string, Pipeline<D, C>>();
 
-  private readonly _entities = new Set<Entity<C>>();
+  private readonly _entities = new Set<ECSEntity<D, C>>();
 
-  constructor(private _ecs: ECS, private _pipelineEntryFilter?: IFilter, private _pipelineExitFilter?: IFilter) {
+  constructor(private _ecs: ECSBase<D, C>, private _pipelineEntryFilter?: IFilter<D, C>, private _pipelineExitFilter?: IFilter<D, C>) {
     this.systems = new SystemCollection(this._ecs, this);
   }
 
@@ -54,7 +55,7 @@ export class Pipeline<C extends IComponentDefinition> {
    * run all passed entities through that filter before adding them.
    * @param entities An iterable list of entities to add into the pipeline.
    */
-  addEntities(entities: IterableIterator<Entity<C>>) {
+  addEntities(entities: IterableIterator<ECSEntity<D, C>>) {
     let filteredEntities = entities;
     if ( this._pipelineEntryFilter ) {
       filteredEntities = this._pipelineEntryFilter(this._ecs, entities);
@@ -70,7 +71,7 @@ export class Pipeline<C extends IComponentDefinition> {
    * @see addEntities
    * @param entity
    */
-  addEntity(entity: Entity<C>) {
+  addEntity(entity: ECSEntity<D, C>) {
     this.addEntities([entity].values());
   }
 
@@ -78,7 +79,7 @@ export class Pipeline<C extends IComponentDefinition> {
    * Removes an entity from the pipeline. Optionally will remove from every child pipeline recursevly.
    * @param entity The entity to remove
    */
-  removeEntity(entity: Entity<C>, recurively: boolean = false) {
+  removeEntity(entity: ECSEntity<D, C>, recurively: boolean = false) {
     this._entities.delete(entity);
 
     if ( recurively ) {

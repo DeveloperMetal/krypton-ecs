@@ -1,14 +1,21 @@
-import { Entity } from ".";
+import { ECSEntity } from ".";
 export class EntityCollection {
     constructor(_ecs) {
         this._ecs = _ecs;
         this._entities = new Map();
     }
     add(schema) {
-        const entity = new Entity(schema, this._ecs.componentManager);
-        this._entities.set(schema.entity, entity);
-        this._ecs.pipeline.addEntity(entity);
-        return entity;
+        if (schema instanceof ECSEntity) {
+            this._entities.set(schema.schema.entity, schema);
+            this._ecs.pipeline.addEntity(schema);
+            return schema;
+        }
+        else {
+            const entity = new ECSEntity(schema, this._ecs.componentManager);
+            this._entities.set(schema.entity, entity);
+            this._ecs.pipeline.addEntity(entity);
+            return entity;
+        }
     }
     remove(id) {
         const entity = this._entities.get(id);

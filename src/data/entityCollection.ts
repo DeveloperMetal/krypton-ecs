@@ -1,22 +1,28 @@
 import { ECSBase } from "..";
-import { Entity } from ".";
-import { IEntitySchema, IRTEntitySchema } from "../schemas/types";
-import { IComponentDefinition } from "types";
+import { ECSEntity } from ".";
+import { IComponents, IEntitySchema } from "../schemas/types";
+import { IDefinitions } from "types";
 
 export interface IQuery {
   [key: string]: string
 }
 
-export class EntityCollection<C extends IComponentDefinition> {
-  private _entities = new Map<string, Entity<C>>();
+export class EntityCollection<D extends IDefinitions, C extends IComponents> {
+  private _entities = new Map<string, ECSEntity<D, C>>();
 
-  constructor(private readonly _ecs: ECSBase<C>) {}
+  constructor(private readonly _ecs: ECSBase<D, C>) {}
 
-  add(schema: IRTEntitySchema<C>) {
-    const entity = new Entity<C>(schema as unknown as IEntitySchema, this._ecs.componentManager);
-    this._entities.set(schema.entity, entity);
-    this._ecs.pipeline.addEntity(entity);
-    return entity;
+  add(schema: IEntitySchema<C> | ECSEntity<D, C>) {
+    if ( schema instanceof ECSEntity ) {
+      this._entities.set(schema.schema.entity, schema);
+      this._ecs.pipeline.addEntity(schema);
+      return schema;
+    } else {
+      const entity = new ECSEntity<D, C>(schema as unknown as IEntitySchema<C>, this._ecs.componentManager);
+      this._entities.set(schema.entity, entity);
+      this._ecs.pipeline.addEntity(entity);
+      return entity;
+    }
   }
 
   remove(id: string) {

@@ -1,5 +1,5 @@
 import { Identifiable } from './utils';
-export class Entity extends Identifiable {
+export class ECSEntity extends Identifiable {
     constructor(schema, componentManager) {
         super(schema.entity);
         this.schema = schema;

@@ -2,7 +2,7 @@ import { mocked } from 'ts-jest/utils';
 import { ECS } from "..";
 import { SystemCollection } from '../data';
 import { Pipeline } from "../data/pipeline";
-import { IFilter, ISystem } from '../data/types';
+import { IFilter, ISystem } from '../types';
 
 const mockPipelineAddEntity = jest.fn();
 const mockPipelineRemoveEntity = jest.fn();
@@ -50,7 +50,7 @@ describe("System Collection", () => {
 
   it("Add and remove system", () => {
     const collection = new SystemCollection(ecs, new Pipeline(ecs));
-    const testSystem: ISystem = jest.fn();
+    const testSystem: ISystem<{}, string> = jest.fn();
 
     collection.add(testSystem);
     expect(collection.hasSystem(testSystem)).toBeTruthy();
@@ -64,8 +64,8 @@ describe("System Collection", () => {
 
   it("Execute systems", async () => {
     const collection = new SystemCollection(ecs, new Pipeline(ecs));
-    const testSystem1: ISystem = jest.fn();
-    const testSystem2: ISystem = jest.fn();
+    const testSystem1: ISystem<{}, string> = jest.fn();
+    const testSystem2: ISystem<{}, string> = jest.fn();
 
     collection.add(testSystem1);
     collection.add(testSystem2);
@@ -78,8 +78,8 @@ describe("System Collection", () => {
 
   it("Execute systems with filter", async () => {
     const collection = new SystemCollection(ecs, new Pipeline(ecs));
-    const testSystem: ISystem = jest.fn();
-    const testFilter: IFilter = jest.fn((_ecs, entities) => entities);
+    const testSystem: ISystem<{}, string> = jest.fn();
+    const testFilter: IFilter<{}, string> = jest.fn((_ecs, entities) => entities);
 
     collection.add(testSystem, testFilter);
 
@@ -91,8 +91,8 @@ describe("System Collection", () => {
 
   it("Add/Remove systems by filter", async () => {
     const collection = new SystemCollection(ecs, new Pipeline(ecs));
-    const testSystem: ISystem = jest.fn();
-    const testFilter: IFilter = jest.fn((_ecs, entities) => entities);
+    const testSystem: ISystem<{}, string> = jest.fn();
+    const testFilter: IFilter<{}, string> = jest.fn((_ecs, entities) => entities);
 
     collection.add(testSystem, testFilter);
     expect(collection.hasSystem(testSystem)).toBeTruthy();
@@ -108,9 +108,9 @@ describe("System Collection", () => {
 
   it("Add multiple systems on one filter", async () => {
     const collection = new SystemCollection(ecs, new Pipeline(ecs));
-    const testSystem1: ISystem = jest.fn();
-    const testSystem2: ISystem = jest.fn();
-    const testFilter: IFilter = jest.fn((_ecs, entities) => entities);
+    const testSystem1: ISystem<{}, string> = jest.fn();
+    const testSystem2: ISystem<{}, string> = jest.fn();
+    const testFilter: IFilter<{}, string> = jest.fn((_ecs, entities) => entities);
 
     collection.add(testSystem1, testFilter);
     collection.add(testSystem2, testFilter);

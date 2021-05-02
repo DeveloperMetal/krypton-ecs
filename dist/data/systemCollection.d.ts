@@ -1,22 +1,23 @@
-import { IComponentDefinition } from "types";
-import { ECS } from "..";
+import { IComponents } from "schemas";
+import { IDefinitions } from "types";
+import { ECSBase } from "..";
 import { Pipeline } from "./pipeline";
-import { IFilter, ISystem } from "./types";
+import { IFilter, ISystem } from "../types";
 export declare type QueuePromiseValue = {
     resolve?: (value?: void | PromiseLike<void> | undefined) => void;
     reject?: (value?: unknown) => void;
     promise?: Promise<void>;
 };
-export declare class SystemCollection<C extends IComponentDefinition> {
-    readonly ecs: ECS;
-    readonly pipeline: Pipeline<C>;
+export declare class SystemCollection<D extends IDefinitions, C extends IComponents> {
+    readonly ecs: ECSBase<D, C>;
+    readonly pipeline: Pipeline<D, C>;
     private _filters;
-    constructor(ecs: ECS, pipeline: Pipeline<C>);
+    constructor(ecs: ECSBase<D, C>, pipeline: Pipeline<D, C>);
     executeSystems(): Promise<void>;
-    add(system: ISystem, filter?: IFilter): void;
-    removeByFilter(filter: IFilter | undefined): boolean;
-    removeSystem(system: ISystem): void;
-    hasFilter(filter: IFilter): boolean;
-    hasSystem(system: ISystem): boolean;
+    add(system: ISystem<D, C>, filter?: IFilter<D, C>): void;
+    removeByFilter(filter: IFilter<D, C> | undefined): boolean;
+    removeSystem(system: ISystem<D, C>): void;
+    hasFilter(filter: IFilter<D, C>): boolean;
+    hasSystem(system: ISystem<D, C>): boolean;
 }
 //# sourceMappingURL=systemCollection.d.ts.map

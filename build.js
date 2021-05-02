@@ -45,6 +45,7 @@ const libPackageConfig = () => ({
   "name": package.name,
   "version": package.version,
   "main": "./index.js",
+  "module": "./index.js",
   "types": "./index.d.ts",
   "repository": package.repository,
   "dependencies": package.dependencies

@@ -1,4 +1,4 @@
-import { IComponentDefinition } from "types";
+export declare type IComponents = string;
 export declare type ISchemaInclude = {
     module: string;
     import: string;
@@ -14,19 +14,15 @@ export interface IComponentSchema {
         [name: string]: IFieldSchema;
     };
 }
-export interface IEntitySchema {
+export interface IEntitySchema<C extends IComponents> {
     entity: string;
-    components: string[];
+    components: C[];
 }
-export interface IRTEntitySchema<C extends IComponentDefinition> {
-    entity: string;
-    components: [keyof C & string][];
-}
-export interface IECSSchema {
+export interface IECSSchema<C extends IComponents> {
     components: IComponentSchema[];
-    entities?: IEntitySchema[];
+    entities?: IEntitySchema<C>[];
 }
 export declare type GeneratorInput = {
     include: ISchemaInclude[];
-} | IComponentSchema | IEntitySchema | IComponentSchema[] | IEntitySchema[];
+} | IComponentSchema | IEntitySchema<string> | IComponentSchema[] | IEntitySchema<string>[];
 //# sourceMappingURL=types.d.ts.map

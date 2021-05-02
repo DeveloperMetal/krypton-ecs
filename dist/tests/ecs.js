@@ -1,6 +1,6 @@
 import { SystemCollection } from "data/systemCollection";
 import { mocked } from "ts-jest/utils";
-import { ECS, Entity } from "..";
+import { ECS, ECSEntity } from "..";
 jest.mock('../index', () => ({
     ECS: jest.fn().mockImplementation(() => ({ componentManager: {} }))
 }));
@@ -23,7 +23,7 @@ const schema = {
 describe("ECS", () => {
     const ECSMocked = mocked(ECS, true);
     const SystemCollectionMocked = mocked(SystemCollection, true);
-    const EntityMocked = mocked(Entity, true);
+    const EntityMocked = mocked(ECSEntity, true);
     let ecs;
     beforeEach(() => {
         ECSMocked.mockClear();

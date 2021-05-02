@@ -1,5 +1,5 @@
-import { IComponentDefinition } from 'types';
-import { IEntitySchema } from '../schemas/types';
+import { IDefinitions } from 'types';
+import { IComponents, IEntitySchema } from '../schemas/types';
 import { Component } from './component';
 import { ComponentManager } from './componentManager';
 import { Identifiable } from './utils';
@@ -7,8 +7,8 @@ import { Identifiable } from './utils';
 /**
  * Entity class which groups components. This class is instantiated internally.
  */
-export class Entity<C extends IComponentDefinition> extends Identifiable {
-  constructor(public schema: IEntitySchema, private componentManager: ComponentManager<C>) {
+export class ECSEntity<D extends IDefinitions, C extends IComponents> extends Identifiable {
+  constructor(public schema: IEntitySchema<C>, private componentManager: ComponentManager<D, C>) {
     super(schema.entity);
     let inConstructor = true;
 
@@ -43,7 +43,7 @@ export class Entity<C extends IComponentDefinition> extends Identifiable {
    * Convenient helper to cast this entity to an interface to ease component invocations.
    */
   as<T>() {
-    return this as unknown as Entity<C> & T;
+    return this as unknown as ECSEntity<D, C> & T;
   }
 
   /**
@@ -57,7 +57,7 @@ export class Entity<C extends IComponentDefinition> extends Identifiable {
    * Retrieves a component object instance attached to this entity.
    * @param name The component name.
    */
-  getComponent<T>(name: string): Component<C> & T {
+  getComponent<T>(name: C): Component<D, C> & T {
     return Reflect.get(this, name);
   }
 
@@ -65,7 +65,7 @@ export class Entity<C extends IComponentDefinition> extends Identifiable {
    * Returns true or false wether a component exists on this component
    * @param name The component name to check.
    */
-  hasComponent(name: string) {
+  hasComponent(name: C) {
     return Reflect.has(this, name);
   }
 }

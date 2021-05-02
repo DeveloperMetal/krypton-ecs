@@ -1,4 +1,4 @@
-import { IComponentDefinition } from "types";
+export type IComponents = string;
 
 export type ISchemaInclude = {
   module: string
@@ -18,21 +18,16 @@ export interface IComponentSchema {
   }
 }
 
-export interface IEntitySchema {
+export interface IEntitySchema<C extends IComponents> {
   entity: string
-  components: string[]
+  components: C[]
 }
 
-export interface IRTEntitySchema<C extends IComponentDefinition> {
-  entity: string
-  components: [keyof C & string][]
-}
-
-export interface IECSSchema {
+export interface IECSSchema<C extends IComponents> {
   components: IComponentSchema[],
-  entities?: IEntitySchema[]
+  entities?: IEntitySchema<C>[]
 }
 
 export type GeneratorInput = {
   include: ISchemaInclude[]
-} | IComponentSchema | IEntitySchema | IComponentSchema[] | IEntitySchema [];
+} | IComponentSchema | IEntitySchema<string> | IComponentSchema[] | IEntitySchema<string> [];

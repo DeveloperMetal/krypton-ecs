@@ -1,6 +1,6 @@
 import { globalECSCache } from "..";
 import { EXEC_PER_FRAME } from "../contants";
-export function makeSystem(system, filter, ecsName = "default", executionGroup = EXEC_PER_FRAME) {
+export function makeECSSystem(system, filter, ecsName = "default", executionGroup = EXEC_PER_FRAME) {
     var _a;
     const ecs = globalECSCache.get(ecsName);
     if (ecs) {

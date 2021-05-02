@@ -1,5 +1,5 @@
 import { ECS } from "..";
-import { FilterPredicate } from "./types";
+import { FilterPredicate } from "../types";
 
 export function* filter<T>(iterable: IterableIterator<T>, predicate: FilterPredicate<T>) {
   let i = 0;
