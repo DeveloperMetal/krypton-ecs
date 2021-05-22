@@ -35,6 +35,7 @@ async function step(progress, cb, label, failMsg, step) {
 
   if ( !result ) {
     progress.update(step, { label: _colors.red(failMsg) });
+    console.error("Exiting: ", result);
     process.exit(1);
   }  else {
     progress.update(step, { label: _colors.green("Success!") });
@@ -72,15 +73,21 @@ async function copyFiles(outputPath) {
     await fs.copyFile(path.join(".", "LICENSE"), path.join(outputPath, "LICENSE"));
     return true;
   } catch(e) {
+    console.error(e);
     return false;
   }
 }
 
 async function build() {
   const outputDir = path.resolve(path.join('.', 'dist'));
-  const progress = new cliProgress.SingleBar({
-    format: progressFormatter
-  }, cliProgress.Presets.shades_classic);
+  const progress = {
+    start: () => console.log("Progress Start"),
+    update: (step) => console.log("Step: ", step),
+    stop: () => console.log("Done...")
+  }
+  // const progress = new cliProgress.SingleBar({
+  //   format: progressFormatter
+  // }, cliProgress.Presets.shades_classic);
   progress.start(3, 0);
 
   try {
