@@ -21,16 +21,21 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '15'
-      - run: |
-          ls -al
-          rm -Rf .yarn/cache
-      - run: |
-          npm install -g yarn
-          yarn install
-      - run: yarn test
-      - run: yarn lint:cli
-      - run: yarn lint:lib
-      - name: build package
+      - name: Delete yarn cache
+        run: rm -Rf ./.yarn/cache
+      - run: ls -al ./.yarn
+      - name: Install yarn
+        run: npm install -g yarn
+      - name: Install packages
+        run: yarn install
+      - run: ls -al ./.yarn
+      - name: Run tests
+        run: yarn test
+      - name: Run lint on cli
+        run: yarn lint:cli
+      - name: Run lint on lib
+        run: yarn lint:lib
+      - name: Build package
         shell: bash
         run: |
           set -x
