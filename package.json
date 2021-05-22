@@ -28,7 +28,7 @@
     "lint:cli": "tslint -p ./src/cli/tsconfig.json",
     "lint:all": "yarn lint:lib && yarn lint:cli",
     "clean": "rimraf ./dist",
-    "package": "yarn lint:all && yarn clean && yarn build:all && yarn build:package"
+    "package": "yarn lint:all && yarn clean && yarn build:package && yarn build:all"
   },
   "dependencies": {
     "findup-sync": "^4.0.0",
