@@ -32,6 +32,7 @@ jobs:
       - name: Run lint on lib
         run: yarn lint:lib
       - name: Build package
+        run: |
           yarn clean
           yarn build:package
       - name: Build cli tools
