@@ -88,6 +88,7 @@ async function build() {
 
   progress.update(3, { label: _colors.green("Build Complete!") })
   progress.stop();
+  process.exit(0);
 }
 
 build();

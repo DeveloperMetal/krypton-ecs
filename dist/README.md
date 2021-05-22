@@ -29,7 +29,7 @@ Defining an entity with Krypton-ECS is very easy, all you need is to define a sc
 
 Via the schema file:
 
-```yml
+```yaml
 entities:
   - entity: "my-entity"
     components:

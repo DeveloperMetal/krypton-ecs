@@ -1,4 +1,4 @@
-import { IComponents } from "schemas";
+import { IComponents } from "../schemas";
 import { IDefinitions } from "../types";
 import { ECSBase, ECSEntity } from "..";
 import { Component } from "./component";

@@ -1,9 +1,8 @@
-import { IComponents } from "schemas";
-import { IDefinitions } from "types";
+import { IComponents } from "../schemas";
+import { IDefinitions, IFilter } from "../types";
 import { ECSBase } from "..";
 import { ECSEntity } from "./entity";
 import { SystemCollection } from "./systemCollection";
-import { IFilter } from "../types";
 export declare class Pipeline<D extends IDefinitions, C extends IComponents> {
     private _ecs;
     private _pipelineEntryFilter?;

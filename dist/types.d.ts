@@ -1,4 +1,4 @@
-import { IComponents, IECSSchema } from "schemas";
+import { IComponents, IECSSchema } from "./schemas";
 import { ECSBase, ECSEntity } from ".";
 export declare enum EntityState {
     None = 0,
