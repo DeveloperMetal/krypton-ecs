@@ -80,14 +80,15 @@ async function copyFiles(outputPath) {
 
 async function build() {
   const outputDir = path.resolve(path.join('.', 'dist'));
-  const progress = {
-    start: () => console.log("Progress Start"),
-    update: (step) => console.log("Step: ", step),
-    stop: () => console.log("Done...")
-  }
-  // const progress = new cliProgress.SingleBar({
-  //   format: progressFormatter
-  // }, cliProgress.Presets.shades_classic);
+  // Uncomment to use a simpler progress indicator for debugging
+  // const progress = {
+  //   start: () => console.log("Progress Start"),
+  //   update: (step) => console.log("Step: ", step),
+  //   stop: () => console.log("Done...")
+  // }
+  const progress = new cliProgress.SingleBar({
+    format: progressFormatter
+  }, cliProgress.Presets.shades_classic);
   progress.start(3, 0);
 
   try {
