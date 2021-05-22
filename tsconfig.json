@@ -4,7 +4,7 @@
     "module": "ES2020",
     "target": "ES2015",
     "outDir": "./dist",
-    "baseUrl": "./src",
+    "baseUrl": "./src/ecs",
     "moduleResolution": "node",
     "declaration": true,
     "declarationMap": true,
@@ -30,7 +30,7 @@
     "forceConsistentCasingInFileNames": true
   },
   "include": [
-    "src/**/*",
+    "src/ecs/**/*",
   ],
   "exclude": [
     "node_modules",

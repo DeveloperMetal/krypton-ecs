@@ -52,17 +52,11 @@ const libPackageConfig = () => ({
 })
 
 async function lint() {
-  const suffix = isWindows ?".cmd":""
-  const lint = path.join(".", "node_modules", ".bin", `tslint${suffix}`);
-  // lint source
-  return await exec(lint, ['-p', 'tsconfig.json']) === 0;
+  return await exec('yarn tslint', ['-p', 'tsconfig.json']) === 0;
 }
 
 async function compile() {
-  const suffix = isWindows ? ".cmd" : ""
-  const tsc = path.join(".", "node_modules", ".bin", `tsc${suffix}`);
-  // build distributable
-  return await exec(tsc, ['-p', 'tsconfig.json']) === 0;
+  return await exec('yarn tsc', ['-p', 'tsconfig.json']) === 0;
 }
 
 async function genPackageJson(outputPath) {
