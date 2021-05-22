@@ -1,7 +1,7 @@
 import { ECSBase } from "..";
 import { ECSEntity } from ".";
 import { IComponents, IEntitySchema } from "../schemas/types";
-import { IDefinitions } from "types";
+import { IDefinitions } from "../types";
 
 export interface IQuery {
   [key: string]: string
