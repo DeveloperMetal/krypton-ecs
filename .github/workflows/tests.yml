@@ -28,6 +28,10 @@ jobs:
       - run: yarn lint:cli
       - run: yarn lint:lib
       - run: yarn clean
-      - run: yarn node ./build_package.js
+      - name: build package
+        shell: bash
+        run: |
+          set -x
+          yarn node ./build_package.js
       - run: yarn build:cli
       - run: yarn build:lib
