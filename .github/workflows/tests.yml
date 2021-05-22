@@ -21,19 +21,8 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '14'
-      - name: Install
-        uses: borales/actions-yarn@v2.0.0
-        with:
-          cmd: install
-      - name: Unit Tests
-        uses: borales/actions-yarn@v2.0.0
-        with:
-          cmd: test
-      - name: Linting
-        uses: borales/actions-yarn@v2.0.0
-        with:
-          cmd: lint
-      - name: Build
-        uses: borales/actions-yarn@v2.0.0
-        with:
-          cmd: build:all
+      - run: |
+          npm install -g yarn
+          yarn install
+      - run: yarn test
+      - run: yarn package
