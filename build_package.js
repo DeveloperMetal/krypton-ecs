@@ -83,6 +83,13 @@ async function build() {
   }, cliProgress.Presets.shades_classic);
   progress.start(3, 0);
 
+  try {
+    await fs.stat(outputDir);
+  } catch(err) {
+    await fs.mkdir(outputDir, {
+      recursive: true
+    });
+  }
   await step(progress, async () => await genPackageJson(outputDir), "Generate package.json", "Failed generating package.json", 1);
   await step(progress, async () => await copyFiles(outputDir), "Copying util files", "Failed copying files", 2);
 
