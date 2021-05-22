@@ -27,11 +27,11 @@ jobs:
       - run: yarn test
       - run: yarn lint:cli
       - run: yarn lint:lib
-      - run: yarn clean
       - name: build package
         shell: bash
         run: |
           set -x
+          yarn clean
           yarn node ./build_package.js
-      - run: yarn build:cli
-      - run: yarn build:lib
+          yarn build:cli
+          yarn build:lib
