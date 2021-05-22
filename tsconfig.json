@@ -3,8 +3,6 @@
     "incremental": true,
     "module": "ES2020",
     "target": "ES2015",
-    "outDir": "./dist",
-    "baseUrl": "./src/ecs",
     "moduleResolution": "node",
     "declaration": true,
     "declarationMap": true,
@@ -29,11 +27,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": [
-    "src/ecs/**/*",
-  ],
   "exclude": [
-    "node_modules",
     "**/*.spec.ts"
   ]
 }

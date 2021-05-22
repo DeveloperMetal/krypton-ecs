@@ -21,7 +21,7 @@ async function installPackages(packages: { url: string, name: string }[]) {
       }
     }
 
-    if ( packagesToInstall.length == 0 ) {
+    if ( packagesToInstall.length === 0 ) {
       return resolve();
     }
 
@@ -129,7 +129,7 @@ export default async function (argv: IGeneratorArgs) {
     console.log("Writing client to: ", outputPath);
     await fs.writeFile(path.join(outputPath, 'index.js'), src, { encoding: "utf-8" });
     await fs.writeFile(path.join(outputPath, 'index.d.ts'), types, { encoding: "utf-8" });
-    installPackages([]);//{ url: 'DeveloperMetal/kecs-client.git#master', name: "@kryptonstudio/ecs-client"}]);
+    installPackages([]);// { url: 'DeveloperMetal/kecs-client.git#master', name: "@kryptonstudio/ecs-client"}]);
     // tslint:disable-next-line: no-console
     console.log("Client Generated.");
   } else {

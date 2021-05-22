@@ -40,7 +40,7 @@ export async function parseYaml(yamlPath: string, data: IECSSchema, depth=0, ope
       if (typeof include === "string") {
         const results = await globSearch(searchPaths, include);
         for(const result of results) {
-          if ( result != yamlPath ) {
+          if ( result !== yamlPath ) {
             const resultYamlPath = result.endsWith('.yml') ? result : path.join(result, 'index.yml');
 
             try {

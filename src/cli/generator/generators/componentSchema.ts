@@ -1,4 +1,4 @@
-import { IComponentSchema } from "@kryptonstudio/ecs";
+import { IComponentSchema } from "@/ecs/schemas";
 import { reduce } from "../utils";
 
 export const generateComponentSchema = (component: IComponentSchema) => `{

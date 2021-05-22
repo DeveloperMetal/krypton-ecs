@@ -1,9 +1,12 @@
 {
-  "name": "@kryptonstudio/ecs",
+  "name": "@kryptonstudio/ecs-src",
   "version": "1.0.0-alpha.11",
   "main": "./index.js",
   "module": "./index.js",
   "types": "./index.d.ts",
+  "bin": {
+    "kecs": "./cli/index.ts"
+  },
   "repository": {
     "url": "https://github.com/DeveloperMetal/krypton-ecs.git",
     "type": "git"

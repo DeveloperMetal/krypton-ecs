@@ -1,4 +1,4 @@
-import { IECSSchema } from "@kryptonstudio/ecs";
+import { IECSSchema } from "@/ecs/schemas";
 import { reduce } from "../utils";
 import { generateComponentSchema } from './componentSchema';
 
