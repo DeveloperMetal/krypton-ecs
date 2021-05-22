@@ -9,7 +9,7 @@ on:
     paths-ignore:
       - '**.md'
       - 'docs/**'
-  
+
 
 
 jobs:
@@ -18,6 +18,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
       - name: Install
         uses: borales/actions-yarn@v2.0.0
         with:
@@ -33,4 +36,4 @@ jobs:
       - name: Build
         uses: borales/actions-yarn@v2.0.0
         with:
-          cmd: build
+          cmd: build:all

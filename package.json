@@ -14,10 +14,10 @@
   "scripts": {
     "version": "yarn format && git add -A src",
     "postversion": "git push && git push --tags",
-    "test": "jest --coverage",
+    "test": "jest --coverage --roots ./src/ecs/",
     "watch:test": "jest --watchAll --coverage",
     "format": "prettier --write \"src/**/*.ts\"",
-    "docs": "typedoc --theme minimal --exclude **/*.spec.ts --out ./docs ./src",
+    "docs": "typedoc --theme minimal --tsconfig ./src/ecs/tsconfig.json --exclude \"**/*.spec.ts\" --out ./docs ./src/ecs/",
     "build:all": "concurrently -nlib,cli \"yarn build:lib\" \"yarn build:cli\"",
     "build:lib": "tsc -p ./src/ecs/tsconfig.json",
     "build:cli": "tsc -p ./src/cli/tsconfig.json",

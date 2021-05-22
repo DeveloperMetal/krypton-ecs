@@ -1,6 +1,6 @@
 import { mocked } from 'ts-jest/utils';
 import { ECS } from "..";
-import { Entity } from "../data/entity";
+import { ECSEntity } from "../data/entity";
 import { EntityCollection } from '../data/entityCollection';
 
 const mockPipelineAddEntity = jest.fn();
@@ -19,14 +19,14 @@ jest.mock('../index', () => ({
 }));
 
 jest.mock('../data/entity', () => ({
-  Entity: jest.fn().mockImplementation(() => ({
-    
+  ECSEntity: jest.fn().mockImplementation(() => ({
+
   }))
 }))
 
 describe("Entity collection", () => {
   const ECSMocked = mocked(ECS, true);
-  const EntityMocked = mocked(Entity, true);
+  const EntityMocked = mocked(ECSEntity, true);
   const ecs = new ECS({
     schema: {
       components: [{
@@ -85,7 +85,7 @@ describe("Entity collection", () => {
     expect(collection.get("testEntity3")).toBeFalsy();
 
     expect(Array.from(collection.values())).toHaveLength(2);
-    
+
   });
 
 });

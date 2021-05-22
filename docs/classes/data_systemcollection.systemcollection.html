@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>@kryptonstudio/ecs-src | @kryptonstudio/ecs-src</title>
+	<title>SystemCollection | @kryptonstudio/ecs-src</title>
 	<meta name="description" content="Documentation for @kryptonstudio/ecs-src">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<style type="text/css">:root {
@@ -2674,7 +2674,7 @@ img {
 		<div class="container">
 			<div class="table-wrap">
 				<div class="table-cell">
-					<strong><a href="index.html">@kryptonstudio/ecs-src</a></strong>
+					<strong><a href="../index.html">@kryptonstudio/ecs-src</a></strong>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -2704,94 +2704,300 @@ img {
 </header>
 <nav class="tsd-navigation secondary">
 	<ul>
+		<li class="current tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
+			<a href="data_systemcollection.systemcollection.html" class="tsd-kind-icon">System<wbr>Collection</a>
+			<ul>
+				<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-has-type-parameter">
+					<a href="data_systemcollection.systemcollection.html#constructor" class="tsd-kind-icon">constructor</a>
+				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a href="data_systemcollection.systemcollection.html#_filters" class="tsd-kind-icon">_filters</a>
+				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-class">
+					<a href="data_systemcollection.systemcollection.html#ecs" class="tsd-kind-icon">ecs</a>
+				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-class">
+					<a href="data_systemcollection.systemcollection.html#pipeline" class="tsd-kind-icon">pipeline</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class">
+					<a href="data_systemcollection.systemcollection.html#add" class="tsd-kind-icon">add</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class">
+					<a href="data_systemcollection.systemcollection.html#executesystems" class="tsd-kind-icon">execute<wbr>Systems</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class">
+					<a href="data_systemcollection.systemcollection.html#hasfilter" class="tsd-kind-icon">has<wbr>Filter</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class">
+					<a href="data_systemcollection.systemcollection.html#hassystem" class="tsd-kind-icon">has<wbr>System</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class">
+					<a href="data_systemcollection.systemcollection.html#removebyfilter" class="tsd-kind-icon">remove<wbr>ByFilter</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class">
+					<a href="data_systemcollection.systemcollection.html#removesystem" class="tsd-kind-icon">remove<wbr>System</a>
+				</li>
+			</ul>
+		</li>
+		<li class=" tsd-kind-type-alias tsd-parent-kind-module">
+			<a href="../modules/data_systemcollection.html#queuepromisevalue" class="tsd-kind-icon">Queue<wbr>Promise<wbr>Value</a>
+		</li>
 	</ul>
 </nav>
 <div class="container container-main">
 	<div class="content-wrap">
-		<div class="tsd-panel tsd-typography">
-			<p><img src="https://github.com/DeveloperMetal/krypton-ecs/workflows/tests/badge.svg?branch=develop" alt=""></p>
-			<a href="#krypton-ecs-system" id="krypton-ecs-system" style="color: inherit; text-decoration: none;">
-				<h1>Krypton ECS System</h1>
-			</a>
-			<p>An experimental type safe ECS system that supports an application loop and delayed bulk events.</p>
-			<a href="#ecs-introduction" id="ecs-introduction" style="color: inherit; text-decoration: none;">
-				<h2>ECS Introduction</h2>
-			</a>
-			<p>An Entity-Component-System is an software architectural pattern which follows the composition over inheritance principle.</p>
-			<p>This pattern generalizes a highly flexible and extensible systems that achieve polyphormic behaviour via interfaces over inheritance. This removes many ambiguity issues caused by deep inheritance hierarches as an application grows over time.</p>
-			<p>ECS systems are most useful on large systems where adding or removing behaviours without interfeering with existing ones is desired. To achieve this the ECS pattern separates data and implementation into separate systems.</p>
-			<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
-				<h2>Usage</h2>
-			</a>
-			<p>Krypton ECS uses a configurable pipeline approach to managing processing of entities and their components.</p>
-			<p>...</p>
-			<a href="#entities" id="entities" style="color: inherit; text-decoration: none;">
-				<h3>Entities</h3>
-			</a>
-			<p>An entity can be through of as a specific grouping of components.
-			At no point should an entity contains its own data. It is the components&#39;s job to encapsulate data and state for any specific feature or behaviour.</p>
-			<p>This distiction between an entity holding components and the components holding data allows behaviour changes during runtime by a system that mutates components.</p>
-			<p>Defining an entity with Krypton-ECS is very easy, all you need is to define a schema that defines its name and the components to use.</p>
-			<p>Via the schema file:</p>
-			<pre><code class="language-yaml"><span style="color: #800000">entities</span><span style="color: #000000">:</span>
-<span style="color: #000000">  - </span><span style="color: #800000">entity</span><span style="color: #000000">: </span><span style="color: #A31515">&quot;my-entity&quot;</span>
-<span style="color: #000000">    </span><span style="color: #800000">components</span><span style="color: #000000">:</span>
-<span style="color: #000000">      - </span><span style="color: #A31515">&quot;Component1&quot;</span>
-<span style="color: #800000">components</span><span style="color: #000000">:</span>
-<span style="color: #000000">  - </span><span style="color: #800000">component</span><span style="color: #000000">: </span><span style="color: #A31515">&quot;Component1&quot;</span>
-<span style="color: #000000">    </span><span style="color: #800000">fields</span><span style="color: #000000">:</span>
-<span style="color: #000000">      </span><span style="color: #800000">fieldA</span><span style="color: #000000">:</span>
-<span style="color: #000000">        </span><span style="color: #800000">type</span><span style="color: #000000">: </span><span style="color: #0000FF">string</span>
-</code></pre>
-			<p>then to generate the ecs client:</p>
-			<pre><code class="language-bash"><span style="color: #000000">kecs generate</span>
-</code></pre>
-			<p>At runtime:</p>
-			<pre><code class="language-typescript"><span style="color: #001080">app</span><span style="color: #000000">.</span><span style="color: #001080">entities</span><span style="color: #000000">.</span><span style="color: #795E26">add</span><span style="color: #000000">({</span>
-<span style="color: #000000">  </span><span style="color: #001080">entity:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;my-entity&quot;</span><span style="color: #000000">,</span>
-<span style="color: #000000">  </span><span style="color: #001080">components:</span><span style="color: #000000"> [</span><span style="color: #A31515">&quot;Component1&quot;</span><span style="color: #000000">]</span>
-<span style="color: #000000">})</span>
-</code></pre>
-			<a href="#components" id="components" style="color: inherit; text-decoration: none;">
-				<h3>Components</h3>
-			</a>
-			<p>Components hold all data related to a feature and should always hold the minimum amount of data to implement a feature. In fact it is highly desired to split features into multiple components that contain very specific data about the different behaviours a feature might require.</p>
-			<p>...</p>
-			<a href="#systems-events-and-their-filters" id="systems-events-and-their-filters" style="color: inherit; text-decoration: none;">
-				<h3>Systems, events and their filters</h3>
-			</a>
-			<p>Systems marry the relationship between entities, components and the mutation of their data. When an application&#39;s behaviour is desired, a system is called to mutate the state of the application.</p>
-			<p>Usually, systems limit themselves to mutate the components they control. But nothing prevents them from touching other components if they support and know other component interfaces.</p>
-			<p>...</p>
-		</div>
-		<div style="position:relative;"><a name="typedoc-main-index" class="tsd-anchor"></a></div>
+		<section class="tsd-panel tsd-type-parameters">
+			<h3>Type parameters</h3>
+			<ul class="tsd-type-parameters">
+				<li>
+					<h4>D<span class="tsd-signature-symbol">: </span><a href="../interfaces/types.idefinitions.html" class="tsd-signature-type" data-tsd-kind="Interface">IDefinitions</a></h4>
+				</li>
+				<li>
+					<h4>C<span class="tsd-signature-symbol">: </span><a href="../modules/schemas_types.html#icomponents" class="tsd-signature-type" data-tsd-kind="Type alias">IComponents</a></h4>
+				</li>
+			</ul>
+		</section>
+		<section class="tsd-panel tsd-hierarchy">
+			<h3>Hierarchy</h3>
+			<ul class="tsd-hierarchy">
+				<li>
+					<span class="target">SystemCollection</span>
+				</li>
+			</ul>
+		</section>
 		<section class="tsd-panel-group tsd-index-group">
 			<h2>Index</h2>
 			<section class="tsd-panel tsd-index-panel">
 				<div class="tsd-index-content">
 					<section class="tsd-index-section ">
-						<h3>Modules</h3>
+						<h3>Constructors</h3>
 						<ul class="tsd-index-list">
-							<li class="tsd-kind-module"><a href="modules/contants.html" class="tsd-kind-icon">contants</a></li>
-							<li class="tsd-kind-module"><a href="modules/data.html" class="tsd-kind-icon">data</a></li>
-							<li class="tsd-kind-module"><a href="modules/data_component.html" class="tsd-kind-icon">data/component</a></li>
-							<li class="tsd-kind-module"><a href="modules/data_componentmanager.html" class="tsd-kind-icon">data/component<wbr>Manager</a></li>
-							<li class="tsd-kind-module"><a href="modules/data_entity.html" class="tsd-kind-icon">data/entity</a></li>
-							<li class="tsd-kind-module"><a href="modules/data_entitycollection.html" class="tsd-kind-icon">data/entity<wbr>Collection</a></li>
-							<li class="tsd-kind-module"><a href="modules/data_pipeline.html" class="tsd-kind-icon">data/pipeline</a></li>
-							<li class="tsd-kind-module"><a href="modules/data_systemcollection.html" class="tsd-kind-icon">data/system<wbr>Collection</a></li>
-							<li class="tsd-kind-module"><a href="modules/data_utils.html" class="tsd-kind-icon">data/utils</a></li>
-							<li class="tsd-kind-module"><a href="modules/decorators.html" class="tsd-kind-icon">decorators</a></li>
-							<li class="tsd-kind-module"><a href="modules/decorators_system.html" class="tsd-kind-icon">decorators/system</a></li>
-							<li class="tsd-kind-module"><a href="modules/ecs_base.html" class="tsd-kind-icon">ecs_<wbr>base</a></li>
-							<li class="tsd-kind-module"><a href="modules/index.html" class="tsd-kind-icon">index</a></li>
-							<li class="tsd-kind-module"><a href="modules/schemas.html" class="tsd-kind-icon">schemas</a></li>
-							<li class="tsd-kind-module"><a href="modules/schemas_types.html" class="tsd-kind-icon">schemas/types</a></li>
-							<li class="tsd-kind-module"><a href="modules/tests_ecs.html" class="tsd-kind-icon">tests/ecs</a></li>
-							<li class="tsd-kind-module"><a href="modules/types.html" class="tsd-kind-icon">types</a></li>
+							<li class="tsd-kind-constructor tsd-parent-kind-class tsd-has-type-parameter"><a href="data_systemcollection.systemcollection.html#constructor" class="tsd-kind-icon">constructor</a></li>
+						</ul>
+					</section>
+					<section class="tsd-index-section ">
+						<h3>Properties</h3>
+						<ul class="tsd-index-list">
+							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="data_systemcollection.systemcollection.html#_filters" class="tsd-kind-icon">_filters</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-class"><a href="data_systemcollection.systemcollection.html#ecs" class="tsd-kind-icon">ecs</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-class"><a href="data_systemcollection.systemcollection.html#pipeline" class="tsd-kind-icon">pipeline</a></li>
+						</ul>
+					</section>
+					<section class="tsd-index-section ">
+						<h3>Methods</h3>
+						<ul class="tsd-index-list">
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="data_systemcollection.systemcollection.html#add" class="tsd-kind-icon">add</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="data_systemcollection.systemcollection.html#executesystems" class="tsd-kind-icon">execute<wbr>Systems</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="data_systemcollection.systemcollection.html#hasfilter" class="tsd-kind-icon">has<wbr>Filter</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="data_systemcollection.systemcollection.html#hassystem" class="tsd-kind-icon">has<wbr>System</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="data_systemcollection.systemcollection.html#removebyfilter" class="tsd-kind-icon">remove<wbr>ByFilter</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="data_systemcollection.systemcollection.html#removesystem" class="tsd-kind-icon">remove<wbr>System</a></li>
 						</ul>
 					</section>
 				</div>
+			</section>
+		</section>
+		<section class="tsd-panel-group tsd-member-group ">
+			<h2>Constructors</h2>
+			<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-has-type-parameter">
+				<a name="constructor" class="tsd-anchor"></a>
+				<h3>constructor</h3>
+				<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-has-type-parameter">
+					<li class="tsd-signature tsd-kind-icon">new <wbr>System<wbr>Collection&lt;D, C&gt;<span class="tsd-signature-symbol">(</span>ecs<span class="tsd-signature-symbol">: </span><a href="ecs_base.ecsbase.html" class="tsd-signature-type" data-tsd-kind="Class">ECSBase</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">D</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span>, pipeline<span class="tsd-signature-symbol">: </span><a href="data_pipeline.pipeline.html" class="tsd-signature-type" data-tsd-kind="Class">Pipeline</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">D</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="data_systemcollection.systemcollection.html" class="tsd-signature-type" data-tsd-kind="Class">SystemCollection</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">D</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/DeveloperMetal/krypton-ecs/blob/e50b2c5/src/ecs/data/systemCollection.ts#L14">data/systemCollection.ts:14</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-type-parameters-title">Type parameters</h4>
+						<ul class="tsd-type-parameters">
+							<li>
+								<h4>D<span class="tsd-signature-symbol">: </span><a href="../interfaces/types.idefinitions.html" class="tsd-signature-type" data-tsd-kind="Interface">IDefinitions</a></h4>
+							</li>
+							<li>
+								<h4>C<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h4>
+							</li>
+						</ul>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>ecs: <a href="ecs_base.ecsbase.html" class="tsd-signature-type" data-tsd-kind="Class">ECSBase</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">D</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h5>
+							</li>
+							<li>
+								<h5>pipeline: <a href="data_pipeline.pipeline.html" class="tsd-signature-type" data-tsd-kind="Class">Pipeline</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">D</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <a href="data_systemcollection.systemcollection.html" class="tsd-signature-type" data-tsd-kind="Class">SystemCollection</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">D</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h4>
+					</li>
+				</ul>
+			</section>
+		</section>
+		<section class="tsd-panel-group tsd-member-group ">
+			<h2>Properties</h2>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+				<a name="_filters" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagPrivate">Private</span> _filters</h3>
+				<div class="tsd-signature tsd-kind-icon">_filters<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="../modules/types.html#ifilter" class="tsd-signature-type" data-tsd-kind="Type alias">IFilter</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">D</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Set</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/types.html#isystem" class="tsd-signature-type" data-tsd-kind="Type alias">ISystem</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">D</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/DeveloperMetal/krypton-ecs/blob/e50b2c5/src/ecs/data/systemCollection.ts#L14">data/systemCollection.ts:14</a></li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+				<a name="ecs" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> ecs</h3>
+				<div class="tsd-signature tsd-kind-icon">ecs<span class="tsd-signature-symbol">:</span> <a href="ecs_base.ecsbase.html" class="tsd-signature-type" data-tsd-kind="Class">ECSBase</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">D</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></div>
+				<aside class="tsd-sources">
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+				<a name="pipeline" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> pipeline</h3>
+				<div class="tsd-signature tsd-kind-icon">pipeline<span class="tsd-signature-symbol">:</span> <a href="data_pipeline.pipeline.html" class="tsd-signature-type" data-tsd-kind="Class">Pipeline</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">D</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></div>
+				<aside class="tsd-sources">
+				</aside>
+			</section>
+		</section>
+		<section class="tsd-panel-group tsd-member-group ">
+			<h2>Methods</h2>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="add" class="tsd-anchor"></a>
+				<h3>add</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">add<span class="tsd-signature-symbol">(</span>system<span class="tsd-signature-symbol">: </span><a href="../modules/types.html#isystem" class="tsd-signature-type" data-tsd-kind="Type alias">ISystem</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">D</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span>, filter<span class="tsd-signature-symbol">?: </span><a href="../modules/types.html#ifilter" class="tsd-signature-type" data-tsd-kind="Type alias">IFilter</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">D</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/DeveloperMetal/krypton-ecs/blob/e50b2c5/src/ecs/data/systemCollection.ts#L31">data/systemCollection.ts:31</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>system: <a href="../modules/types.html#isystem" class="tsd-signature-type" data-tsd-kind="Type alias">ISystem</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">D</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h5>
+							</li>
+							<li>
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> filter: <a href="../modules/types.html#ifilter" class="tsd-signature-type" data-tsd-kind="Type alias">IFilter</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">D</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="executesystems" class="tsd-anchor"></a>
+				<h3>execute<wbr>Systems</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">execute<wbr>Systems<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/DeveloperMetal/krypton-ecs/blob/e50b2c5/src/ecs/data/systemCollection.ts#L18">data/systemCollection.ts:18</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="hasfilter" class="tsd-anchor"></a>
+				<h3>has<wbr>Filter</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">has<wbr>Filter<span class="tsd-signature-symbol">(</span>filter<span class="tsd-signature-symbol">: </span><a href="../modules/types.html#ifilter" class="tsd-signature-type" data-tsd-kind="Type alias">IFilter</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">D</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/DeveloperMetal/krypton-ecs/blob/e50b2c5/src/ecs/data/systemCollection.ts#L56">data/systemCollection.ts:56</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>filter: <a href="../modules/types.html#ifilter" class="tsd-signature-type" data-tsd-kind="Type alias">IFilter</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">D</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="hassystem" class="tsd-anchor"></a>
+				<h3>has<wbr>System</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">has<wbr>System<span class="tsd-signature-symbol">(</span>system<span class="tsd-signature-symbol">: </span><a href="../modules/types.html#isystem" class="tsd-signature-type" data-tsd-kind="Type alias">ISystem</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">D</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/DeveloperMetal/krypton-ecs/blob/e50b2c5/src/ecs/data/systemCollection.ts#L60">data/systemCollection.ts:60</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>system: <a href="../modules/types.html#isystem" class="tsd-signature-type" data-tsd-kind="Type alias">ISystem</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">D</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="removebyfilter" class="tsd-anchor"></a>
+				<h3>remove<wbr>ByFilter</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">remove<wbr>ByFilter<span class="tsd-signature-symbol">(</span>filter<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="../modules/types.html#ifilter" class="tsd-signature-type" data-tsd-kind="Type alias">IFilter</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">D</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/DeveloperMetal/krypton-ecs/blob/e50b2c5/src/ecs/data/systemCollection.ts#L41">data/systemCollection.ts:41</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>filter: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="../modules/types.html#ifilter" class="tsd-signature-type" data-tsd-kind="Type alias">IFilter</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">D</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="removesystem" class="tsd-anchor"></a>
+				<h3>remove<wbr>System</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">remove<wbr>System<span class="tsd-signature-symbol">(</span>system<span class="tsd-signature-symbol">: </span><a href="../modules/types.html#isystem" class="tsd-signature-type" data-tsd-kind="Type alias">ISystem</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">D</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/DeveloperMetal/krypton-ecs/blob/e50b2c5/src/ecs/data/systemCollection.ts#L48">data/systemCollection.ts:48</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>system: <a href="../modules/types.html#isystem" class="tsd-signature-type" data-tsd-kind="Type alias">ISystem</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">D</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					</li>
+				</ul>
 			</section>
 		</section>
 		<footer class="with-border-bottom">
@@ -2805,15 +3011,20 @@ img {
 						<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
 					</ul>
 					<ul class="tsd-legend">
+						<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+						<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+						<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+						<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+					</ul>
+					<ul class="tsd-legend">
 						<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 						<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
 					</ul>
 					<ul class="tsd-legend">
-						<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
-						<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+						<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
 					</ul>
 					<ul class="tsd-legend">
-						<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+						<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
 					</ul>
 				</div>
 			</div>

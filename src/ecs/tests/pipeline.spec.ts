@@ -1,6 +1,6 @@
 import { mocked } from "ts-jest/utils";
 import { ECS } from "..";
-import { Entity } from "../data/entity";
+import { ECSEntity } from "../data/entity";
 import { Pipeline } from "../data/pipeline";
 import { SystemCollection } from "../data/systemCollection";
 import { IFilter } from "../types";
@@ -23,7 +23,7 @@ jest.mock('../data/systemCollection', () => ({
 }));
 
 jest.mock('../data/entity', () => ({
-  Entity: jest.fn().mockImplementation(() => ({
+  ECSEntity: jest.fn().mockImplementation(() => ({
     schema: {
       components: []
     }
@@ -34,7 +34,8 @@ jest.mock('../data/entity', () => ({
 describe("Pipelines", () => {
   const ECSMocked = mocked(ECS, true);
   const SystemCollectionMocked = mocked(SystemCollection, true);
-  const EntityMocked = mocked(Entity, true);
+  const EntityMocked = mocked(ECSEntity, false);
+  console.log("Mocked classes: ", ECSMocked, SystemCollectionMocked, EntityMocked);
   const ecs = new ECS({
     schema: {
       components: [{
@@ -56,9 +57,9 @@ describe("Pipelines", () => {
 
   it("Setup Pipeline no exit filter", () => {
     const pipeline = new Pipeline(ecs);
-    const testEntity1 = new Entity({} as IEntitySchema<string>, ecs.componentManager);
-    const testEntity2 = new Entity({} as IEntitySchema<string>, ecs.componentManager);
-    const testEntity3 = new Entity({} as IEntitySchema<string>, ecs.componentManager);
+    const testEntity1 = new ECSEntity({} as IEntitySchema<string>, ecs.componentManager);
+    const testEntity2 = new ECSEntity({} as IEntitySchema<string>, ecs.componentManager);
+    const testEntity3 = new ECSEntity({} as IEntitySchema<string>, ecs.componentManager);
     pipeline.addEntity(testEntity1);
 
     expect(pipeline.systems).toBeTruthy();
@@ -75,7 +76,7 @@ describe("Pipelines", () => {
   it("Setup Pipeline with enter filters", () => {
     const enterFilter: IFilter<{}, string> = jest.fn((_ecs, entities) => entities);
     const pipeline = new Pipeline(ecs, enterFilter);
-    const testEntity1 = new Entity({} as IEntitySchema<string>, ecs.componentManager);
+    const testEntity1 = new ECSEntity({} as IEntitySchema<string>, ecs.componentManager);
     pipeline.addEntity(testEntity1);
 
     expect(pipeline.systems).toBeTruthy();
@@ -84,8 +85,8 @@ describe("Pipelines", () => {
   });
 
   it("Setup Pipeline with exit filters", async () => {
-    const testEntity1 = new Entity({} as IEntitySchema<string>, ecs.componentManager);
-    const testEntity2 = new Entity({} as IEntitySchema<string>, ecs.componentManager);
+    const testEntity1 = new ECSEntity({} as IEntitySchema<string>, ecs.componentManager);
+    const testEntity2 = new ECSEntity({} as IEntitySchema<string>, ecs.componentManager);
     const exitFilter: IFilter<{}, string> = jest.fn((_ecs, _entities) => [testEntity2].values());
     const pipeline = new Pipeline(ecs, undefined, exitFilter);
     pipeline.addEntity(testEntity1);
@@ -106,7 +107,7 @@ describe("Pipelines", () => {
 
     expect(pipelineChild.entityCount).toBe(0);
 
-    const testEntity1 = new Entity({} as IEntitySchema<string>, ecs.componentManager);
+    const testEntity1 = new ECSEntity({} as IEntitySchema<string>, ecs.componentManager);
     pipelineParent.addEntity(testEntity1);
     await pipelineParent.execute();
 
@@ -117,7 +118,7 @@ describe("Pipelines", () => {
   it("Pipeline remove entity", async () => {
     const pipeline = new Pipeline(ecs);
 
-    const testEntity1 = new Entity({} as IEntitySchema<string>, ecs.componentManager);
+    const testEntity1 = new ECSEntity({} as IEntitySchema<string>, ecs.componentManager);
     pipeline.addEntity(testEntity1);
     expect(pipeline.entityCount).toBe(1);
     pipeline.removeEntity(testEntity1);
@@ -129,7 +130,7 @@ describe("Pipelines", () => {
     const pipeline2 = new Pipeline(ecs);
     pipeline1.children.set("child", pipeline2);
 
-    const testEntity1 = new Entity({} as IEntitySchema<string>, ecs.componentManager);
+    const testEntity1 = new ECSEntity({} as IEntitySchema<string>, ecs.componentManager);
     pipeline1.addEntity(testEntity1);
     pipeline2.addEntity(testEntity1);
 
@@ -144,7 +145,7 @@ describe("Pipelines", () => {
   it("Pipeline flush", async () => {
     const pipeline = new Pipeline(ecs);
 
-    const testEntity1 = new Entity({} as IEntitySchema<string>, ecs.componentManager);
+    const testEntity1 = new ECSEntity({} as IEntitySchema<string>, ecs.componentManager);
     pipeline.addEntity(testEntity1);
     expect(pipeline.entityCount).toBe(1);
     pipeline.flush();
@@ -156,7 +157,7 @@ describe("Pipelines", () => {
     const pipeline2 = new Pipeline(ecs);
     pipeline1.children.set("child", pipeline2);
 
-    const testEntity1 = new Entity({} as IEntitySchema<string>, ecs.componentManager);
+    const testEntity1 = new ECSEntity({} as IEntitySchema<string>, ecs.componentManager);
     pipeline1.addEntity(testEntity1);
     pipeline2.addEntity(testEntity1);
 

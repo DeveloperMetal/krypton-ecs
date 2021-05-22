@@ -1,10 +1,10 @@
 import { ECS, IECSSchema } from "..";
 import { Component } from "../data/component";
 import { ComponentManager } from "../data/componentManager";
-import { Entity } from "../data/entity";
+import { ECSEntity } from "../data/entity";
 import { IComponentSchema } from "../schemas/types";
 
-interface ITestComponent extends Component{
+interface ITestComponent extends ECSEntity<{}, string> {
   fieldA: string
   fieldB: number
   fieldC: boolean
@@ -14,12 +14,12 @@ interface ITestComponent extends Component{
   fieldNull: number | null
 }
 
-interface IHaveTestComponent extends Entity {
+interface IHaveTestComponent extends ECSEntity<{}, string> {
   TestComponent: ITestComponent
 }
 
 describe("Components", () => {
-  let testComponentManager: ComponentManager;
+  let testComponentManager: ComponentManager<{}, string>;
   let testEcs: ECS;
   const testComponentSchema: IComponentSchema = {
     component: "TestComponent",
@@ -61,7 +61,7 @@ describe("Components", () => {
       }
     }
   };
-  const schema: IECSSchema = {
+  const schema: IECSSchema<string> = {
     components: [
       testComponentSchema
       , {
@@ -133,7 +133,7 @@ describe("Components", () => {
 
 
   it("Defaults", () => {
-    const entity = new Entity({
+    const entity = new ECSEntity<{}, string>({
       entity: "testEntity",
       components: ["TestComponent"]
     }, testComponentManager).as<IHaveTestComponent>();
@@ -147,7 +147,7 @@ describe("Components", () => {
   });
 
   it("Set Fields", () => {
-    const entity = new Entity({
+    const entity = new ECSEntity({
       entity: "testEntity",
       components: ["TestComponent"]
     }, testComponentManager).as<IHaveTestComponent>();
@@ -168,7 +168,7 @@ describe("Components", () => {
   });
 
   it("Test nullables", () => {
-    const entity = new Entity({
+    const entity = new ECSEntity({
       entity: "testEntity",
       components: ["TestComponent"]
     }, testComponentManager).as<IHaveTestComponent>();
@@ -179,7 +179,7 @@ describe("Components", () => {
   });
 
   it("Test invalid types", () => {
-    const entity = new Entity({
+    const entity = new ECSEntity({
       entity: "testEntity",
       components: ["TestComponent"]
     }, testComponentManager).as<IHaveTestComponent>();
@@ -193,7 +193,7 @@ describe("Components", () => {
   });
 
   it("Invalid field set", () => {
-    const entity = new Entity({
+    const entity = new ECSEntity({
       entity: "testEntity",
       components: ["TestComponent"]
     }, testComponentManager).as<IHaveTestComponent>();
@@ -207,16 +207,16 @@ describe("Components", () => {
       components: [component]
     });
 
-    expect(() => new Entity(makeSchema("BadNumberComponent"), testComponentManager)).toThrow();
-    expect(() => new Entity(makeSchema("BadStringComponent"), testComponentManager)).toThrow();
-    expect(() => new Entity(makeSchema("BadBooleanComponent"), testComponentManager)).toThrow();
-    expect(() => new Entity(makeSchema("BadObjectComponent"), testComponentManager)).toThrow();
-    expect(() => new Entity(makeSchema("BadFloatArrayComponent"), testComponentManager)).toThrow();
-    expect(() => new Entity(makeSchema("BadNullDefault"), testComponentManager)).toThrow();
+    expect(() => new ECSEntity(makeSchema("BadNumberComponent"), testComponentManager)).toThrow();
+    expect(() => new ECSEntity(makeSchema("BadStringComponent"), testComponentManager)).toThrow();
+    expect(() => new ECSEntity(makeSchema("BadBooleanComponent"), testComponentManager)).toThrow();
+    expect(() => new ECSEntity(makeSchema("BadObjectComponent"), testComponentManager)).toThrow();
+    expect(() => new ECSEntity(makeSchema("BadFloatArrayComponent"), testComponentManager)).toThrow();
+    expect(() => new ECSEntity(makeSchema("BadNullDefault"), testComponentManager)).toThrow();
   });
 
   it("Parent reference", () => {
-    const entity = new Entity({
+    const entity = new ECSEntity({
       entity: "testEntity",
       components: ["TestComponent"]
     }, testComponentManager);
@@ -226,7 +226,7 @@ describe("Components", () => {
   })
 
   it("Test constructor, infer guard", () => {
-    const entity = new Entity({
+    const entity = new ECSEntity({
       entity: "testEntity",
       components: ["TestComponent"]
     }, testComponentManager)

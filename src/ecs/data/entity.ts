@@ -1,4 +1,4 @@
-import { IDefinitions } from 'types';
+import { IDefinitions } from '../types';
 import { IComponents, IEntitySchema } from '../schemas/types';
 import { Component } from './component';
 import { ComponentManager } from './componentManager';

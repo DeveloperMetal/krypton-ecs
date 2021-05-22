@@ -1,9 +1,8 @@
-import { IComponents } from "schemas";
-import { IDefinitions } from "types";
+import { IComponents } from "../schemas";
+import { IDefinitions, IFilter } from "../types";
 import { ECSBase } from "..";
 import { ECSEntity} from "./entity";
 import { SystemCollection } from "./systemCollection";
-import { IFilter } from "../types";
 
 /**
  * An execution pipeline to handle tight control of systems execution and orchestration.

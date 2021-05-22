@@ -1,5 +1,5 @@
-import { IComponents } from "schemas";
-import { IDefinitions } from "types";
+import { IComponents } from "../schemas";
+import { IDefinitions } from "../types";
 import { ECSBase, globalECSCache } from "..";
 import { EXEC_PER_FRAME } from "../contants";
 import { IFilter, ISystem } from "../types";

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>@kryptonstudio/ecs-src | @kryptonstudio/ecs-src</title>
+	<title>index | @kryptonstudio/ecs-src</title>
 	<meta name="description" content="Documentation for @kryptonstudio/ecs-src">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<style type="text/css">:root {
@@ -2674,7 +2674,7 @@ img {
 		<div class="container">
 			<div class="table-wrap">
 				<div class="table-cell">
-					<strong><a href="index.html">@kryptonstudio/ecs-src</a></strong>
+					<strong><a href="../index.html">@kryptonstudio/ecs-src</a></strong>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -2704,94 +2704,176 @@ img {
 </header>
 <nav class="tsd-navigation secondary">
 	<ul>
+		<li class=" tsd-kind-reference tsd-parent-kind-module">
+			<a href="index.html#ecsbase" class="tsd-kind-icon">ECSBase</a>
+		</li>
+		<li class=" tsd-kind-reference tsd-parent-kind-module">
+			<a href="index.html#ecsentity" class="tsd-kind-icon">ECSEntity</a>
+		</li>
+		<li class=" tsd-kind-reference tsd-parent-kind-module">
+			<a href="index.html#ecsopts" class="tsd-kind-icon">ECSOpts</a>
+		</li>
+		<li class=" tsd-kind-reference tsd-parent-kind-module">
+			<a href="index.html#entitystate" class="tsd-kind-icon">Entity<wbr>State</a>
+		</li>
+		<li class=" tsd-kind-reference tsd-parent-kind-module">
+			<a href="index.html#filterpredicate" class="tsd-kind-icon">Filter<wbr>Predicate</a>
+		</li>
+		<li class=" tsd-kind-reference tsd-parent-kind-module">
+			<a href="index.html#generatorinput" class="tsd-kind-icon">Generator<wbr>Input</a>
+		</li>
+		<li class=" tsd-kind-reference tsd-parent-kind-module">
+			<a href="index.html#icomponentschema" class="tsd-kind-icon">IComponent<wbr>Schema</a>
+		</li>
+		<li class=" tsd-kind-reference tsd-parent-kind-module">
+			<a href="index.html#icomponents" class="tsd-kind-icon">IComponents</a>
+		</li>
+		<li class=" tsd-kind-reference tsd-parent-kind-module">
+			<a href="index.html#idefinitions" class="tsd-kind-icon">IDefinitions</a>
+		</li>
+		<li class=" tsd-kind-reference tsd-parent-kind-module">
+			<a href="index.html#iecsschema" class="tsd-kind-icon">IECSSchema</a>
+		</li>
+		<li class=" tsd-kind-reference tsd-parent-kind-module">
+			<a href="index.html#ientityschema" class="tsd-kind-icon">IEntity<wbr>Schema</a>
+		</li>
+		<li class=" tsd-kind-reference tsd-parent-kind-module">
+			<a href="index.html#ifieldschema" class="tsd-kind-icon">IField<wbr>Schema</a>
+		</li>
+		<li class=" tsd-kind-reference tsd-parent-kind-module">
+			<a href="index.html#ifilter" class="tsd-kind-icon">IFilter</a>
+		</li>
+		<li class=" tsd-kind-reference tsd-parent-kind-module">
+			<a href="index.html#ischemainclude" class="tsd-kind-icon">ISchema<wbr>Include</a>
+		</li>
+		<li class=" tsd-kind-reference tsd-parent-kind-module">
+			<a href="index.html#isystem" class="tsd-kind-icon">ISystem</a>
+		</li>
+		<li class=" tsd-kind-reference tsd-parent-kind-module">
+			<a href="index.html#globalecscache" class="tsd-kind-icon">globalECSCache</a>
+		</li>
+		<li class=" tsd-kind-class tsd-parent-kind-module">
+			<a href="../classes/index.ecs.html" class="tsd-kind-icon">ECS</a>
+		</li>
 	</ul>
 </nav>
 <div class="container container-main">
 	<div class="content-wrap">
-		<div class="tsd-panel tsd-typography">
-			<p><img src="https://github.com/DeveloperMetal/krypton-ecs/workflows/tests/badge.svg?branch=develop" alt=""></p>
-			<a href="#krypton-ecs-system" id="krypton-ecs-system" style="color: inherit; text-decoration: none;">
-				<h1>Krypton ECS System</h1>
-			</a>
-			<p>An experimental type safe ECS system that supports an application loop and delayed bulk events.</p>
-			<a href="#ecs-introduction" id="ecs-introduction" style="color: inherit; text-decoration: none;">
-				<h2>ECS Introduction</h2>
-			</a>
-			<p>An Entity-Component-System is an software architectural pattern which follows the composition over inheritance principle.</p>
-			<p>This pattern generalizes a highly flexible and extensible systems that achieve polyphormic behaviour via interfaces over inheritance. This removes many ambiguity issues caused by deep inheritance hierarches as an application grows over time.</p>
-			<p>ECS systems are most useful on large systems where adding or removing behaviours without interfeering with existing ones is desired. To achieve this the ECS pattern separates data and implementation into separate systems.</p>
-			<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
-				<h2>Usage</h2>
-			</a>
-			<p>Krypton ECS uses a configurable pipeline approach to managing processing of entities and their components.</p>
-			<p>...</p>
-			<a href="#entities" id="entities" style="color: inherit; text-decoration: none;">
-				<h3>Entities</h3>
-			</a>
-			<p>An entity can be through of as a specific grouping of components.
-			At no point should an entity contains its own data. It is the components&#39;s job to encapsulate data and state for any specific feature or behaviour.</p>
-			<p>This distiction between an entity holding components and the components holding data allows behaviour changes during runtime by a system that mutates components.</p>
-			<p>Defining an entity with Krypton-ECS is very easy, all you need is to define a schema that defines its name and the components to use.</p>
-			<p>Via the schema file:</p>
-			<pre><code class="language-yaml"><span style="color: #800000">entities</span><span style="color: #000000">:</span>
-<span style="color: #000000">  - </span><span style="color: #800000">entity</span><span style="color: #000000">: </span><span style="color: #A31515">&quot;my-entity&quot;</span>
-<span style="color: #000000">    </span><span style="color: #800000">components</span><span style="color: #000000">:</span>
-<span style="color: #000000">      - </span><span style="color: #A31515">&quot;Component1&quot;</span>
-<span style="color: #800000">components</span><span style="color: #000000">:</span>
-<span style="color: #000000">  - </span><span style="color: #800000">component</span><span style="color: #000000">: </span><span style="color: #A31515">&quot;Component1&quot;</span>
-<span style="color: #000000">    </span><span style="color: #800000">fields</span><span style="color: #000000">:</span>
-<span style="color: #000000">      </span><span style="color: #800000">fieldA</span><span style="color: #000000">:</span>
-<span style="color: #000000">        </span><span style="color: #800000">type</span><span style="color: #000000">: </span><span style="color: #0000FF">string</span>
-</code></pre>
-			<p>then to generate the ecs client:</p>
-			<pre><code class="language-bash"><span style="color: #000000">kecs generate</span>
-</code></pre>
-			<p>At runtime:</p>
-			<pre><code class="language-typescript"><span style="color: #001080">app</span><span style="color: #000000">.</span><span style="color: #001080">entities</span><span style="color: #000000">.</span><span style="color: #795E26">add</span><span style="color: #000000">({</span>
-<span style="color: #000000">  </span><span style="color: #001080">entity:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;my-entity&quot;</span><span style="color: #000000">,</span>
-<span style="color: #000000">  </span><span style="color: #001080">components:</span><span style="color: #000000"> [</span><span style="color: #A31515">&quot;Component1&quot;</span><span style="color: #000000">]</span>
-<span style="color: #000000">})</span>
-</code></pre>
-			<a href="#components" id="components" style="color: inherit; text-decoration: none;">
-				<h3>Components</h3>
-			</a>
-			<p>Components hold all data related to a feature and should always hold the minimum amount of data to implement a feature. In fact it is highly desired to split features into multiple components that contain very specific data about the different behaviours a feature might require.</p>
-			<p>...</p>
-			<a href="#systems-events-and-their-filters" id="systems-events-and-their-filters" style="color: inherit; text-decoration: none;">
-				<h3>Systems, events and their filters</h3>
-			</a>
-			<p>Systems marry the relationship between entities, components and the mutation of their data. When an application&#39;s behaviour is desired, a system is called to mutate the state of the application.</p>
-			<p>Usually, systems limit themselves to mutate the components they control. But nothing prevents them from touching other components if they support and know other component interfaces.</p>
-			<p>...</p>
-		</div>
-		<div style="position:relative;"><a name="typedoc-main-index" class="tsd-anchor"></a></div>
 		<section class="tsd-panel-group tsd-index-group">
 			<h2>Index</h2>
 			<section class="tsd-panel tsd-index-panel">
 				<div class="tsd-index-content">
 					<section class="tsd-index-section ">
-						<h3>Modules</h3>
+						<h3>References</h3>
 						<ul class="tsd-index-list">
-							<li class="tsd-kind-module"><a href="modules/contants.html" class="tsd-kind-icon">contants</a></li>
-							<li class="tsd-kind-module"><a href="modules/data.html" class="tsd-kind-icon">data</a></li>
-							<li class="tsd-kind-module"><a href="modules/data_component.html" class="tsd-kind-icon">data/component</a></li>
-							<li class="tsd-kind-module"><a href="modules/data_componentmanager.html" class="tsd-kind-icon">data/component<wbr>Manager</a></li>
-							<li class="tsd-kind-module"><a href="modules/data_entity.html" class="tsd-kind-icon">data/entity</a></li>
-							<li class="tsd-kind-module"><a href="modules/data_entitycollection.html" class="tsd-kind-icon">data/entity<wbr>Collection</a></li>
-							<li class="tsd-kind-module"><a href="modules/data_pipeline.html" class="tsd-kind-icon">data/pipeline</a></li>
-							<li class="tsd-kind-module"><a href="modules/data_systemcollection.html" class="tsd-kind-icon">data/system<wbr>Collection</a></li>
-							<li class="tsd-kind-module"><a href="modules/data_utils.html" class="tsd-kind-icon">data/utils</a></li>
-							<li class="tsd-kind-module"><a href="modules/decorators.html" class="tsd-kind-icon">decorators</a></li>
-							<li class="tsd-kind-module"><a href="modules/decorators_system.html" class="tsd-kind-icon">decorators/system</a></li>
-							<li class="tsd-kind-module"><a href="modules/ecs_base.html" class="tsd-kind-icon">ecs_<wbr>base</a></li>
-							<li class="tsd-kind-module"><a href="modules/index.html" class="tsd-kind-icon">index</a></li>
-							<li class="tsd-kind-module"><a href="modules/schemas.html" class="tsd-kind-icon">schemas</a></li>
-							<li class="tsd-kind-module"><a href="modules/schemas_types.html" class="tsd-kind-icon">schemas/types</a></li>
-							<li class="tsd-kind-module"><a href="modules/tests_ecs.html" class="tsd-kind-icon">tests/ecs</a></li>
-							<li class="tsd-kind-module"><a href="modules/types.html" class="tsd-kind-icon">types</a></li>
+							<li class="tsd-kind-reference tsd-parent-kind-module"><a href="index.html#ecsbase" class="tsd-kind-icon">ECSBase</a></li>
+							<li class="tsd-kind-reference tsd-parent-kind-module"><a href="index.html#ecsentity" class="tsd-kind-icon">ECSEntity</a></li>
+							<li class="tsd-kind-reference tsd-parent-kind-module"><a href="index.html#ecsopts" class="tsd-kind-icon">ECSOpts</a></li>
+							<li class="tsd-kind-reference tsd-parent-kind-module"><a href="index.html#entitystate" class="tsd-kind-icon">Entity<wbr>State</a></li>
+							<li class="tsd-kind-reference tsd-parent-kind-module"><a href="index.html#filterpredicate" class="tsd-kind-icon">Filter<wbr>Predicate</a></li>
+							<li class="tsd-kind-reference tsd-parent-kind-module"><a href="index.html#generatorinput" class="tsd-kind-icon">Generator<wbr>Input</a></li>
+							<li class="tsd-kind-reference tsd-parent-kind-module"><a href="index.html#icomponentschema" class="tsd-kind-icon">IComponent<wbr>Schema</a></li>
+							<li class="tsd-kind-reference tsd-parent-kind-module"><a href="index.html#icomponents" class="tsd-kind-icon">IComponents</a></li>
+							<li class="tsd-kind-reference tsd-parent-kind-module"><a href="index.html#idefinitions" class="tsd-kind-icon">IDefinitions</a></li>
+							<li class="tsd-kind-reference tsd-parent-kind-module"><a href="index.html#iecsschema" class="tsd-kind-icon">IECSSchema</a></li>
+							<li class="tsd-kind-reference tsd-parent-kind-module"><a href="index.html#ientityschema" class="tsd-kind-icon">IEntity<wbr>Schema</a></li>
+							<li class="tsd-kind-reference tsd-parent-kind-module"><a href="index.html#ifieldschema" class="tsd-kind-icon">IField<wbr>Schema</a></li>
+							<li class="tsd-kind-reference tsd-parent-kind-module"><a href="index.html#ifilter" class="tsd-kind-icon">IFilter</a></li>
+							<li class="tsd-kind-reference tsd-parent-kind-module"><a href="index.html#ischemainclude" class="tsd-kind-icon">ISchema<wbr>Include</a></li>
+							<li class="tsd-kind-reference tsd-parent-kind-module"><a href="index.html#isystem" class="tsd-kind-icon">ISystem</a></li>
+							<li class="tsd-kind-reference tsd-parent-kind-module"><a href="index.html#globalecscache" class="tsd-kind-icon">globalECSCache</a></li>
+						</ul>
+					</section>
+					<section class="tsd-index-section ">
+						<h3>Classes</h3>
+						<ul class="tsd-index-list">
+							<li class="tsd-kind-class tsd-parent-kind-module"><a href="../classes/index.ecs.html" class="tsd-kind-icon">ECS</a></li>
 						</ul>
 					</section>
 				</div>
+			</section>
+		</section>
+		<section class="tsd-panel-group tsd-member-group ">
+			<h2>References</h2>
+			<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+				<a name="ecsbase" class="tsd-anchor"></a>
+				<h3>ECSBase</h3>
+				Re-exports <a href="../classes/ecs_base.ecsbase.html">ECSBase</a>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+				<a name="ecsentity" class="tsd-anchor"></a>
+				<h3>ECSEntity</h3>
+				Re-exports <a href="../classes/data_entity.ecsentity.html">ECSEntity</a>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+				<a name="ecsopts" class="tsd-anchor"></a>
+				<h3>ECSOpts</h3>
+				Re-exports <a href="../interfaces/types.ecsopts.html">ECSOpts</a>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+				<a name="entitystate" class="tsd-anchor"></a>
+				<h3>Entity<wbr>State</h3>
+				Re-exports <a href="../enums/types.entitystate.html">EntityState</a>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+				<a name="filterpredicate" class="tsd-anchor"></a>
+				<h3>Filter<wbr>Predicate</h3>
+				Re-exports <a href="types.html#filterpredicate">FilterPredicate</a>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+				<a name="generatorinput" class="tsd-anchor"></a>
+				<h3>Generator<wbr>Input</h3>
+				Re-exports <a href="schemas_types.html#generatorinput">GeneratorInput</a>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+				<a name="icomponentschema" class="tsd-anchor"></a>
+				<h3>IComponent<wbr>Schema</h3>
+				Re-exports <a href="../interfaces/schemas_types.icomponentschema.html">IComponentSchema</a>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+				<a name="icomponents" class="tsd-anchor"></a>
+				<h3>IComponents</h3>
+				Re-exports <a href="schemas_types.html#icomponents">IComponents</a>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+				<a name="idefinitions" class="tsd-anchor"></a>
+				<h3>IDefinitions</h3>
+				Re-exports <a href="../interfaces/types.idefinitions.html">IDefinitions</a>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+				<a name="iecsschema" class="tsd-anchor"></a>
+				<h3>IECSSchema</h3>
+				Re-exports <a href="../interfaces/schemas_types.iecsschema.html">IECSSchema</a>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+				<a name="ientityschema" class="tsd-anchor"></a>
+				<h3>IEntity<wbr>Schema</h3>
+				Re-exports <a href="../interfaces/schemas_types.ientityschema.html">IEntitySchema</a>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+				<a name="ifieldschema" class="tsd-anchor"></a>
+				<h3>IField<wbr>Schema</h3>
+				Re-exports <a href="../interfaces/schemas_types.ifieldschema.html">IFieldSchema</a>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+				<a name="ifilter" class="tsd-anchor"></a>
+				<h3>IFilter</h3>
+				Re-exports <a href="types.html#ifilter">IFilter</a>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+				<a name="ischemainclude" class="tsd-anchor"></a>
+				<h3>ISchema<wbr>Include</h3>
+				Re-exports <a href="schemas_types.html#ischemainclude">ISchemaInclude</a>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+				<a name="isystem" class="tsd-anchor"></a>
+				<h3>ISystem</h3>
+				Re-exports <a href="types.html#isystem">ISystem</a>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+				<a name="globalecscache" class="tsd-anchor"></a>
+				<h3>globalECSCache</h3>
+				Re-exports <a href="ecs_base.html#globalecscache">globalECSCache</a>
 			</section>
 		</section>
 		<footer class="with-border-bottom">

@@ -1,4 +1,4 @@
-import { IDefinitions } from "types";
+import { IDefinitions } from "../types";
 import { ECSEntity } from "..";
 import { IComponents, IComponentSchema, IFieldSchema } from "../schemas/types";
 import { Identifiable } from "./utils";

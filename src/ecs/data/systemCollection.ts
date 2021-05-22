@@ -1,8 +1,7 @@
-import { IComponents } from "schemas";
-import { IDefinitions } from "types";
+import { IComponents } from "../schemas";
 import { ECSBase } from "..";
 import { Pipeline } from "./pipeline";
-import { IFilter, ISystem } from "../types";
+import { IDefinitions, IFilter, ISystem } from "../types";
 
 export type QueuePromiseValue = {
   resolve?: (value?: void | PromiseLike<void> | undefined) => void

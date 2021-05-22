@@ -1,11 +1,11 @@
-import { ECS, Entity, IECSSchema } from "..";
+import { ECS, ECSEntity, IECSSchema } from "..";
 import { ComponentManager } from "../data/componentManager";
 
 
 describe("Component Manager", () => {
-  let testComponentManager: ComponentManager;
+  let testComponentManager: ComponentManager<{}, string>;
   let testEcs: ECS;
-  const schema: IECSSchema = {
+  const schema: IECSSchema<string> = {
     components: [
       {
         component: "TestComponent",
@@ -29,7 +29,7 @@ describe("Component Manager", () => {
   })
 
   it("Instantiate Component", () => {
-    const testEntity = {} as Entity;
+    const testEntity = {} as ECSEntity<{}, string>;
 
     const component = testComponentManager.newComponentInstance("TestComponent", testEntity);
     expect(component).toBeTruthy();
