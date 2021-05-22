@@ -22,8 +22,10 @@ jobs:
         with:
           node-version: '15'
       - run: |
+          ls -al
+          rm -Rf .yarn/cache
+      - run: |
           npm install -g yarn
-          rm -Rf ./yarn/cache
           yarn install
       - run: yarn test
       - run: yarn lint:cli
