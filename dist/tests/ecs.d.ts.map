@@ -1,1 +1,1 @@
-{"version":3,"file":"ecs.d.ts","sourceRoot":"","sources":["../../src/ecs/tests/ecs.ts"],"names":[],"mappings":""}
+{"version":3,"file":"ecs.d.ts","sourceRoot":"","sources":["../../src/tests/ecs.ts"],"names":[],"mappings":""}

@@ -3,6 +3,13 @@
     "incremental": true,
     "module": "ES2020",
     "target": "ES2015",
+    "outDir": "./dist/",
+    "baseUrl": "./src",
+    "paths": {
+      "@/ecs/*": [
+        "./*"
+      ]
+    },
     "moduleResolution": "node",
     "declaration": true,
     "declarationMap": true,
@@ -28,6 +35,8 @@
     "forceConsistentCasingInFileNames": true
   },
   "exclude": [
-    "**/*.spec.ts"
+    "node_modules",
+    "**/*.spec.ts",
+    "dist"
   ]
 }

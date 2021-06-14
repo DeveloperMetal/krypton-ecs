@@ -1,1 +1,1 @@
-{"version":3,"file":"contants.js","sourceRoot":"","sources":["../src/ecs/contants.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,MAAM,cAAc,GAAG,SAAS,CAAC"}
+{"version":3,"file":"contants.js","sourceRoot":"","sources":["../src/contants.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,MAAM,cAAc,GAAG,SAAS,CAAC"}

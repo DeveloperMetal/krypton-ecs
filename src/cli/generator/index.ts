@@ -4,82 +4,24 @@ import { IGeneratorArgs } from "./types";
 import findup from "findup-sync";
 import fs from "fs/promises";
 import path from "path";
-import { exec } from "child_process";
+import { JSGenerator, TSTypesGenerator } from "./utils";
 import { generate as generateInterfaces } from "./generators/interfaces";
 import { generate as generateSchema } from "./generators/schema";
-
-async function installPackages(packages: { url: string, name: string }[]) {
-  return new Promise<void>(async (resolve, reject) => {
-    const packagesToInstall: string[] = [];
-    for (const dep of packages) {
-      try {
-        require(dep.name);
-      } catch (err) {
-        // tslint:disable-next-line: no-console
-        console.log("Module not found: ", dep.name);
-        packagesToInstall.push(dep.url);
-      }
-    }
-
-    if ( packagesToInstall.length === 0 ) {
-      return resolve();
-    }
-
-    let cmd = `npm i -s ${packagesToInstall.join(' ')}`;
-
-    if ( await usesYarn() ) {
-      cmd = `yarn add ${packagesToInstall.join(' ')}`;
-    }
-
-    exec(cmd, (error, stdout, stderr) => {
-      if ( error ) {
-        // tslint:disable-next-line: no-console
-        console.log(stdout);
-        // tslint:disable-next-line: no-console
-        console.log(stderr);
-        reject(error);
-        return;
-      }
-
-      // tslint:disable-next-line: no-console
-      console.log(stdout);
-      resolve();
-    })
-  });
-}
-
-async function usesYarn(cwd = process.cwd()) {
-  try {
-    const stat = await fs.stat(path.resolve(cwd, 'yarn.lock'))
-    return stat.isFile();
-  } catch(err) {
-    return false;
-  }
-}
-
+import { generate as generateClient } from "./generators/client";
+import { generate as generateClientTypes } from "./generators/clientTypes";
 
 function generateCode(data: IECSSchema) {
-  const src = `// Component and Entity Schema ////////////////////////////////////////////////
-${generateSchema(data)}
-
-module.exports = {
-  schema: componentSchemas
-}
-`;
-
-  return src;
+  const js = new JSGenerator();
+  js.collect(generateSchema(data));
+  js.collect(generateClient(data));
+  return js.generateSrc();
 }
 
 function generateTypes(data: IECSSchema) {
-  const src = `import { IECSSchema, IComponentDefinition } from '@kryptonstudio/ecs';
-
-// Component Interfaces //////////////////////////////////////////////////////
-${generateInterfaces(data)}
-
-export declare const schema: IECSSchema;
-`;
-
-  return src;
+  const ts = new TSTypesGenerator();
+  ts.collect(generateInterfaces(data));
+  ts.collect(generateClientTypes(data));
+  return ts.generateSrc();
 }
 
 export default async function (argv: IGeneratorArgs) {
@@ -100,8 +42,8 @@ export default async function (argv: IGeneratorArgs) {
     return;
   }
   // tslint:disable-next-line: no-console
-  const src = generateCode(data);
-  const types = generateTypes(data);
+  const schemaSrc = generateCode(data);
+  const schemaSrcTypes = generateTypes(data);
 
   const packageJsonPath = findup("package.json");
   if ( !packageJsonPath ) {
@@ -124,12 +66,12 @@ export default async function (argv: IGeneratorArgs) {
     }
   }
 
-  if ( src && outputPath) {
+  if ( schemaSrc && outputPath) {
+    const schemaOutputPath = path.join(outputPath, 'schema');
     // tslint:disable-next-line: no-console
     console.log("Writing client to: ", outputPath);
-    await fs.writeFile(path.join(outputPath, 'index.js'), src, { encoding: "utf-8" });
-    await fs.writeFile(path.join(outputPath, 'index.d.ts'), types, { encoding: "utf-8" });
-    installPackages([]);// { url: 'DeveloperMetal/kecs-client.git#master', name: "@kryptonstudio/ecs-client"}]);
+    await fs.writeFile(path.join(schemaOutputPath, 'index.js'), schemaSrc, { encoding: "utf-8" });
+    await fs.writeFile(path.join(schemaOutputPath, 'index.d.ts'), schemaSrcTypes, { encoding: "utf-8" });
     // tslint:disable-next-line: no-console
     console.log("Client Generated.");
   } else {

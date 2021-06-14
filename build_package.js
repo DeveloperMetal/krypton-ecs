@@ -13,7 +13,7 @@ async function exec(cmd, opts) {
     const p = spawn(cmd, opts, { stdout: 'inherit', stdio: 'inherit', stdout: 'inherit' });
 
     p.on('error', (err) => {
-      console.log(err);
+      reject(err);
     });
 
     p.on('exit', (code) => {
@@ -43,17 +43,27 @@ async function step(progress, cb, label, failMsg, step) {
 }
 
 const libPackageConfig = () => ({
-  "name": package.name,
+  "name": "@kryptonstudio/ecs",
   "version": package.version,
   "main": "./index.js",
   "module": "./index.js",
   "types": "./index.d.ts",
   "bin": {
-    "kecs": "./cli/index.ts"
+    "kecs": "./cli/index.js"
   },
   "repository": package.repository,
   "dependencies": package.dependencies
 })
+
+async function compile() {
+  try{
+    await exec("yarn", ["tsc", "-p", "./tsconfig.json"]);
+  } catch(err) {
+    console.err(err);
+    return false;
+  }
+  return true;
+}
 
 async function genPackageJson(outputPath) {
   // generate package.json
@@ -89,7 +99,7 @@ async function build() {
   const progress = new cliProgress.SingleBar({
     format: progressFormatter
   }, cliProgress.Presets.shades_classic);
-  progress.start(3, 0);
+  progress.start(4, 0);
 
   try {
     await fs.stat(outputDir);
@@ -98,10 +108,11 @@ async function build() {
       recursive: true
     });
   }
-  await step(progress, async () => await genPackageJson(outputDir), "Generate package.json", "Failed generating package.json", 1);
-  await step(progress, async () => await copyFiles(outputDir), "Copying util files", "Failed copying files", 2);
+  await step(progress, compile, "Compile Project", "Failed to compile", 1);
+  await step(progress, async () => await genPackageJson(outputDir), "Generate package.json", "Failed generating package.json", 2);
+  await step(progress, async () => await copyFiles(outputDir), "Copying util files", "Failed copying files", 3);
 
-  progress.update(3, { label: _colors.green("Build Complete!") })
+  progress.update(4, { label: _colors.green("Build Complete!") })
   progress.stop();
   process.exit(0);
 }

@@ -1,0 +1,1 @@
+{"version":3,"file":"clientTypes.js","sourceRoot":"","sources":["../../../../src/cli/generator/generators/clientTypes.ts"],"names":[],"mappings":"AAGA,MAAM,CAAC,MAAM,QAAQ,GAAG,CAAC,CAAqB,EAAkB,EAAE,CAAC,CAAC;IAClE,OAAO,EAAE,CAAC,EAAE,SAAS,EAAE,mBAAmB;YACtC,SAAS,EAAE,CAAC,SAAS,EAAE,eAAe,EAAE,WAAW,CAAC,EAAE;KACzD;IACD,GAAG,EAAE;;;;CAIN;CAAC,CAAC,CAAC"}
